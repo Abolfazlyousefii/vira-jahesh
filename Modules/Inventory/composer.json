@@ -1,0 +1,11 @@
+{
+    "name": "jahesh/inventory",
+    "description": "انبار و موجودی",
+    "type": "library",
+    "license": "proprietary",
+    "autoload": {
+        "psr-4": {
+            "Modules\\Inventory\\": "app/"
+        }
+    }
+}

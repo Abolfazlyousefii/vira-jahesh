@@ -1,0 +1,11 @@
+{
+    "name": "jahesh/sales",
+    "description": "فروش و فاکتورها",
+    "type": "library",
+    "license": "proprietary",
+    "autoload": {
+        "psr-4": {
+            "Modules\\Sales\\": "app/"
+        }
+    }
+}

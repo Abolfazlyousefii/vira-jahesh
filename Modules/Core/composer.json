@@ -1,0 +1,11 @@
+{
+    "name": "jahesh/core",
+    "description": "هسته و کاربران",
+    "type": "library",
+    "license": "proprietary",
+    "autoload": {
+        "psr-4": {
+            "Modules\\Core\\": "app/"
+        }
+    }
+}

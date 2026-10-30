@@ -1,0 +1,8 @@
+{
+    "name": "Customers",
+    "alias": "customers",
+    "description": "Customer identity and contact information shared by sales channels",
+    "priority": 5,
+    "providers": ["Modules\\Customers\\Providers\\CustomersServiceProvider"],
+    "files": []
+}

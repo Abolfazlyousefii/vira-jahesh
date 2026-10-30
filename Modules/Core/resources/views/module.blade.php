@@ -1,0 +1,3 @@
+<x-layouts.panel :title="config('vira.modules.'.$module.'.label')">
+<section class="s-panel" style="padding:30px"><div class="s-avatar" style="width:52px;height:52px;margin-bottom:18px"><i data-lucide="{{ config('vira.modules.'.$module.'.icon') }}"></i></div><span class="s-pill">مرحلهٔ آماده‌سازی</span><h1 style="margin:14px 0">{{ config('vira.modules.'.$module.'.label') }}</h1><p class="s-muted">این بخش در نسخهٔ آغازین ویرا پایه‌گذاری شده است. امکانات عملیاتی آن در مرحلهٔ بعد تکمیل می‌شود.</p><a class="s-btn s-mainbtn" href="{{ route('panel.dashboard') }}" style="margin-top:24px">بازگشت به میز کار <i data-lucide="arrow-left"></i></a></section>
+</x-layouts.panel>

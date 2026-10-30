@@ -1,0 +1,10 @@
+{
+    "Core": true,
+    "Customers": true,
+    "Catalog": true,
+    "Inventory": true,
+    "Sales": true,
+    "Crm": true,
+    "Pos": true,
+    "Storefront": true
+}

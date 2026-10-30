@@ -1,0 +1,11 @@
+{
+    "name": "jahesh/crm",
+    "description": "مشتریان و ارتباطات",
+    "type": "library",
+    "license": "proprietary",
+    "autoload": {
+        "psr-4": {
+            "Modules\\Crm\\": "app/"
+        }
+    }
+}

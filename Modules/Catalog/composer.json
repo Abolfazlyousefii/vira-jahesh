@@ -1,0 +1,11 @@
+{
+    "name": "jahesh/catalog",
+    "description": "کالا و کاتالوگ",
+    "type": "library",
+    "license": "proprietary",
+    "autoload": {
+        "psr-4": {
+            "Modules\\Catalog\\": "app/"
+        }
+    }
+}

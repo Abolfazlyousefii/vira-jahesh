@@ -1,0 +1,11 @@
+{
+    "name": "jahesh/storefront",
+    "description": "سایت فروشگاهی",
+    "type": "library",
+    "license": "proprietary",
+    "autoload": {
+        "psr-4": {
+            "Modules\\Storefront\\": "app/"
+        }
+    }
+}

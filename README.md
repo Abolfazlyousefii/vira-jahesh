@@ -1,0 +1,52 @@
+# ویرا — یکپارچه با جهش
+
+پایهٔ یکپارچه و ماژولار مدیریت فروشگاه، مشتریان و سایت فروشگاهی.
+
+## وضعیت فعلی
+
+این نسخه، زیرساخت آغازین محصول است: ورود و خروج، نقش و مجوز، پنل فارسی واکنش‌گرا، سه رنگ‌بندی، حالت تیره، صفحهٔ وضعیت ماژول‌ها، ثبت فعالیت و اسکلت سایت. عملیات کالا، فاکتور، پرداخت، CRM و صندوق هنوز پیاده‌سازی نشده‌اند. دادهٔ تجاری ساختگی و حساب پیش‌فرض در پروژه وجود ندارد.
+
+## راه‌اندازی
+
+نیازمند PHP 8.3 یا بالاتر با mbstring، intl، gd، exif، zip، bcmath و درایور دیتابیس، Composer و Node.js 22 یا بالاتر است.
+
+```powershell
+composer install
+Copy-Item .env.example .env
+php artisan key:generate
+New-Item database/database.sqlite -ItemType File -ErrorAction SilentlyContinue
+php artisan migrate --seed
+npm ci
+npm run build
+php artisan vira:owner your-email@example.com
+composer dev
+```
+
+دستور ساخت مدیر، رمز را مخفیانه از شما می‌پرسد؛ حساب موجود را بازنویسی نمی‌کند. در نصب فعلی، حساب اولیه به‌صورت محلی ایجاد شده و مشخصات آن داخل `storage/app/private/initial-access.txt` قرار دارد. این فایل، دیتابیس و `.env` در گیت ذخیره نمی‌شوند.
+
+- سایت: http://127.0.0.1:8017
+- پنل: http://127.0.0.1:8017/panel
+- وضعیت اجرای برنامه: `/up`؛ این مسیر جای پایش دیتابیس و سرویس‌های وابسته را نمی‌گیرد.
+
+## اجزای اصلی
+
+- Laravel 13 و Fortify برای هسته و احراز هویت.
+- Livewire 4، Alpine همراه آن، Blade، Tailwind 4 و Vite برای رابط.
+- Nwidart Laravel Modules برای بارگذاری ماژول‌ها.
+- Spatie Permission، Activitylog و Media Library برای مجوز، ثبت فعالیت و زیرساخت فایل.
+- Morilog Jalali برای تاریخ شمسی، Brick Money برای محاسبات دقیق پول، Lucide برای آیکن‌ها، Chart.js برای گزارش‌های آینده و فونت محلی Vazir.
+- PHPUnit و Pint برای آزمون و یکدستی کد؛ GitHub Actions برای اجرای بررسی‌ها.
+
+کیف پول، درگاه، تلفن، پیامک و پرداخت اشتراک در این مرحله نصب و متصل نشده‌اند؛ انتخاب آن‌ها با نیاز و سرویس واقعی هر قابلیت انجام می‌شود.
+
+## ساختار و بررسی
+
+ماژول‌ها داخل `Modules/` هستند؛ [تصمیم‌های معماری](docs/architecture.md) و [اجرای محلی و XAMPP](docs/local-development.md) را ببینید.
+
+```powershell
+composer check
+npm run build
+php artisan module:list
+```
+
+این محصول اختصاصی جهش است. استفاده از کتابخانه‌های متن‌باز تابع مجوز همان کتابخانه‌هاست. طرح پنل، پیاده‌سازی اختصاصی بر اساس پیش‌نمایش تأییدشده است؛ قالب تجاری Vuexy یا Metronic خریداری یا در پروژه کپی نشده است.

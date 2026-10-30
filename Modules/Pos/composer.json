@@ -1,0 +1,11 @@
+{
+    "name": "jahesh/pos",
+    "description": "صندوق فروشگاهی",
+    "type": "library",
+    "license": "proprietary",
+    "autoload": {
+        "psr-4": {
+            "Modules\\Pos\\": "app/"
+        }
+    }
+}

@@ -1,0 +1,11 @@
+{
+    "name": "Crm",
+    "alias": "crm",
+    "description": "مشتریان و ارتباطات",
+    "keywords": [],
+    "priority": 10,
+    "providers": [
+        "Modules\\Crm\\Providers\\CrmServiceProvider"
+    ],
+    "files": []
+}

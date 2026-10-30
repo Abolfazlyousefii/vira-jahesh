@@ -1,0 +1,11 @@
+{
+    "name": "Pos",
+    "alias": "pos",
+    "description": "صندوق فروشگاهی",
+    "keywords": [],
+    "priority": 10,
+    "providers": [
+        "Modules\\Pos\\Providers\\PosServiceProvider"
+    ],
+    "files": []
+}

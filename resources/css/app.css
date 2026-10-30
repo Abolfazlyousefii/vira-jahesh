@@ -1,0 +1,1106 @@
+@import 'tailwindcss';
+@import '@fontsource/vazir/400.css';
+@import '@fontsource/vazir/700.css';
+@source '../../Modules/**/*.blade.php';
+@source '../views/**/*.blade.php';
+
+#jstudio {
+    --s-bg: light-dark(#f3f4f9, #111420);
+    --s-surface: light-dark(#fff, #1c2030);
+    --s-text: light-dark(#303348, #edf0fa);
+    --s-muted: light-dark(#7d8197, #a1a8c1);
+    --s-line: light-dark(#e9eaf2, #30354b);
+    --s-primary: #7762de;
+    --s-soft: light-dark(#efecfc, #332b50);
+    --s-nav: #22253f;
+    --s-blue: #4b94e8;
+    --s-green: #27a69a;
+    --s-orange: #e59a40;
+    --s-radius: 14px;
+    font:
+        13px/1.85 Vazir,
+        Tahoma,
+        sans-serif;
+    direction: rtl;
+    color: var(--s-text);
+    color-scheme: light dark;
+    max-width: 100%;
+}
+#jstudio[data-mode='light'] {
+    color-scheme: light;
+}
+#jstudio[data-mode='dark'] {
+    color-scheme: dark;
+}
+#jstudio[data-palette='ocean'] {
+    --s-primary: #347dc0;
+    --s-soft: light-dark(#e8f2fc, #223a52);
+    --s-nav: #172e43;
+}
+#jstudio[data-palette='rose'] {
+    --s-primary: #b45b87;
+    --s-soft: light-dark(#fbecf3, #45283a);
+    --s-nav: #35273e;
+}
+#jstudio * {
+    box-sizing: border-box;
+}
+#jstudio [hidden] {
+    display: none !important;
+}
+#jstudio button,
+#jstudio select,
+#jstudio input {
+    font: inherit;
+    color: inherit;
+}
+#jstudio button {
+    cursor: pointer;
+}
+#jstudio button:focus-visible,
+#jstudio input:focus-visible,
+#jstudio select:focus-visible {
+    outline: 2px solid var(--s-primary);
+    outline-offset: 3px;
+}
+#jstudio h1,
+#jstudio h2,
+#jstudio h3,
+#jstudio p {
+    margin: 0;
+}
+#jstudio h1 {
+    font-size: 22px;
+    font-weight: 700;
+}
+#jstudio h2 {
+    font-size: 14px;
+    font-weight: 700;
+}
+#jstudio h3 {
+    font-size: 13px;
+    font-weight: 700;
+}
+#jstudio svg.lucide {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+#jstudio .s-muted {
+    color: var(--s-muted);
+}
+#jstudio .s-small {
+    font-size: 11px;
+}
+#jstudio .s-flex {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+#jstudio .s-between {
+    justify-content: space-between;
+}
+#jstudio .s-wrap {
+    flex-wrap: wrap;
+}
+#jstudio .s-btn {
+    border: 1px solid var(--s-line);
+    background: var(--s-surface);
+    border-radius: 8px;
+    padding: 8px 12px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 7px;
+    white-space: nowrap;
+    transition:
+        background 0.18s,
+        transform 0.18s,
+        box-shadow 0.18s,
+        border-color 0.18s;
+}
+#jstudio .s-btn:hover {
+    transform: translateY(-2px);
+    border-color: var(--s-primary);
+    box-shadow: 0 4px 12px #26234412;
+}
+#jstudio .s-mainbtn {
+    background: var(--s-primary);
+    border-color: var(--s-primary);
+    color: #fff;
+    box-shadow: 0 3px 8px color-mix(in srgb, var(--s-primary) 24%, transparent);
+}
+#jstudio .s-iconbtn {
+    padding: 8px;
+    min-width: 35px;
+}
+#jstudio .s-input {
+    border: 1px solid var(--s-line);
+    background: var(--s-surface);
+    border-radius: 8px;
+    padding: 8px 10px;
+    max-width: 100%;
+    min-width: 0;
+}
+#jstudio .s-config {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+}
+#jstudio .s-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+#jstudio .s-swatch {
+    width: 25px;
+    height: 25px;
+    border: 3px solid var(--s-surface);
+    outline: 1px solid var(--s-line);
+    border-radius: 50%;
+    padding: 0;
+    transition: transform 0.2s;
+}
+#jstudio .s-swatch:hover {
+    transform: scale(1.15);
+}
+#jstudio .s-swatch[aria-pressed='true'] {
+    outline: 2px solid var(--s-text);
+}
+#jstudio .s-app {
+    display: grid;
+    grid-template-columns: 192px minmax(0, 1fr);
+    background: var(--s-bg);
+    border: 1px solid var(--s-line);
+    border-radius: 18px;
+    overflow: hidden;
+    min-height: 890px;
+}
+#jstudio .s-sidebar {
+    background: var(--s-nav);
+    color: #e8e9f4;
+    padding: 25px 13px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+#jstudio .s-brand {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 0 10px;
+}
+#jstudio .s-logo {
+    width: 35px;
+    height: 35px;
+    display: grid;
+    place-items: center;
+    background: var(--s-primary);
+    border-radius: 10px;
+    color: #fff;
+    font-size: 23px;
+    font-weight: 700;
+    transform: rotate(-6deg);
+}
+#jstudio .s-brandname {
+    font-size: 21px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+#jstudio .s-brand small {
+    display: block;
+    color: #a9adc8;
+    font-size: 10px;
+}
+#jstudio .s-workspace {
+    padding: 10px;
+    border: 1px solid #ffffff1c;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #ffffff06;
+}
+#jstudio .s-cap {
+    font-size: 10px;
+    color: #989dbb;
+    padding: 0 10px;
+    margin-bottom: 9px;
+}
+#jstudio .s-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+#jstudio .s-nav :is(button, a) {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 11px;
+    text-align: right;
+    border: 0;
+    border-radius: 8px;
+    background: none;
+    color: #bfc3da;
+    transition:
+        background 0.2s,
+        color 0.2s,
+        transform 0.2s;
+}
+#jstudio .s-nav :is(button, a):hover {
+    background: #ffffff0b;
+    color: #fff;
+    transform: translateX(-3px);
+}
+#jstudio .s-nav :is(button, a).active {
+    background: var(--s-primary);
+    color: #fff;
+    box-shadow: 0 4px 12px #0000001a;
+}
+#jstudio .s-navcount {
+    margin-right: auto;
+    background: #ffffff1c;
+    padding: 0 7px;
+    border-radius: 5px;
+    font-size: 10px;
+}
+#jstudio .s-subnav {
+    margin: 0 22px 5px 0;
+    border-right: 1px solid #ffffff24;
+    display: grid;
+    gap: 2px;
+}
+#jstudio .s-subnav button {
+    font-size: 11px;
+    padding: 6px 15px;
+}
+#jstudio .s-sidebottom {
+    margin-top: auto;
+    border-top: 1px solid #ffffff1c;
+    padding: 15px 8px 0;
+}
+#jstudio .s-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    background: var(--s-soft);
+    color: var(--s-primary);
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+#jstudio .s-sidebar .s-avatar {
+    background: #ffffff14;
+    color: #d4d0fa;
+}
+#jstudio .s-main {
+    min-width: 0;
+    padding: 16px 22px 0;
+}
+#jstudio .s-topbar {
+    background: var(--s-surface);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    gap: 12px;
+    box-shadow: 0 2px 12px #20253b04;
+}
+#jstudio .s-searchbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--s-muted);
+    flex: 1;
+    min-width: 0;
+}
+#jstudio .s-searchbox input {
+    border: 0;
+    background: none;
+    outline-offset: 0;
+    min-width: 0;
+    width: 100%;
+    padding: 4px 0;
+}
+#jstudio .s-avatarprofile {
+    border-radius: 50%;
+    background: var(--s-soft);
+    position: relative;
+}
+#jstudio .s-avatarprofile:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 8px;
+    height: 8px;
+    background: var(--s-green);
+    border: 2px solid var(--s-surface);
+    border-radius: 50%;
+}
+#jstudio .s-bell {
+    position: relative;
+}
+#jstudio .s-bell:after {
+    content: '';
+    width: 5px;
+    height: 5px;
+    background: #e87979;
+    border-radius: 50%;
+    position: absolute;
+    top: 6px;
+    right: 7px;
+}
+#jstudio .s-breadcrumb {
+    color: var(--s-muted);
+    font-size: 11px;
+    margin: 19px 0 12px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+#jstudio .s-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 17px;
+}
+#jstudio .s-tabs {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    border-bottom: 1px solid var(--s-line);
+    margin-bottom: 19px;
+    overflow: auto;
+}
+#jstudio .s-tabs button {
+    border: 0;
+    background: none;
+    color: var(--s-muted);
+    padding: 9px 1px 12px;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition:
+        color 0.2s,
+        border-color 0.2s;
+}
+#jstudio .s-tabs button[aria-selected='true'] {
+    border-color: var(--s-primary);
+    color: var(--s-primary);
+    font-weight: 700;
+}
+#jstudio .s-welcome {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    background: var(--s-soft);
+    border-radius: var(--s-radius);
+    padding: 17px 20px;
+    margin-bottom: 17px;
+    position: relative;
+    overflow: hidden;
+}
+#jstudio .s-welcome h2 {
+    color: var(--s-primary);
+    font-size: 17px;
+}
+#jstudio .s-welcome p {
+    font-size: 12px;
+    color: var(--s-muted);
+    margin-top: 3px;
+}
+#jstudio .s-welmark {
+    display: flex;
+    gap: 7px;
+    align-items: flex-end;
+    height: 65px;
+    padding: 0 8px;
+    transform: rotate(-10deg);
+    flex-shrink: 0;
+}
+#jstudio .s-welmark span {
+    width: 21px;
+    background: var(--s-primary);
+    border-radius: 5px;
+    opacity: 0.2;
+}
+#jstudio .s-welmark span:nth-child(2) {
+    opacity: 0.4;
+}
+#jstudio .s-welmark span:nth-child(3) {
+    opacity: 0.7;
+}
+#jstudio .s-welmark span:nth-child(4) {
+    opacity: 1;
+}
+#jstudio .s-kpis {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 17px;
+}
+#jstudio .s-kpi {
+    background: var(--s-surface);
+    padding: 15px;
+    border-radius: var(--s-radius);
+    border-bottom: 2px solid var(--k-color);
+    transition:
+        transform 0.2s,
+        box-shadow 0.2s;
+}
+#jstudio .s-kpi:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px #2524460d;
+}
+#jstudio .s-kpihead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    color: var(--s-muted);
+    font-size: 11px;
+}
+#jstudio .s-kpiicon {
+    width: 30px;
+    height: 30px;
+    display: grid;
+    place-items: center;
+    background: color-mix(in srgb, var(--k-color) 13%, var(--s-surface));
+    border-radius: 8px;
+    color: var(--k-color);
+}
+#jstudio .s-value {
+    font-size: 25px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.6px;
+    margin: 8px 0 3px;
+}
+#jstudio .s-value small {
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0;
+    color: var(--s-muted);
+}
+#jstudio .s-up {
+    color: light-dark(#258474, #71d5bc);
+    font-size: 10px;
+}
+#jstudio .s-metricfoot {
+    font-size: 10px;
+    color: var(--s-muted);
+}
+#jstudio .s-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.7fr) minmax(210px, 1fr);
+    gap: 15px;
+    margin-bottom: 17px;
+}
+#jstudio .s-panel {
+    background: var(--s-surface);
+    border-radius: var(--s-radius);
+    padding: 17px;
+    min-width: 0;
+}
+#jstudio .s-panelhead {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+#jstudio .s-link {
+    background: none;
+    border: 0;
+    padding: 0;
+    color: var(--s-primary);
+    font-size: 11px;
+}
+#jstudio .s-summaryvalue {
+    font-size: 22px;
+    font-weight: 700;
+}
+#jstudio .s-pill {
+    font-size: 10px;
+    padding: 3px 7px;
+    border-radius: 5px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--s-soft);
+    color: var(--s-primary);
+    white-space: nowrap;
+}
+#jstudio .s-pill.green {
+    background: light-dark(#e8f7f1, #1f403a);
+    color: light-dark(#24846e, #7adac0);
+}
+#jstudio .s-pill.orange {
+    background: light-dark(#fff2df, #453824);
+    color: light-dark(#a5691c, #eac384);
+}
+#jstudio .s-pill.blue {
+    background: light-dark(#e9f2fe, #26394e);
+    color: light-dark(#3c7fca, #9ac5f7);
+}
+#jstudio .s-chart {
+    width: 100%;
+    height: 190px;
+    display: block;
+    overflow: visible;
+}
+#jstudio .s-chart text {
+    font-family: Vazir, Tahoma, sans-serif;
+    font-size: 10px;
+    fill: var(--s-muted);
+}
+#jstudio .s-legend {
+    display: flex;
+    gap: 16px;
+    font-size: 10px;
+    color: var(--s-muted);
+    align-items: center;
+}
+#jstudio .s-dot {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    margin-left: 4px;
+}
+#jstudio .s-ringwrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    margin: 20px 0;
+}
+#jstudio .s-ring {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    background: conic-gradient(
+        var(--s-primary) 0% 62%,
+        var(--s-green) 62% 86%,
+        var(--s-orange) 86%
+    );
+    display: grid;
+    place-items: center;
+    transform: rotate(-90deg);
+    flex-shrink: 0;
+}
+#jstudio .s-ringinner {
+    width: 101px;
+    height: 101px;
+    border-radius: 50%;
+    background: var(--s-surface);
+    display: grid;
+    place-content: center;
+    text-align: center;
+    transform: rotate(90deg);
+}
+#jstudio .s-ringinner strong {
+    font-size: 24px;
+    line-height: 1.4;
+}
+#jstudio .s-channel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin: 8px 0;
+    font-size: 11px;
+}
+#jstudio .s-target {
+    border-top: 1px solid var(--s-line);
+    margin-top: 12px;
+    padding-top: 12px;
+}
+#jstudio .s-track {
+    height: 5px;
+    background: var(--s-bg);
+    border-radius: 5px;
+    margin-top: 9px;
+    overflow: hidden;
+}
+#jstudio .s-track span {
+    display: block;
+    height: 100%;
+    width: 76%;
+    border-radius: 5px;
+    background: var(--s-primary);
+    transition: width 0.4s;
+}
+#jstudio .s-bottomgrid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.7fr) minmax(210px, 1fr);
+    gap: 15px;
+}
+#jstudio .s-tablewrap {
+    overflow: auto;
+}
+#jstudio table {
+    border-collapse: collapse;
+    width: 100%;
+    text-align: right;
+    white-space: nowrap;
+}
+#jstudio th {
+    font-weight: 400;
+    color: var(--s-muted);
+    font-size: 10px;
+    background: var(--s-bg);
+}
+#jstudio th,
+#jstudio td {
+    padding: 10px 7px;
+    border-bottom: 1px solid var(--s-line);
+}
+#jstudio td {
+    font-size: 11px;
+}
+#jstudio tr:last-child td {
+    border-bottom: 0;
+}
+#jstudio tbody tr {
+    transition: background 0.16s;
+}
+#jstudio tbody tr:hover {
+    background: var(--s-soft);
+}
+#jstudio .s-miniavatar {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    font-size: 10px;
+}
+#jstudio .s-timeline {
+    display: flex;
+    gap: 11px;
+    position: relative;
+    padding: 9px 0;
+}
+#jstudio .s-timeline + .s-timeline:before {
+    content: '';
+    width: 1px;
+    height: 18px;
+    background: var(--s-line);
+    position: absolute;
+    right: 5px;
+    top: -10px;
+}
+#jstudio .s-timedot {
+    width: 11px;
+    height: 11px;
+    border: 3px solid color-mix(in srgb, var(--s-primary) 18%, var(--s-surface));
+    background: var(--s-primary);
+    border-radius: 50%;
+    margin-top: 6px;
+    flex-shrink: 0;
+}
+#jstudio .s-timeline p {
+    font-size: 11px;
+}
+#jstudio .s-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 10px;
+    color: var(--s-muted);
+    padding: 17px 0 13px;
+}
+#jstudio .s-board {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 13px;
+}
+#jstudio .s-lane {
+    background: color-mix(in srgb, var(--s-bg) 85%, var(--s-primary));
+    border-radius: 10px;
+    padding: 12px;
+    min-width: 0;
+}
+#jstudio .s-deal {
+    background: var(--s-surface);
+    border-radius: 10px;
+    padding: 13px;
+    margin-top: 12px;
+    border-top: 3px solid var(--s-primary);
+    transition:
+        transform 0.2s,
+        box-shadow 0.2s;
+}
+#jstudio .s-deal:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 18px #22223d0d;
+}
+#jstudio .s-deal .s-btn {
+    font-size: 11px;
+    padding: 5px 8px;
+    margin-top: 12px;
+    width: 100%;
+}
+#jstudio .s-toast {
+    padding: 10px 13px;
+    background: var(--s-soft);
+    border: 1px solid color-mix(in srgb, var(--s-primary) 25%, transparent);
+    border-radius: 8px;
+    margin-bottom: 14px;
+    font-size: 12px;
+}
+#jstudio .s-mobilemenu {
+    display: none;
+}
+#jstudio .s-notice {
+    background: var(--s-soft);
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+#jstudio .s-compact .s-sidebar {
+    padding-inline: 8px;
+}
+#jstudio .s-app.s-compact {
+    grid-template-columns: 66px minmax(0, 1fr);
+}
+#jstudio .s-compact .s-hidecollapse,
+#jstudio .s-compact .s-subnav,
+#jstudio .s-compact .s-navcount,
+#jstudio .s-compact .s-cap {
+    display: none;
+}
+#jstudio .s-compact .s-brand {
+    padding: 0;
+    justify-content: center;
+}
+#jstudio .s-compact .s-nav :is(button, a) {
+    justify-content: center;
+    padding: 12px;
+}
+#jstudio .s-compact .s-workspace {
+    justify-content: center;
+    padding: 8px 0;
+    border: 0;
+}
+#jstudio .s-compact .s-sidebottom {
+    padding-inline: 0;
+}
+#jstudio .s-compact .s-sidebottom .s-flex {
+    justify-content: center;
+}
+#jstudio.s-phone {
+    max-width: 390px;
+    margin-inline: auto;
+}
+#jstudio.s-phone .s-app {
+    grid-template-columns: 1fr;
+    min-height: 0;
+}
+#jstudio.s-phone .s-sidebar {
+    display: none;
+}
+#jstudio.s-phone .s-sidebar.s-show {
+    display: flex;
+}
+#jstudio.s-phone .s-mobilemenu {
+    display: inline-flex;
+}
+#jstudio.s-phone .s-collapsebtn {
+    display: none;
+}
+#jstudio.s-phone .s-main {
+    padding: 12px 12px 0;
+}
+#jstudio.s-phone .s-grid,
+#jstudio.s-phone .s-bottomgrid,
+#jstudio.s-phone .s-board {
+    grid-template-columns: 1fr;
+}
+#jstudio.s-phone .s-kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+#jstudio.s-phone .s-topdate,
+#jstudio.s-phone .s-welmark {
+    display: none;
+}
+#jstudio.s-phone .s-heading h1 {
+    font-size: 20px;
+}
+#jstudio.s-phone .s-topbar {
+    padding: 9px;
+}
+#jstudio .s-panel.flash {
+    animation: s-reveal 0.25s ease-out;
+}
+@keyframes s-reveal {
+    from {
+        transform: translateY(7px);
+        opacity: 0.6;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+@media (max-width: 720px) {
+    #jstudio .s-app {
+        grid-template-columns: 1fr;
+        min-height: 0;
+    }
+    #jstudio .s-sidebar {
+        display: none;
+    }
+    #jstudio .s-sidebar.s-show {
+        display: flex;
+    }
+    #jstudio .s-mobilemenu {
+        display: inline-flex;
+    }
+    #jstudio .s-collapsebtn {
+        display: none;
+    }
+    #jstudio .s-main {
+        padding: 12px 12px 0;
+    }
+    #jstudio .s-grid,
+    #jstudio .s-bottomgrid {
+        grid-template-columns: 1fr;
+    }
+    #jstudio .s-kpis {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    #jstudio .s-topdate {
+        display: none;
+    }
+}
+@media (max-width: 440px) {
+    #jstudio .s-board {
+        grid-template-columns: 1fr;
+    }
+    #jstudio .s-welmark {
+        display: none;
+    }
+    #jstudio .s-value {
+        font-size: 23px;
+    }
+    #jstudio .s-heading h1 {
+        font-size: 20px;
+    }
+    #jstudio .s-kpi {
+        padding: 12px;
+    }
+    #jstudio .s-tabs {
+        gap: 15px;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    #jstudio *,
+    #jstudio *:before {
+        animation: none !important;
+        transition: none !important;
+        transform: none !important;
+    }
+}
+@media (pointer: coarse) {
+    #jstudio button,
+    #jstudio select {
+        min-height: 44px;
+    }
+    #jstudio input {
+        font-size: 16px;
+    }
+}
+
+html,
+body {
+    margin: 0;
+    min-height: 100%;
+    font-family: Vazir, Tahoma, sans-serif;
+}
+body {
+    background: #f3f4f9;
+}
+a {
+    text-decoration: none;
+    color: inherit;
+}
+button {
+    cursor: pointer;
+}
+[x-cloak] {
+    display: none !important;
+}
+#jstudio {
+    min-height: 100dvh;
+}
+#jstudio .s-app {
+    border: 0;
+    border-radius: 0;
+    min-height: 100dvh;
+}
+#jstudio .s-main {
+    padding-top: 20px;
+}
+#jstudio .s-sidebar {
+    min-height: 100%;
+}
+#jstudio .s-content {
+    padding-bottom: 24px;
+}
+#jstudio .s-nav a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 11px;
+    text-align: right;
+    border-radius: 8px;
+    color: #bfc3da;
+}
+#jstudio .s-brand small {
+    font-size: 11px;
+}
+#jstudio .s-subnav a {
+    font-size: 11px;
+    padding: 6px 15px;
+}
+#jstudio .s-compact .s-nav a {
+    justify-content: center;
+    padding: 12px;
+}
+#jstudio .s-statusgrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+#jstudio .s-modulebox {
+    padding: 14px;
+    border: 1px solid var(--s-line);
+    border-radius: 12px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    transition:
+        transform 0.2s,
+        border-color 0.2s;
+}
+#jstudio .s-modulebox:hover {
+    transform: translateY(-3px);
+    border-color: var(--s-primary);
+}
+#jstudio .s-modulebox .s-avatar {
+    width: 42px;
+    height: 42px;
+}
+#jstudio .s-flow {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+}
+#jstudio .s-flowitem {
+    text-align: center;
+    padding: 18px 8px;
+    border-radius: 10px;
+    background: var(--s-bg);
+}
+#jstudio .s-flowitem .s-avatar {
+    margin: 0 auto 10px;
+}
+#jstudio .s-auth {
+    min-height: 100dvh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: var(--s-bg);
+}
+#jstudio .s-authart {
+    background: var(--s-nav);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(30px, 7vw, 100px);
+}
+#jstudio .s-authform {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 20px;
+}
+#jstudio .s-authinner {
+    width: 100%;
+    max-width: 370px;
+}
+#jstudio .s-field {
+    margin: 18px 0;
+}
+#jstudio .s-field label {
+    display: block;
+    margin-bottom: 7px;
+}
+#jstudio .s-field input {
+    width: 100%;
+    padding: 12px;
+}
+#jstudio .s-error {
+    color: light-dark(#b42345, #ff9aae);
+    font-size: 12px;
+    margin-top: 8px;
+}
+#jstudio .s-home {
+    max-width: 1100px;
+    margin: auto;
+    padding: 30px 24px;
+}
+#jstudio .s-homehero {
+    padding: 80px 0;
+    max-width: 750px;
+}
+#jstudio .s-homehero h1 {
+    font-size: clamp(30px, 5vw, 58px);
+    line-height: 1.6;
+    letter-spacing: -1px;
+}
+#jstudio .s-homehero p {
+    font-size: 16px;
+    margin: 18px 0 28px;
+    color: var(--s-muted);
+}
+#jstudio .s-authart h1 {
+    font-size: 34px;
+    line-height: 1.7;
+}
+#jstudio .s-sidebar .s-nav a.active {
+    background: var(--s-primary);
+    color: #fff;
+}
+#jstudio .s-chiprow {
+    display: flex;
+    gap: 7px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+@media (max-width: 720px) {
+    #jstudio .s-statusgrid,
+    #jstudio .s-auth {
+        grid-template-columns: 1fr;
+    }
+    #jstudio .s-authart {
+        display: none;
+    }
+    #jstudio .s-flow {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}

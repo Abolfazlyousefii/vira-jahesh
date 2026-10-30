@@ -1,0 +1,7 @@
+{
+    "name": "jahesh/customers",
+    "description": "Shared customer identities, independent of CRM follow-ups",
+    "type": "library",
+    "license": "proprietary",
+    "autoload": { "psr-4": { "Modules\\Customers\\": "app/" } }
+}

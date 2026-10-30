@@ -1,0 +1,11 @@
+{
+    "name": "Storefront",
+    "alias": "storefront",
+    "description": "سایت فروشگاهی",
+    "keywords": [],
+    "priority": 10,
+    "providers": [
+        "Modules\\Storefront\\Providers\\StorefrontServiceProvider"
+    ],
+    "files": []
+}

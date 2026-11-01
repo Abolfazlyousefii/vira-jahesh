@@ -102,4 +102,30 @@ class StorefrontSectionsTest extends TestCase
         $this->actingAs($owner)->get('/panel/storefront')->assertNotFound();
         $this->get('/')->assertNotFound();
     }
+    public function test_unauthorized_operator_cannot_invoke_editor_mutations(): void
+    {
+        $this->seed();
+        $operator = User::factory()->create();
+        $operator->assignRole('operator');
+
+        Livewire::actingAs($operator)->test(StorefrontEditor::class)->assertForbidden();
+        $this->assertDatabaseCount('storefront_sections', 0);
+    }
+
+    public function test_owner_can_upload_an_image_to_the_single_hero_media_collection(): void
+    {
+        Storage::fake('public');
+        $this->seed();
+        $owner = User::factory()->create();
+        $owner->assignRole('owner');
+
+        Livewire::actingAs($owner)->test(StorefrontEditor::class)
+            ->set('heroImage', UploadedFile::fake()->image('banner.jpg', 750, 420))
+            ->call('save')
+            ->assertHasNoErrors();
+
+        $hero = StorefrontSection::where('section_key', 'hero')->firstOrFail();
+        $this->assertCount(1, $hero->getMedia('hero'));
+        $this->get('/')->assertSee('storage/', false);
+    }
 }

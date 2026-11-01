@@ -4,7 +4,7 @@
 - Read `VIRA-PROJECT-CONTEXT.fa.md` for the full Persian product context; editable source documents are indexed in `docs/product/README.md`.
 - Keep implemented behavior distinct from planned requirements. After changing product scope or completing a milestone, update the relevant source documents and regenerate the consolidated context file.
 - One Laravel modular monolith: retail ERP, optional CRM, POS and storefront.
-- This repository currently contains the foundation, not a completed retail system.
+- This repository has a foundation plus phase-1 modular dashboard widgets and editable storefront introduction sections, not a completed retail system.
 - One business per installation for now. Tenant isolation and subscription billing are not implemented.
 - Persian RTL UI, Vazir font, Blade + Livewire + Alpine; retain the approved navy sidebar and violet/blue/rose themes.
 

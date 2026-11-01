@@ -23,7 +23,10 @@
 - `app/Support/ModuleAccess.php`: بررسی فعال بودن، وابستگی و رد چرخهٔ وابستگی.
 - `app/Support/ModuleServiceProvider.php`: بارگذاری مسیر، migration و view ماژول.
 - `app/Http/Middleware/RequireModule.php`: کنترل فعال بودن ماژول سمت سرور.
-- `app/Livewire/FoundationDashboard.php`: داشبورد آغازین، نه گزارش فروش کامل.
+- `app/Livewire/FoundationDashboard.php`: داشبورد ماژولار آغازین، نه گزارش فروش کامل.
+- `Modules/Core/app/Dashboard/WidgetRegistry.php`: ثبت و کنترل دسترسی ویجت‌های Core و ماژول‌های آینده.
+- `Modules/Core/app/Models/DashboardWidgetPreference.php`: ذخیرهٔ چیدمان هر کاربر.
+- `Modules/Storefront/app/Support/StorefrontSections.php` و `Modules/Storefront/app/Livewire/StorefrontEditor.php`: مدیریت سکشن‌های معرفی سایت، مستقل از منطق Catalog/Sales.
 - `resources/views/components/layouts/`: قالب پایه و پنل؛ `resources/css/app.css` و `resources/js/app.js`: ظاهر و تعامل‌های مشترک.
 - `database/seeders/DatabaseSeeder.php`: مجوزها و نقش‌های اولیه؛ حساب ثابت ایجاد نمی‌کند.
 - `app/Console/Commands/CreateOwner.php`: ساخت مدیر بدون ثبت‌نام عمومی.

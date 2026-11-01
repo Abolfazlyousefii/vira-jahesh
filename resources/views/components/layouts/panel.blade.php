@@ -17,7 +17,12 @@
             </nav></div>
             <div><div class="s-cap">مدیریت</div><nav class="s-nav">
                 @can('modules.manage')<a href="{{ route('panel.modules') }}" class="{{ request()->routeIs('panel.modules') ? 'active' : '' }}"><i data-lucide="blocks"></i><span class="s-hidecollapse">ماژول‌های مجموعه</span></a>@endcan
-                @if($moduleAccess->available('Storefront'))<a href="{{ route('storefront.home') }}"><i data-lucide="store"></i><span class="s-hidecollapse">مشاهدهٔ سایت</span></a>@endif
+                @if($moduleAccess->available('Storefront'))
+                    @can('storefront.manage')
+                        <a href="{{ route('panel.storefront') }}" class="{{ request()->routeIs('panel.storefront') ? 'active' : '' }}"><i data-lucide="store"></i><span class="s-hidecollapse">مدیریت صفحهٔ اصلی سایت</span></a>
+                    @endcan
+                    <a href="{{ route('storefront.home') }}"><i data-lucide="store"></i><span class="s-hidecollapse">مشاهدهٔ سایت</span></a>
+                @endif
             </nav></div>
             <div class="s-sidebottom"><div class="s-flex"><div class="s-avatar">{{ mb_substr(auth()->user()->name, 0, 1) }}</div><div class="s-hidecollapse"><strong class="s-small">{{ auth()->user()->name }}</strong><div class="s-small" style="color:#a9adc8">{{ auth()->user()->hasRole('owner') ? 'مدیر مجموعه' : 'کاربر مجموعه' }}</div></div></div></div>
         </aside>

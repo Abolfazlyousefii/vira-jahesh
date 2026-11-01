@@ -68,7 +68,7 @@ class DashboardWidgetsTest extends TestCase
 
         $registry = app(WidgetRegistry::class);
         $registry->register('crm.followups', 'پیگیری‌های CRM', 'Crm', 'crm.view', 'core::dashboard.widgets.modules', function () {
-            throw new \\RuntimeException('Disabled module resolver must not execute.');
+            throw new \RuntimeException('Disabled module resolver must not execute.');
         });
 
         $keys = collect($registry->visibleTo($owner))->pluck('key');
@@ -101,7 +101,7 @@ class DashboardWidgetsTest extends TestCase
 
         $registry = app(WidgetRegistry::class);
         $registry->register('restricted', 'Restricted', 'Core', 'modules.manage', 'core::dashboard.widgets.modules', function () {
-            throw new \\RuntimeException('Private resolver was invoked.');
+            throw new \RuntimeException('Private resolver was invoked.');
         });
 
         Livewire::actingAs($operator)->test(FoundationDashboard::class)->assertOk();

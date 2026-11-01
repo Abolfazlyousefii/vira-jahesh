@@ -12,7 +12,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         app(PermissionRegistrar::class)->forgetCachedPermissions();
-        $permissions = ['panel.access', 'modules.manage'];
+        $permissions = ['panel.access', 'modules.manage', 'storefront.manage'];
         foreach (['customers', 'catalog', 'inventory', 'sales', 'crm', 'pos'] as $module) {
             $permissions[] = $module.'.view';
         }

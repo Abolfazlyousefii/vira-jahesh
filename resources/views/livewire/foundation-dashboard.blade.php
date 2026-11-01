@@ -1,26 +1,43 @@
 <div>
-    <div class="s-heading"><div><h1>نبض کسب‌وکار شما</h1><p class="s-muted">خوش آمدی {{ auth()->user()->name }}؛ همه‌چیز از اینجا شروع می‌شود.</p></div><span class="s-pill green"><i data-lucide="shield-check"></i>فضای کار فعال</span></div>
-    <div class="s-tabs"><a class="s-link" href="{{ route('panel.dashboard') }}" style="padding:10px 0;border-bottom:2px solid var(--s-primary)">نمای کلی</a>@can('modules.manage')<a class="s-muted" href="{{ route('panel.modules') }}">ماژول‌های مجموعه</a>@endcan</div>
-    <div class="s-welcome"><div><h2>یک شروع منظم، برای رشد بیشتر</h2><p>مشتریان، کالاها و فروش‌های مجموعه‌ات را در یک فضای کار مدیریت کن.</p></div><div class="s-welmark" aria-hidden="true"><span style="height:22px"></span><span style="height:35px"></span><span style="height:47px"></span><span style="height:65px"></span></div></div>
-    <section class="s-kpis" aria-label="خلاصهٔ فضای کار">
-        @foreach([['ماژول‌های در دسترس', $activeModules, 'blocks', 'var(--s-primary)', 'قابل انتخاب برای مجموعه'], ['کاربران مجموعه', $users, 'users', 'var(--s-blue)', 'حساب‌های ثبت‌شده'], ['رویدادهای اخیر', $activities->count(), 'activity', 'var(--s-green)', 'آخرین فعالیت‌های ثبت‌شده'], ['کانال‌های فروش', 2, 'store', 'var(--s-orange)', 'مسیر حضوری و اینترنتی']] as [$label,$value,$icon,$color,$caption])
-        <div class="s-kpi" style="--k-color:{{ $color }}"><div class="s-kpihead"><span>{{ $label }}</span><span class="s-kpiicon"><i data-lucide="{{ $icon }}"></i></span></div><div class="s-value">{{ \Morilog\Jalali\CalendarUtils::convertNumbers((string)$value) }}</div><div class="s-metricfoot">{{ $caption }}</div></div>
-        @endforeach
-    </section>
-    <div class="s-grid"><section class="s-panel"><div class="s-panelhead"><h2>بخش‌های فضای کار</h2><span class="s-pill">یکپارچه</span></div><div class="s-statusgrid">
-        @foreach($modules as $module)
-            @if(!in_array($module['name'], ['Core','Storefront']))
-            <div class="s-modulebox"><div class="s-avatar"><i data-lucide="{{ $module['icon'] }}"></i></div><div><h3>{{ $module['label'] }}</h3><span class="s-small s-muted">{{ $module['available'] ? 'پایهٔ ماژول آماده است' : 'غیرفعال' }}</span></div></div>
+    <div class="s-heading">
+        <div>
+            <h1>نبض کسب‌وکار شما</h1>
+            <p class="s-muted">خوش آمدی {{ auth()->user()->name }}؛ ویجت‌های این صفحه بر اساس مجوزهای شما نمایش داده می‌شوند.</p>
+        </div>
+        <button type="button" class="s-btn s-mainbtn" wire:click="$toggle('editing')" :aria-pressed="$wire.editing ? 'true' : 'false'">
+            <i data-lucide="blocks"></i> {{ $editing ? 'پایان تنظیم چیدمان' : 'ویرایش چیدمان' }}
+        </button>
+    </div>
+    <div class="s-welcome">
+        <div><h2>فضای کار یکپارچهٔ ویرا</h2><p>هر ماژول، اطلاعات خودش را در ویجت‌های مجاز نمایش می‌دهد. گزارش فروش پس از تکمیل Sales فعال می‌شود.</p></div>
+        <div class="s-welmark" aria-hidden="true"><span style="height:22px"></span><span style="height:35px"></span><span style="height:47px"></span><span style="height:65px"></span></div>
+    </div>
+    <section class="vira-widget-grid" aria-label="ویجت‌های داشبورد">
+        @foreach($widgets as $widget)
+            @if($widget['is_visible'] || $editing)
+                <section wire:key="widget-{{ $widget['key'] }}" class="s-panel vira-widget {{ $widget['size'] === 'wide' ? 'vira-widget-wide' : '' }}">
+                    <div class="s-panelhead">
+                        <h2>{{ $widget['title'] }}</h2>
+                        @if($editing)<span class="s-pill">{{ $widget['is_visible'] ? 'نمایش داده می‌شود' : 'مخفی است' }}</span>@endif
+                    </div>
+                    @if($widget['is_visible'])
+                        @include($widget['view'], ['data' => $widget['data']])
+                    @else
+                        <p class="s-muted">این ویجت در چیدمان شما مخفی است.</p>
+                    @endif
+                    @if($editing)
+                        <div class="vira-widget-actions">
+                            <button type="button" class="s-btn" wire:click="toggleWidget('{{ $widget['key'] }}')">{{ $widget['is_visible'] ? 'مخفی‌کردن' : 'نمایش‌دادن' }}</button>
+                            <button type="button" class="s-btn" wire:click="moveWidget('{{ $widget['key'] }}', 'up')" @disabled($loop->first) aria-label="بالا بردن {{ $widget['title'] }}">↑</button>
+                            <button type="button" class="s-btn" wire:click="moveWidget('{{ $widget['key'] }}', 'down')" @disabled($loop->last) aria-label="پایین بردن {{ $widget['title'] }}">↓</button>
+                            <button type="button" class="s-btn" wire:click="resizeWidget('{{ $widget['key'] }}', '{{ $widget['size'] === 'wide' ? 'compact' : 'wide' }}')">{{ $widget['size'] === 'wide' ? 'اندازهٔ معمولی' : 'نمایش عریض' }}</button>
+                        </div>
+                    @endif
+                </section>
             @endif
         @endforeach
-    </div></section><section class="s-panel"><div class="s-panelhead"><h2>آخرین فعالیت‌ها</h2><i data-lucide="activity" class="s-muted"></i></div>
-        @forelse($activities as $activity)
-        <div class="s-timeline"><span class="s-timedot"></span><div><p>{{ $activity->description }}</p><span class="s-muted s-small">{{ $activity->created_at->timezone('Asia/Tehran')->format('H:i') }}</span></div></div>
-        @empty<p class="s-muted s-small">هنوز فعالیتی ثبت نشده است.</p>@endforelse
-    </section></div>
-    <section class="s-panel"><div class="s-panelhead"><h2>مسیر فروش یکپارچه</h2><span class="s-muted s-small">توسعهٔ مرحله‌ای امکانات</span></div><div class="s-flow">
-    @foreach([['store','سایت و صندوق','دریافت سفارش'],['contact-round','مشتریان','ارتباط و پیگیری'],['receipt-text','فروش','فاکتور و پرداخت'],['boxes','انبار','تأمین و تحویل']] as [$icon,$label,$description])
-        <div class="s-flowitem"><div class="s-avatar"><i data-lucide="{{ $icon }}"></i></div><h3>{{ $label }}</h3><span class="s-muted s-small">{{ $description }}</span></div>
-    @endforeach
-    </div></section>
+    </section>
+    @if(count($widgets) === 0)
+        <section class="s-panel"><p class="s-muted">ویجتی با مجوزهای فعلی در دسترس نیست.</p></section>
+    @endif
 </div>

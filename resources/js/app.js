@@ -1,4 +1,5 @@
 import './bootstrap';
+import '../css/vira-phase1.css';
 import {
     Livewire,
     Alpine,

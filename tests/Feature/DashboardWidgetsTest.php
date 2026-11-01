@@ -93,6 +93,7 @@ class DashboardWidgetsTest extends TestCase
             'size' => 'wide',
         ]);
     }
+
     public function test_a_widget_resolver_is_never_executed_for_a_user_without_permission(): void
     {
         $this->seed();

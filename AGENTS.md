@@ -1,6 +1,8 @@
 # Vira — یکپارچه با جهش
 
 ## Product and scope
+- Read `VIRA-PROJECT-CONTEXT.fa.md` for the full Persian product context; editable source documents are indexed in `docs/product/README.md`.
+- Keep implemented behavior distinct from planned requirements. After changing product scope or completing a milestone, update the relevant source documents and regenerate the consolidated context file.
 - One Laravel modular monolith: retail ERP, optional CRM, POS and storefront.
 - This repository currently contains the foundation, not a completed retail system.
 - One business per installation for now. Tenant isolation and subscription billing are not implemented.

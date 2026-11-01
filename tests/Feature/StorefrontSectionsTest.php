@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
 use Modules\Storefront\Livewire\StorefrontEditor;
 use Modules\Storefront\Models\StorefrontSection;
@@ -102,6 +104,7 @@ class StorefrontSectionsTest extends TestCase
         $this->actingAs($owner)->get('/panel/storefront')->assertNotFound();
         $this->get('/')->assertNotFound();
     }
+
     public function test_unauthorized_operator_cannot_invoke_editor_mutations(): void
     {
         $this->seed();

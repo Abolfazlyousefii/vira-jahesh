@@ -9,7 +9,7 @@
 - Laravel Fortify برای ورود و خروج؛ ثبت‌نام عمومی کارکنان و ویژگی‌های اختیاری فعلاً خاموش‌اند.
 - Spatie Permission برای نقش و مجوز، Activitylog برای زیرساخت رویداد، Media Library برای زیرساخت فایل.
 - Morilog Jalali برای نمایش شمسی؛ ذخیرهٔ زمان UTC و نمایش در Asia/Tehran.
-- Brick Money برای محاسبهٔ دقیق پول؛ مدل‌های مالی هنوز ساخته نشده‌اند.
+- Brick Money نصب است؛ مدل‌های فروش پایه از عدد صحیح تومان و محاسبهٔ صحیح با سقف مشخص استفاده می‌کنند. حسابداری کامل و مدل پرداخت اینترنتی هنوز ساخته نشده‌اند.
 - Chart.js نصب است، اما گزارش و نمودار فروش واقعی ساخته نشده است.
 - PHPUnit، Pint و Prettier؛ GitHub Actions برای نصب، ساخت، بررسی و کش قالب/مسیر.
 
@@ -24,10 +24,18 @@
 - `app/Support/ModuleServiceProvider.php`: بارگذاری مسیر، migration و view ماژول.
 - `app/Http/Middleware/RequireModule.php`: کنترل فعال بودن ماژول سمت سرور.
 - `app/Livewire/FoundationDashboard.php`: داشبورد ماژولار آغازین، نه گزارش فروش کامل.
-- `Modules/Core/app/Dashboard/WidgetRegistry.php`: ثبت و کنترل دسترسی ویجت‌های Core و ماژول‌های آینده.
+- `Modules/Core/app/Dashboard/WidgetRegistry.php`: ثبت، اولویت پیش‌فرض و کنترل دسترسی ویجت‌های Core و ماژول‌ها؛ ویجت‌های عملیاتی در Provider ماژول مالک ثبت می‌شوند.
 - `Modules/Core/app/Models/DashboardWidgetPreference.php`: ذخیرهٔ چیدمان هر کاربر.
 - `Modules/Storefront/app/Support/StorefrontSections.php` و `Modules/Storefront/app/Livewire/StorefrontEditor.php`: مدیریت سکشن‌های معرفی سایت، مستقل از منطق Catalog/Sales.
 - `resources/views/components/layouts/`: قالب پایه و پنل؛ `resources/css/app.css` و `resources/js/app.js`: ظاهر و تعامل‌های مشترک.
+- `Modules/Core/app/Livewire/WorkspacePage.php` و `Support/WorkspaceAccess.php`: پوستهٔ صفحه، کنترل مجدد مجوز/ماژول در mutation و render و تبدیل ارقام. شناسه‌های ویرایش و توکن فروش با Livewire Locked محافظت می‌شوند.
+- `Modules/Catalog/app/Actions/ProductDirectory.php` و `Modules/Customers/app/Actions/CustomerDirectory.php`: خواندن مشترک کالا/مشتری در مرز ماژول.
+- `Modules/Inventory/app/Actions/StockLedger.php`: تنها مسیر تغییر ماندهٔ پایه و ثبت گردش؛ افزایش/کاهش شرطی و تراکنشی.
+- `Modules/Sales/app/Actions/RecordSale.php`: فروش غیرتکراری، قیمت سرور، مبلغ صحیح و گردش اتمیک. Pos رابط مشترک فروش را با کانال و مجوز ثابت استفاده می‌کند.
+- `resources/css/vira-workspace.css`: فرم‌ها، فهرست کارتی موبایل، صندوق، ویترین و چاپ؛ فونت وزیر و تم‌های قبلی حفظ شده‌اند. منوی موبایل لایهٔ قابل بستن با Escape دارد و محتوای پشتش inert می‌شود.
+- `Modules/Catalog/app/Actions/SaveCatalogProduct.php`: ثبت تراکنشی کالای ساده و گروه رنگ/سایز، اعتبارسنجی کد/بارکد/ترکیب و حفظ شناسه‌های قبلی. `ProductGroup` تصویر و دادهٔ مشترک دارد؛ Product واحد قابل فروش Sales/Inventory است.
+- `Modules/Core/app/Livewire/StaffPage.php` و `Support/StaffAccess.php`: مدیریت محدود به owner، الگوهای دسترسی و محافظت از حساب مدیر. `RequireActiveAccount` ورود/جلسهٔ حساب غیرفعال را می‌بندد؛ تغییر دسترسی با Actor ثبت می‌شود و رمز وارد Activitylog نمی‌شود.
+- `resources/css/vira-catalog-upgrade.css`: فرم‌های تصویر/تنوع و کارکنان؛ `public/licenses/lucide.txt` متن مجوز SVGهای آماده است. منابع در `docs/design-assets.md` ثبت شده‌اند. پیام ورود و صفحه‌بندی فارسی‌اند.
 - `database/seeders/DatabaseSeeder.php`: مجوزها و نقش‌های اولیه؛ حساب ثابت ایجاد نمی‌کند.
 - `app/Console/Commands/CreateOwner.php`: ساخت مدیر بدون ثبت‌نام عمومی.
 - `tests/Feature/`: آزمون‌های هسته، دسترسی و ساخت مدیر.
@@ -58,7 +66,11 @@
 
 پیامک، پردازش صوت، خروجی سنگین و گزارش در صف با retry و timeout اجرا شوند. صف‌های پیشنهادی critical/default/notifications/reports هستند؛ دستور توسعه فعلی reports را پردازش نمی‌کند. در استقرار واقعی، worker گزارش با منابع جدا لازم است. رویدادهای جانبی پس از commit منتشر شوند. خرابی اطلاع‌رسانی نباید فروش را باطل کند؛ خطای موجودی/پرداخت نباید پنهان شود.
 
-## طراحی پنل مورد تأیید
+## مبنای فعلی طراحی پنل؛ نیازمند بازطراحی پس از فروشگاه
+
+مالک در بازبینی جدید، ظاهر و UX پنل را نهایی و حرفه‌ای نمی‌داند. ساختار و قواعد فشردگی فعلی تا رسیدن نوبت بازطراحی حفظ شوند؛ اولویت اکنون فروشگاه با الهام از آلور است. رنگ و طرح اختصاصی سایت مستقل از پنل تنظیم می‌شوند؛ جزئیات در سند چهارم است.
+
+درخواست جدید مالک در ۲۰۲۶-۱۱-۰۹: فضای کمتر و ظاهر مینیمال‌تر. سبک جاری در `resources/css/vira-minimal.css` است: فاصله و ارتفاع کمتر، حذف بنر تزئینی داشبورد، نوار مالی مشترک و ردیف‌های کوتاه موبایل، و جزئیات جمع‌شوندهٔ پرونده. خریدها مستقیم دیده می‌شوند و اطلاعات تکمیلی/مرجوعی/پیگیری با عنوان و شمارنده باز می‌شوند. فونت وزیر، سایدبار سرمه‌ای، تم‌ها، مجوزها و کنترل‌های لمس حفظ شده‌اند. جزئیات بررسی در `docs/minimal-panel.md` است؛ صفحات جدید با همین تراکم بصری ادامه یابند.
 
 سایدبار سرمه‌ای، جمع‌شونده و گروه‌بندی‌شده؛ فضای محتوای خنثی؛ رنگ تأکیدی بنفش با گزینه‌های آبی و رز؛ حالت روشن و تیره؛ تایپوگرافی وزیر؛ کارت و جدول جمع‌وجور؛ آیکن‌های منسجم و تب‌های واضح. حالت موبایل با منوی بازشونده و چیدمان ستونی کار کند.
 

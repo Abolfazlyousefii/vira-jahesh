@@ -1,0 +1,32 @@
+#jstudio .v-kind-selector { display:flex;gap:10px;flex-wrap:wrap;margin:20px 0 }
+#jstudio .v-photo-section,#jstudio .v-variants { padding:20px;border:1px solid var(--s-line);border-radius:14px;margin-top:20px }
+#jstudio .v-photo-section h2,#jstudio .v-variants h2,#jstudio .v-permission-heading h2 { display:flex;align-items:center;gap:9px }
+#jstudio .v-upload-control { position:relative;display:flex;align-items:center;justify-content:center;gap:10px;min-height:64px;border:1px dashed var(--s-primary);border-radius:12px;background:var(--s-soft);color:var(--v-accent-ink);padding:12px }
+#jstudio .v-upload-control input { position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer }
+#jstudio .v-upload-control:focus-within { outline:3px solid var(--s-primary);outline-offset:3px }
+#jstudio .v-photo-preview { display:block;max-width:100%;width:180px;height:160px;object-fit:contain;border:1px solid var(--s-line);border-radius:12px;background:var(--s-bg);margin:12px 0 }
+#jstudio .v-variant-card { background:var(--s-bg);border:1px solid var(--s-line);padding:18px;border-radius:12px;margin:16px 0 }
+#jstudio .v-variant-fields { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 16px }
+#jstudio .v-variant-fields input { background:var(--s-surface) }
+#jstudio .v-field input:disabled { color:var(--s-muted);cursor:not-allowed }
+#jstudio .v-product-thumb { display:inline-grid;place-items:center;flex-shrink:0;width:48px;height:48px;border-radius:10px;background:var(--s-soft);color:var(--v-accent-ink);overflow:hidden }
+#jstudio .v-product-thumb img { width:100%;height:100%;object-fit:contain }
+#jstudio .v-product-choice .v-product-thumb { width:76px;height:76px }
+#jstudio .v-product-art img { display:block;width:100%;height:210px;object-fit:contain;border-radius:12px;background:var(--s-bg) }
+#jstudio .v-product-detail-art { min-height:350px }
+#jstudio .v-product-detail-art img { height:auto;max-height:500px }
+#jstudio .v-variant-selection { margin:20px 0;padding:16px 0;border-block:1px solid var(--s-line) }
+#jstudio .v-variant-selection .s-controls { margin-top:12px }
+#jstudio .v-permission-heading { display:grid;gap:12px;margin-top:24px;padding-top:20px;border-top:1px solid var(--s-line) }
+#jstudio .v-permission-grid { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 20px;margin-top:15px }
+#jstudio .v-permission-grid .v-field { padding:14px;border:1px solid var(--s-line);border-radius:12px }
+@media(max-width:1000px) { #jstudio .v-variant-fields { grid-template-columns:repeat(2,minmax(0,1fr)) } }
+@media(max-width:600px) {
+ #jstudio .v-responsive-table td[data-label='ایمیل'] { grid-column:1/-1 }
+ #jstudio .v-responsive-table td[data-label='ایمیل'] bdi { white-space:normal;overflow-wrap:anywhere }
+ #jstudio .v-variant-fields,#jstudio .v-permission-grid { grid-template-columns:1fr }
+ #jstudio .v-photo-section,#jstudio .v-variants,#jstudio .v-variant-card { padding:12px }
+ #jstudio .v-kind-selector .s-btn { flex:1;white-space:normal }
+ #jstudio .v-permission-grid { gap:0 }
+ #jstudio .v-product-detail-art { min-height:200px }
+}

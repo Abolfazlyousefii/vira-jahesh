@@ -1,0 +1,51 @@
+/* Compact panel rhythm. Keep readable text and 44px touch targets. */
+#jstudio .s-app .s-main { padding-top:12px }
+#jstudio .s-app .s-sidebar { padding-top:16px;gap:14px }
+#jstudio .s-app .s-nav { gap:2px }
+#jstudio .s-app .s-nav a { min-height:44px;padding-block:8px }
+#jstudio .s-app .s-topbar { padding:6px 12px;box-shadow:none;border:1px solid var(--s-line) }
+#jstudio .s-app .s-breadcrumb { margin:10px 0 8px }
+#jstudio .s-app .v-workspace { gap:12px }
+#jstudio .s-app .s-panel { padding:12px 14px;border-radius:10px;box-shadow:none }
+#jstudio .s-app .v-form-panel { box-shadow:none }
+#jstudio .s-app .s-heading { gap:8px;margin-bottom:12px }
+#jstudio .s-app .s-heading h1 { font-size:20px;line-height:1.5 }
+#jstudio .s-app .s-heading p { margin-top:3px;font-size:13px }
+#jstudio .s-app .v-eyebrow { display:none }
+#jstudio .s-app .s-panelhead { margin-bottom:8px }
+#jstudio .s-app .s-panelhead h2 { font-size:14px }
+#jstudio .s-app .v-toolbar { margin-bottom:10px }
+#jstudio .s-app .v-field { margin-block:8px;gap:4px }
+#jstudio .s-app .v-form-footer { margin-top:12px;padding-top:12px }
+#jstudio .s-app .v-table td { padding:10px 12px }
+#jstudio .s-app .v-table th { padding:9px 12px }
+#jstudio .s-app .v-help { margin-block:8px }
+#jstudio .s-app .v-empty { padding:24px 12px;gap:8px }
+#jstudio .s-app .v-report-metrics { gap:0;background:var(--s-surface);border:1px solid var(--s-line);border-radius:10px;overflow:hidden;grid-template-columns:repeat(3,minmax(0,1fr)) }
+#jstudio .s-app .v-report-metrics .s-panel { border-radius:0;padding:12px 16px;background:transparent }
+#jstudio .s-app .v-report-metrics .s-panel + .s-panel { border-inline-start:1px solid var(--s-line) }
+#jstudio .s-app .v-report-metrics h2 { font-size:12px;color:var(--s-muted);font-weight:400 }
+#jstudio .s-app .v-report-metrics .v-metric { margin-block:6px;font-size:24px;line-height:1.5 }
+#jstudio .s-app .v-report-metrics p { font-size:11px;line-height:1.5 }
+#jstudio .s-app .v-compact-details { padding-block:4px }
+#jstudio .s-app .v-compact-details > summary { min-height:44px;align-content:center;cursor:pointer;font-size:14px }
+#jstudio .s-app .v-compact-details > summary small { font-size:12px;font-weight:400 }
+#jstudio .s-app .v-compact-details[open] { padding-bottom:12px }
+#jstudio .s-app summary:focus-visible { outline:3px solid var(--s-primary);outline-offset:2px;border-radius:4px }
+#jstudio .s-app .v-profile-details { margin-block:10px;gap:10px 20px }
+#jstudio .s-app .v-profile-caption { margin:0;color:var(--s-muted);font-size:11px }
+#jstudio .s-app .vira-widget-grid { gap:12px;margin-top:12px }
+#jstudio .s-app .vira-widget { min-height:0 }
+#jstudio .s-app .vira-widget .v-metric { font-size:28px;margin-block:8px }
+#jstudio .s-app .vira-widget .v-metric-link { margin-top:6px;min-height:44px;align-items:center }
+@media(min-width:1280px) { #jstudio .s-app .vira-widget-grid { grid-template-columns:repeat(3,minmax(0,1fr)) } }
+@media(max-width:600px) {
+ #jstudio .s-app .s-panel { padding-inline:12px }
+ #jstudio .s-app .v-report-metrics { grid-template-columns:1fr }
+ #jstudio .s-app .v-report-metrics .s-panel { display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:3px 8px;padding:10px 12px }
+ #jstudio .s-app .v-report-metrics .s-panel + .s-panel { border-inline-start:0;border-top:1px solid var(--s-line) }
+ #jstudio .s-app .v-report-metrics .v-metric { margin:0;font-size:19px;text-align:end }
+ #jstudio .s-app .v-report-metrics p { grid-column:1/-1 }
+ #jstudio .s-app .s-heading > .s-btn { width:auto }
+ #jstudio .s-app .v-responsive-table td { padding:6px }
+}

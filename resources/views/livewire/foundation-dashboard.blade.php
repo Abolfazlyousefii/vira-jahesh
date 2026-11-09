@@ -8,10 +8,6 @@
             <i data-lucide="blocks"></i> {{ $editing ? 'پایان تنظیم چیدمان' : 'ویرایش چیدمان' }}
         </button>
     </div>
-    <div class="s-welcome">
-        <div><h2>فضای کار یکپارچهٔ ویرا</h2><p>هر ماژول، اطلاعات خودش را در ویجت‌های مجاز نمایش می‌دهد. گزارش فروش پس از تکمیل Sales فعال می‌شود.</p></div>
-        <div class="s-welmark" aria-hidden="true"><span style="height:22px"></span><span style="height:35px"></span><span style="height:47px"></span><span style="height:65px"></span></div>
-    </div>
     <section class="vira-widget-grid" aria-label="ویجت‌های داشبورد">
         @foreach($widgets as $widget)
             @if($widget['is_visible'] || $editing)

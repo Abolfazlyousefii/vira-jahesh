@@ -4,16 +4,17 @@
 - Read `VIRA-PROJECT-CONTEXT.fa.md` for the full Persian product context; editable source documents are indexed in `docs/product/README.md`.
 - Keep implemented behavior distinct from planned requirements. After changing product scope or completing a milestone, update the relevant source documents and regenerate the consolidated context file.
 - One Laravel modular monolith: retail ERP, optional CRM, POS and storefront.
-- This repository has a foundation plus phase-1 modular dashboard widgets and editable storefront introduction sections, not a completed retail system.
+- This repository has a retail base plus catalog/staff, stock-document and reporting upgrades: product images/variants, owner-managed staff access, stock ledger, single-SKU purchase receipts/suppliers, atomic warehouse transfers, manual paid sales/POS and partial returns with manually confirmed refunds, filtered gross/refund/net reports with event CSV and permission-filtered low-stock alerts, CRM, widgets and a public catalog. Online checkout, supplier payments, profit/cost accounting and full accounting are not implemented. See docs/retail-reports.md and previous milestone reports.
 - One business per installation for now. Tenant isolation and subscription billing are not implemented.
 - Persian RTL UI, Vazir font, Blade + Livewire + Alpine; retain the approved navy sidebar and violet/blue/rose themes.
+- Keep the compact minimal panel rhythm: small spacing, inline metric summaries and progressive disclosure. Do not reintroduce large decorative welcome banners or oversized metric cards. See docs/minimal-panel.md.
 
 ## Module ownership
 - `Core`: identity, authorization and workspace.
-- `Customers`: shared customer identity; it must not depend on CRM.
+- `Customers`: shared customer identity plus profile UI composed through optional Sales/Crm actions; identity and installation availability must not depend on CRM. See docs/customer-profiles.md.
 - `Crm`: optional relationship follow-ups, notes and calls.
 - `Catalog`: product identity, variants and pricing.
-- `Inventory`: stock movement and reservations.
+- `Inventory`: stock movement, physical purchase receipts/supplier identity, warehouse transfers and future reservations; purchase orders/accounting are not implemented.
 - `Sales`: orders, invoices, returns and payment state.
 - `Pos` and `Storefront`: sales channels; both call Sales actions.
 - Keep code in its owning module. Use named actions/contracts across module boundaries, not other modules' controllers or ad hoc stock updates.

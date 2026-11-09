@@ -13,14 +13,14 @@ final class WidgetRegistry
 
     public function __construct(private ModuleAccess $modules) {}
 
-    public function register(string $key, string $title, string $module, string $permission, string $view, Closure $resolve): void
+    public function register(string $key, string $title, string $module, string $permission, string $view, Closure $resolve, int $priority = 100): void
     {
-        $this->definitions[$key] = compact('key', 'title', 'module', 'permission', 'view', 'resolve');
+        $this->definitions[$key] = compact('key', 'title', 'module', 'permission', 'view', 'resolve', 'priority');
     }
 
     public function visibleTo(User $user): array
     {
-        return array_values(array_filter($this->definitions, fn (array $widget) => $this->allowed($user, $widget)));
+        return collect($this->definitions)->filter(fn (array $widget) => $this->allowed($user, $widget))->sortBy('priority')->values()->all();
     }
 
     public function authorizeWidget(User $user, string $key): array

@@ -5,6 +5,7 @@
                 <span class="s-logo">و</span><span><strong>ویرا</strong><small class="s-muted" style="display:block">یکپارچه با جهش</small></span>
             </a>
             <nav aria-label="دسترسی‌های سایت">
+                <a href="{{ route('storefront.shop') }}">کالاها</a>
                 <a href="#site-features">ویژگی‌ها</a>
                 <a href="#site-cta">دربارهٔ ویرا</a>
                 <a class="s-btn" href="{{ route('login') }}">ورود به مجموعه <i data-lucide="arrow-left"></i></a>

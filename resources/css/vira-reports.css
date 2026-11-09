@@ -1,0 +1,5 @@
+#jstudio .v-report-metrics { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px }
+#jstudio .v-report-metrics .s-panel { min-width:0 }
+#jstudio .v-report-metrics .v-metric { font-size:clamp(20px,2.3vw,32px);overflow-wrap:anywhere }
+#jstudio .v-report-filters summary { min-height:44px;cursor:pointer;display:list-item;align-content:center }
+@media(max-width:1000px) { #jstudio .v-report-metrics { grid-template-columns:1fr } }

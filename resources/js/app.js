@@ -1,5 +1,10 @@
 import './bootstrap';
 import '../css/vira-phase1.css';
+import '../css/vira-workspace.css';
+import '../css/vira-catalog-upgrade.css';
+import '../css/vira-reports.css';
+import '../css/vira-customer-profile.css';
+import '../css/vira-minimal.css';
 import {
     Livewire,
     Alpine,
@@ -28,6 +33,14 @@ import {
     Users,
     Activity,
     CircleHelp,
+    ImagePlus,
+    Shapes,
+    UserRoundCog,
+    UserRound,
+    UserPlus,
+    Search,
+    Plus,
+    Trash2,
 } from 'lucide';
 
 const iconSet = {
@@ -53,6 +66,14 @@ const iconSet = {
     Users,
     Activity,
     CircleHelp,
+    ImagePlus,
+    Shapes,
+    UserRoundCog,
+    UserRound,
+    UserPlus,
+    Search,
+    Plus,
+    Trash2,
 };
 const refreshIcons = () =>
     createIcons({
@@ -99,5 +120,6 @@ Alpine.data('workspace', () => ({
 
 document.addEventListener('livewire:navigated', refreshIcons);
 document.addEventListener('DOMContentLoaded', refreshIcons);
+Livewire.hook('morphed', refreshIcons);
 Livewire.start();
 refreshIcons();

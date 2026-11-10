@@ -3,10 +3,10 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use Database\Seeders\DemoRetailSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use Database\Seeders\DemoRetailSeeder;
 use Livewire\Livewire;
 use Modules\Catalog\Models\Product;
 use Modules\Customers\Actions\CustomerDirectory;

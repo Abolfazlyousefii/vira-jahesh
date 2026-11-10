@@ -3,8 +3,8 @@
 namespace Modules\Customers\Livewire;
 
 use App\Support\ModuleAccess;
-use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Locked;
 use Modules\Core\Livewire\WorkspacePage;
 use Modules\Core\Support\WorkspaceAccess;

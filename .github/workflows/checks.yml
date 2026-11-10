@@ -28,3 +28,12 @@ jobs:
       - run: composer validate --strict
       - run: composer check
       - run: php artisan view:cache && php artisan route:cache
+      - name: Verify isolated demo fixtures and idempotent seeding
+        run: |
+          touch database/vira-demo.sqlite
+          export DB_CONNECTION=sqlite
+          export DB_DATABASE="$PWD/database/vira-demo.sqlite"
+          php artisan migrate --force
+          php artisan db:seed --class=DatabaseSeeder --force
+          php artisan db:seed --class=DemoRetailSeeder --force
+          php artisan db:seed --class=DemoRetailSeeder --force

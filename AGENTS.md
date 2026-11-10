@@ -40,3 +40,8 @@
 ## Running
 - `composer dev` starts the local server on 127.0.0.1:8017, a queue worker, and Vite.
 - For XAMPP/Laragon Apache, document root must be this repository's `public/` folder. See `docs/local-development.md`.
+
+
+## Current customer UI & five-accent design (2026-11-10)
+
+Use `docs/customers-360.md` for the reviewed customer directory, profile, demo-only seeding guard and semantic five-accent palette. Preserve customer IDs, historical Sales/Crm relationships, and module/permission gates. Never run `DemoRetailSeeder` against the main database. The V4 panel remains light-only; Storefront is independently styled.

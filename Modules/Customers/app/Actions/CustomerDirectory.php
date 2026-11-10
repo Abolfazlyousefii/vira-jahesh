@@ -11,8 +11,18 @@ final class CustomerDirectory
     public function search(string $search = ''): Builder
     {
         $search = mb_substr(WorkspaceAccess::digits($search), 0, 120);
+        $compact = preg_replace('/[\s\-()]/u', '', $search);
+        if (preg_match('/^[0-9]+$/', $compact)) {
+            $search = $compact;
+        }
+        // LIKE wildcards are not user-facing search operators.
+        $search = str_replace(['%', '_'], '', $search);
 
-        return Customer::query()->when($search !== '', fn ($query) => $query->where(fn ($q) => $q->where('name', 'like', '%'.$search.'%')->orWhere('mobile', 'like', '%'.$search.'%')))->orderBy('name');
+        return Customer::query()->when($search !== '', fn ($query) => $query->where(fn ($q) => $q
+            ->where('name', 'like', '%'.$search.'%')
+            ->orWhere('mobile', 'like', '%'.$search.'%')
+            ->orWhereHas('phoneNumbers', fn ($phones) => $phones->where('number_normalized', 'like', '%'.$search.'%'))
+        ))->orderBy('name')->orderBy('id');
     }
 
     public function find(int $id): Customer

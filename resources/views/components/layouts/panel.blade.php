@@ -35,11 +35,21 @@
     ], $enabled));
     $isSecondaryActive = collect($secondary)->contains(fn ($item) => request()->routeIs($item['route']));
     $businessName = \Modules\Core\Models\BusinessSetting::find(1)?->name ?: 'مجموعه من';
+    // One semantic accent per workspace area; the application shell remains navy/teal.
+    $area = match (true) {
+        request()->routeIs('panel.customers*') => 'customers',
+        request()->routeIs('panel.crm*') => 'crm',
+        request()->routeIs('panel.catalog*') => 'catalog',
+        request()->routeIs('panel.inventory*') => 'inventory',
+        request()->routeIs('panel.sales*', 'panel.pos*', 'panel.reports*') => 'sales',
+        request()->routeIs('panel.storefront*') => 'storefront',
+        default => 'core',
+    };
 @endphp
 <x-layouts.base :title="$title">
     <div class="v4-app app-shell" :class="{'sidebar-open': menu}" x-init="more = @js($isSecondaryActive)" @keydown.escape.window="menu = false; quickOpen = false; searchOpen = false" @resize.window="if (innerWidth > 920) menu = false">
         <button x-show="menu" x-cloak type="button" class="sidebar-overlay" @click="menu=false; $refs.mobileToggle.focus()" aria-label="بستن منوی اصلی"></button>
-        <main class="workspace">
+        <main class="workspace" data-vira-section="{{ $area }}">
             <header class="topbar">
                 <button type="button" class="mobile-menu" x-ref="mobileToggle" @click="menu=true; $nextTick(() => $refs.mobileClose.focus())" aria-label="باز کردن منوی اصلی" :aria-expanded="menu"><i data-lucide="menu"></i></button>
                 <div class="top-context">
@@ -97,7 +107,7 @@
                 <div class="nav-list">
                     <a class="nav-link {{ request()->routeIs('panel.dashboard') ? 'active' : '' }}" href="{{ route('panel.dashboard') }}" @if(request()->routeIs('panel.dashboard')) aria-current="page" @endif><i data-lucide="layout-dashboard"></i><span>میز کار</span></a>
                     @foreach($primary as $item)
-                        <a href="{{ route($item['route']) }}" class="nav-link {{ request()->routeIs($item['route'].'*') ? 'active' : '' }}" @if(request()->routeIs($item['route'].'*')) aria-current="page" @endif><i data-lucide="{{ $item['icon'] }}"></i><span>{{ $item['title'] }}</span></a>
+                        <a href="{{ route($item['route']) }}" data-vira-area="{{ $item['module'] }}" class="nav-link {{ request()->routeIs($item['route'].'*') ? 'active' : '' }}" @if(request()->routeIs($item['route'].'*')) aria-current="page" @endif><i data-lucide="{{ $item['icon'] }}"></i><span>{{ $item['title'] }}</span></a>
                     @endforeach
                 </div>
                 @if(count($secondary))
@@ -105,7 +115,7 @@
                     <button type="button" class="more-modules" @click="more=!more" :aria-expanded="more"><span>مشاهده همه ماژول‌ها</span><i data-lucide="chevron-down"></i></button>
                     <div class="nav-list" x-show="more" x-cloak>
                         @foreach($secondary as $item)
-                            <a href="{{ route($item['route']) }}" class="nav-link {{ request()->routeIs($item['route']) ? 'active' : '' }}" @if(request()->routeIs($item['route'])) aria-current="page" @endif><i data-lucide="{{ $item['icon'] }}"></i><span>{{ $item['title'] }}</span></a>
+                            <a href="{{ route($item['route']) }}" data-vira-area="{{ $item['module'] }}" class="nav-link {{ request()->routeIs($item['route']) ? 'active' : '' }}" @if(request()->routeIs($item['route'])) aria-current="page" @endif><i data-lucide="{{ $item['icon'] }}"></i><span>{{ $item['title'] }}</span></a>
                         @endforeach
                     </div>
                 @endif

@@ -6,6 +6,7 @@ import '../css/vira-reports.css';
 import '../css/vira-customer-profile.css';
 import '../css/vira-minimal.css';
 import '../css/vira-v4.css';
+import '../css/vira-customers-360.css';
 import { chartShape, chartIsEmpty } from './vira-sales-chart.js';
 import {
     Livewire,
@@ -54,6 +55,13 @@ import {
     Clock,
     ClockAlert,
     CalendarDays,
+    UsersRound,
+    SearchX,
+    Pencil,
+    Smartphone,
+    Phone,
+    MapPin,
+    MessageCircle,
     Settings,
 } from 'lucide';
 
@@ -99,6 +107,13 @@ const iconSet = {
     Clock,
     ClockAlert,
     CalendarDays,
+    UsersRound,
+    SearchX,
+    Pencil,
+    Smartphone,
+    Phone,
+    MapPin,
+    MessageCircle,
     Settings,
 };
 const refreshIcons = () =>

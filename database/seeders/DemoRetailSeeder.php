@@ -46,7 +46,7 @@ class DemoRetailSeeder extends Seeder
         }
         foreach (['Customers', 'Catalog', 'Inventory', 'Sales', 'Crm'] as $module) {
             if (! app(ModuleAccess::class)->available($module)) {
-                throw new \RuntimeException('برای ساخت داده دمو، ماژول '.$module.' باید فعال باشد.');
+                throw new RuntimeException('برای ساخت داده دمو، ماژول '.$module.' باید فعال باشد.');
             }
         }
 

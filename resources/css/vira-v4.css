@@ -1,0 +1,654 @@
+/* Approved Vira V4 design system, adapted to the panel only.
+ * Source: reviewed standalone V4 prototype. Never apply these styles to Storefront.
+ * Brand, font and dashboard content are Laravel-controlled.
+ */
+#jstudio .v4-app {
+      color-scheme: light;
+      --navy: #173642;
+      --navy-deep: #142f3a;
+      --navy-soft: #234653;
+      --teal: #16877e;
+      --teal-dark: #11766e;
+      --teal-soft: #eaf5f2;
+      --ink: #273943;
+      --ink-2: #52636b;
+      --muted: #87969b;
+      --muted-2: #a6b1b4;
+      --line: #edf1ef;
+      --line-2: #e5ebe8;
+      --canvas: #f7f9f8;
+      --surface: #fff;
+      --blue: #6489ad;
+      --blue-soft: #eef3f8;
+      --purple: #8a7eb4;
+      --purple-soft: #f2f0f8;
+      --amber: #b88b55;
+      --amber-soft: #faf4eb;
+      --green: #4d967d;
+      --green-soft: #edf6f1;
+      --red: #b96f6f;
+      --red-soft: #fbf0ef;
+      --shadow: 0 5px 20px rgba(34, 57, 65, .035), 0 1px 3px rgba(34, 57, 65, .025);
+      --shadow-pop: 0 18px 45px rgba(23, 54, 66, .14);
+      --radius: 16px;
+      --radius-sm: 12px;
+      --sidebar-width: 244px;
+      --header-height: 70px;
+    }
+#jstudio .v4-app * { box-sizing: border-box; }
+#jstudio .v4-app, #jstudio .v4-app { width: 100%; height: 100%; margin: 0; }
+#jstudio .v4-app {
+      overflow: hidden;
+      background: var(--canvas);
+      color: var(--ink);
+      font-family: "Vazirmatn", Tahoma, sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+#jstudio .v4-app button, #jstudio .v4-app input { font: inherit; }
+#jstudio .v4-app button { cursor: pointer; }
+#jstudio .v4-app button:focus-visible, #jstudio .v4-app input:focus-visible { outline: 3px solid rgba(22, 135, 126, .2); outline-offset: 2px; }
+#jstudio .v4-app .icon { width: 19px; height: 19px; display: inline-block; flex: 0 0 auto; fill: none; stroke: currentColor; stroke-width: 1.65; stroke-linecap: round; stroke-linejoin: round; }
+#jstudio .v4-app .icon.sm { width: 16px; height: 16px; }
+#jstudio .v4-app .icon.xs { width: 14px; height: 14px; }
+#jstudio .v4-app .icon.lg { width: 21px; height: 21px; }
+#jstudio .v4-app .muted { color: var(--muted); }
+#jstudio .v4-app .num { font-variant-numeric: tabular-nums; }
+#jstudio .v4-app.app-shell {
+      width: 100%; height: 100dvh; min-height: 0;
+      display: grid; grid-template-columns: minmax(0, 1fr) var(--sidebar-width);
+      direction: ltr;
+    }
+#jstudio .v4-app .workspace {
+      direction: rtl; min-width: 0; min-height: 0;
+      display: grid; grid-template-rows: var(--header-height) minmax(0, 1fr);
+      background: var(--canvas);
+    }
+#jstudio .v4-app .topbar {
+      height: var(--header-height); min-width: 0; position: sticky; top: 0; z-index: 50;
+      display: grid; grid-template-columns: auto minmax(220px, 440px) auto;
+      align-items: center; justify-content: space-between; gap: 22px;
+      padding: 0 27px; background: rgba(255,255,255,.97);
+      border-bottom: 1px solid rgba(225, 233, 229, .8);
+      box-shadow: 0 3px 14px rgba(31, 58, 66, .018);
+    }
+#jstudio .v4-app .mobile-menu { display: none; }
+#jstudio .v4-app .top-context { display: flex; align-items: center; gap: 10px; min-width: 155px; }
+#jstudio .v4-app .context-mark { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 11px; color: var(--teal); background: #eff7f4; }
+#jstudio .v4-app .context-copy strong { display: block; color: var(--ink); font-size: 12px; font-weight: 650; }
+#jstudio .v4-app .context-copy small { display: block; margin-top: 3px; color: var(--muted); font-size: 10px; }
+#jstudio .v4-app .global-search { position: relative; width: 100%; }
+#jstudio .v4-app .search-box {
+      height: 41px; display: flex; align-items: center; gap: 10px; padding: 0 13px;
+      color: #91a0a3; background: #f9fbfa; border: 1px solid #edf1ef;
+      border-radius: 12px; transition: border-color .18s, background .18s, box-shadow .18s;
+    }
+#jstudio .v4-app .search-box:focus-within { background: #fff; border-color: #c8e2dc; box-shadow: 0 0 0 4px rgba(22,135,126,.055); }
+#jstudio .v4-app .search-box input { width: 100%; min-width: 0; border: 0; outline: 0; color: var(--ink-2); background: transparent; font-size: 11px; }
+#jstudio .v4-app .search-box input::placeholder { color: #a7b2b3; }
+#jstudio .v4-app .shortcut { flex: 0 0 auto; padding: 3px 6px; color: #9aa7a8; background: #f1f4f2; border: 1px solid #e9eeeb; border-radius: 6px; font: 9px/1.2 sans-serif; direction: ltr; }
+#jstudio .v4-app .top-actions { display: flex; align-items: center; gap: 8px; }
+#jstudio .v4-app .icon-button { position: relative; width: 37px; height: 37px; display: grid; place-items: center; border: 1px solid transparent; border-radius: 11px; color: #718187; background: transparent; transition: .18s; }
+#jstudio .v4-app .icon-button:hover { color: var(--teal); background: #f2f8f6; border-color: #e7f0ed; }
+#jstudio .v4-app .notification-dot { position: absolute; top: 8px; left: 8px; width: 6px; height: 6px; border: 1.5px solid #fff; border-radius: 50%; background: #d6a16a; }
+#jstudio .v4-app .create-button { height: 38px; display: inline-flex; align-items: center; gap: 8px; padding: 0 14px; border: 1px solid #dcece7; border-radius: 11px; color: #fff; background: var(--teal); font-size: 11px; font-weight: 600; box-shadow: 0 3px 9px rgba(22,135,126,.09); transition: background .18s, transform .18s; }
+#jstudio .v4-app .create-button:hover { background: var(--teal-dark); transform: translateY(-1px); }
+#jstudio .v4-app .user-chip { width: 35px; height: 35px; display: grid; place-items: center; border: 1px solid #dcebe6; border-radius: 50%; color: #fff; background: #2b8f84; font-size: 11px; font-weight: 600; }
+#jstudio .v4-app .search-results, #jstudio .v4-app .notification-popover {
+      position: absolute; top: calc(100% + 9px); right: 0; z-index: 70; display: none;
+      width: 100%; padding: 9px; border: 1px solid var(--line-2); border-radius: 14px;
+      background: #fff; box-shadow: var(--shadow-pop);
+    }
+#jstudio .v4-app .search-results.open, #jstudio .v4-app .notification-popover.open { display: block; }
+#jstudio .v4-app .popover-title { padding: 7px 8px 9px; color: var(--muted); font-size: 10px; font-weight: 600; }
+#jstudio .v4-app .search-result { width: 100%; display: flex; align-items: center; gap: 10px; padding: 10px; border: 0; border-radius: 9px; text-align: right; color: var(--ink-2); background: transparent; font-size: 11px; }
+#jstudio .v4-app .search-result:hover { color: var(--teal-dark); background: #f5f9f7; }
+#jstudio .v4-app .search-result .icon { color: #829d98; }
+#jstudio .v4-app .notification-wrap { position: relative; }
+#jstudio .v4-app .notification-popover { right: auto; left: -8px; width: 290px; }
+#jstudio .v4-app .notification-item { display: flex; align-items: flex-start; gap: 10px; padding: 11px 7px; border-top: 1px solid #f2f4f3; }
+#jstudio .v4-app .notification-item .mini-icon { width: 30px; height: 30px; display: grid; place-items: center; flex: 0 0 auto; border-radius: 10px; color: var(--amber); background: var(--amber-soft); }
+#jstudio .v4-app .notification-item strong { display: block; color: var(--ink-2); font-size: 10px; font-weight: 550; }
+#jstudio .v4-app .notification-item small { display: block; margin-top: 4px; color: var(--muted); font-size: 9px; }
+#jstudio .v4-app .sidebar {
+      direction: rtl; min-width: 0; min-height: 0; overflow: hidden;
+      display: flex; flex-direction: column; padding: 22px 14px 14px;
+      color: #e8f0f1; background: var(--navy);
+      border-left: 1px solid rgba(255,255,255,.045); position: relative; z-index: 60;
+    }
+#jstudio .v4-app .brand-row { display: flex; align-items: center; gap: 11px; padding: 0 8px 20px; }
+#jstudio .v4-app .brand-mark { width: 40px; height: 40px; display: grid; place-items: center; border-radius: 13px; color: #fff; background: #16877e; font-size: 22px; font-weight: 750; }
+#jstudio .v4-app .brand-name { color: #fff; font-size: 20px; line-height: 1.05; font-weight: 750; letter-spacing: -.5px; }
+#jstudio .v4-app .brand-sub { margin-top: 5px; color: #91aab1; font-size: 8px; letter-spacing: 1.1px; direction: ltr; text-align: right; }
+#jstudio .v4-app .workspace-switch { width: 100%; display: flex; align-items: center; gap: 10px; margin-bottom: 21px; padding: 10px 11px; border: 1px solid rgba(218,237,239,.09); border-radius: 12px; text-align: right; color: #eef5f4; background: rgba(255,255,255,.045); }
+#jstudio .v4-app .workspace-avatar { width: 33px; height: 33px; display: grid; place-items: center; border-radius: 10px; color: #b9e4dc; background: rgba(22,135,126,.2); }
+#jstudio .v4-app .workspace-switch strong { display: block; font-size: 11px; font-weight: 600; }
+#jstudio .v4-app .workspace-switch small { display: block; margin-top: 4px; color: #9bb0b5; font-size: 9px; }
+#jstudio .v4-app .workspace-switch .switch-chevron { margin-right: auto; color: #8ea6ac; }
+#jstudio .v4-app .nav-scroll { min-height: 0; overflow: auto; scrollbar-width: none; padding: 0 1px; }
+#jstudio .v4-app .nav-scroll::-webkit-scrollbar { display: none; }
+#jstudio .v4-app .nav-label { padding: 0 11px 9px; color: #829ca4; font-size: 9px; font-weight: 600; }
+#jstudio .v4-app .nav-list { display: grid; gap: 5px; }
+#jstudio .v4-app .nav-link { width: 100%; min-height: 43px; display: flex; align-items: center; gap: 11px; padding: 0 11px; border: 0; border-radius: 10px; text-align: right; color: #b8c9cd; background: transparent; transition: background .18s, color .18s; }
+#jstudio .v4-app .nav-link .icon { width: 18px; height: 18px; color: #8fa8ad; }
+#jstudio .v4-app .nav-link span { font-size: 11px; font-weight: 450; }
+#jstudio .v4-app .nav-link:hover { color: #fff; background: rgba(255,255,255,.055); }
+#jstudio .v4-app .nav-link:hover .icon { color: #d1e7e3; }
+#jstudio .v4-app .nav-link.active { color: #fff; background: rgba(35,155,142,.16); box-shadow: inset -2px 0 0 #46b8a8; }
+#jstudio .v4-app .nav-link.active .icon { color: #74cfc1; }
+#jstudio .v4-app .nav-link .nav-count { margin-right: auto; min-width: 20px; height: 19px; display: grid; place-items: center; border-radius: 7px; color: #c4e7e0; background: rgba(22,135,126,.2); font-size: 9px; }
+#jstudio .v4-app .nav-divider { height: 1px; margin: 15px 10px 13px; background: rgba(230,243,246,.085); }
+#jstudio .v4-app .more-modules { width: 100%; display: flex; align-items: center; justify-content: space-between; margin-top: 8px; padding: 11px 10px; border: 0; color: #9db3b8; background: transparent; font-size: 10px; }
+#jstudio .v4-app .more-modules:hover { color: #fff; }
+#jstudio .v4-app .more-modules .chevron { transition: transform .2s; }
+#jstudio .v4-app .more-modules[aria-expanded="true"] .chevron { transform: rotate(180deg); }
+#jstudio .v4-app .extra-nav { display: none; padding-top: 3px; }
+#jstudio .v4-app .extra-nav.open { display: grid; gap: 5px; }
+#jstudio .v4-app .sidebar-bottom { margin-top: auto; padding-top: 13px; }
+#jstudio .v4-app .sidebar-help { display: flex; align-items: center; gap: 9px; padding: 9px 10px; margin-bottom: 10px; color: #9eb5b9; border-radius: 10px; background: rgba(255,255,255,.035); }
+#jstudio .v4-app .sidebar-help .icon { color: #83bdb3; }
+#jstudio .v4-app .sidebar-help span { font-size: 10px; }
+#jstudio .v4-app .profile-row { display: flex; align-items: center; gap: 9px; padding: 11px 7px 1px; border-top: 1px solid rgba(230,243,246,.09); }
+#jstudio .v4-app .profile-avatar { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 50%; color: #e8fffb; background: #2b827b; font-size: 11px; font-weight: 600; }
+#jstudio .v4-app .profile-meta { min-width: 0; }
+#jstudio .v4-app .profile-meta strong { display: block; color: #e6eff1; font-size: 10px; font-weight: 550; }
+#jstudio .v4-app .profile-meta small { display: block; margin-top: 4px; color: #8da6af; font-size: 9px; }
+#jstudio .v4-app .profile-menu { margin-right: auto; padding: 5px; border: 0; color: #8da6af; background: transparent; }
+#jstudio .v4-app .dashboard-main { min-width: 0; min-height: 0; overflow: auto; overscroll-behavior: contain; padding: 23px 27px 24px; scrollbar-width: thin; scrollbar-color: #dbe5e1 transparent; }
+#jstudio .v4-app .dashboard-main::-webkit-scrollbar { width: 6px; }
+#jstudio .v4-app .dashboard-main::-webkit-scrollbar-thumb { border-radius: 10px; background: #dbe5e1; }
+#jstudio .v4-app .dashboard-layout { width: 100%; min-height: 100%; display: grid; grid-template-rows: auto auto minmax(390px, 1fr); gap: 17px; }
+#jstudio .v4-app .page-heading { display: flex; align-items: center; justify-content: space-between; min-height: 54px; gap: 15px; }
+#jstudio .v4-app .breadcrumbs { display: flex; align-items: center; gap: 7px; margin-bottom: 5px; color: #a0acad; font-size: 9px; }
+#jstudio .v4-app .breadcrumbs .current { color: var(--teal); font-weight: 600; }
+#jstudio .v4-app .page-title-row { display: flex; align-items: baseline; flex-wrap: wrap; gap: 9px; }
+#jstudio .v4-app .page-title { margin: 0; color: #263b43; font-size: 20px; font-weight: 700; letter-spacing: -.35px; }
+#jstudio .v4-app .page-subtitle { color: #8c999d; font-size: 10px; font-weight: 400; }
+#jstudio .v4-app .heading-actions { display: flex; align-items: center; gap: 10px; flex: 0 0 auto; }
+#jstudio .v4-app .date-button { height: 35px; display: inline-flex; align-items: center; gap: 7px; padding: 0 11px; border: 1px solid #e8eeeb; border-radius: 10px; color: #728188; background: #fff; font-size: 10px; }
+#jstudio .v4-app .date-button:hover { border-color: #cce3dc; color: var(--teal); }
+#jstudio .v4-app .live-indicator { display: inline-flex; align-items: center; gap: 7px; color: #91a09f; font-size: 9px; }
+#jstudio .v4-app .live-indicator i { width: 6px; height: 6px; border-radius: 50%; background: #5ca48c; box-shadow: 0 0 0 3px #e8f3ee; }
+#jstudio .v4-app .kpi-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+#jstudio .v4-app .kpi-card { min-width: 0; min-height: 96px; display: flex; align-items: center; gap: 13px; padding: 16px 17px; border: 1px solid #edf1ef; border-radius: var(--radius); background: #fff; box-shadow: var(--shadow); transition: box-shadow .18s, transform .18s; }
+#jstudio .v4-app .kpi-card:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(34,57,65,.055); }
+#jstudio .v4-app .kpi-icon { width: 39px; height: 39px; display: grid; place-items: center; flex: 0 0 auto; border-radius: 12px; }
+#jstudio .v4-app .kpi-icon.teal { color: var(--teal); background: #eff7f4; }
+#jstudio .v4-app .kpi-icon.blue { color: var(--blue); background: var(--blue-soft); }
+#jstudio .v4-app .kpi-icon.purple { color: var(--purple); background: var(--purple-soft); }
+#jstudio .v4-app .kpi-content { min-width: 0; flex: 1; }
+#jstudio .v4-app .kpi-label { display: block; color: #879599; font-size: 10px; font-weight: 450; }
+#jstudio .v4-app .kpi-value { display: block; margin-top: 5px; color: #2a3d45; font-size: 21px; line-height: 1.15; font-weight: 700; letter-spacing: -.25px; white-space: nowrap; }
+#jstudio .v4-app .kpi-foot { display: flex; align-items: center; gap: 6px; margin-top: 5px; color: #9aa6a6; font-size: 9px; }
+#jstudio .v4-app .trend-up { display: inline-flex; align-items: center; gap: 3px; color: #57947d; font-weight: 550; }
+#jstudio .v4-app .dashboard-panels { min-height: 390px; display: grid; grid-template-rows: minmax(230px, 1.35fr) minmax(145px, .8fr); gap: 14px; }
+#jstudio .v4-app .panel-row { min-height: 0; display: grid; gap: 14px; }
+#jstudio .v4-app .panel-row.top { grid-template-columns: minmax(0, 1.55fr) minmax(285px, .85fr); }
+#jstudio .v4-app .panel-row.bottom { grid-template-columns: minmax(0, 1fr); }
+#jstudio .v4-app .panel { min-width: 0; min-height: 0; overflow: hidden; border: 1px solid #edf1ef; border-radius: var(--radius); background: #fff; box-shadow: var(--shadow); }
+#jstudio .v4-app .panel-head { min-height: 53px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 17px; border-bottom: 1px solid #f2f5f3; }
+#jstudio .v4-app .panel-title { display: flex; align-items: center; gap: 8px; color: #354950; font-size: 11px; font-weight: 650; }
+#jstudio .v4-app .panel-title .icon { color: #7b9f98; }
+#jstudio .v4-app .panel-subtitle { display: block; margin-top: 4px; color: #9aa6a6; font-size: 9px; font-weight: 400; }
+#jstudio .v4-app .text-link { display: inline-flex; align-items: center; gap: 5px; padding: 5px 0; border: 0; color: var(--teal); background: transparent; font-size: 9px; font-weight: 550; white-space: nowrap; }
+#jstudio .v4-app .text-link:hover { color: #0c655e; }
+#jstudio .v4-app .chart-panel { display: flex; flex-direction: column; }
+#jstudio .v4-app .chart-head-left { display: flex; align-items: center; gap: 12px; }
+#jstudio .v4-app .chart-total { color: #33474e; font-size: 15px; font-weight: 700; }
+#jstudio .v4-app .chart-total small { margin-right: 4px; color: #98a4a4; font-size: 9px; font-weight: 400; }
+#jstudio .v4-app .segmented { display: inline-flex; align-items: center; gap: 2px; padding: 3px; border-radius: 8px; background: #f5f7f6; }
+#jstudio .v4-app .segmented button { height: 25px; padding: 0 9px; border: 0; border-radius: 6px; color: #97a3a2; background: transparent; font-size: 9px; }
+#jstudio .v4-app .segmented button.active { color: var(--teal-dark); background: #fff; box-shadow: 0 1px 3px rgba(25,48,62,.055); font-weight: 600; }
+#jstudio .v4-app .chart-area { min-height: 0; flex: 1; display: flex; flex-direction: column; padding: 11px 17px 12px; }
+#jstudio .v4-app .chart-legend { display: flex; align-items: center; gap: 7px; color: #99a5a4; font-size: 9px; }
+#jstudio .v4-app .legend-dot { width: 6px; height: 6px; border-radius: 50%; background: #5b9e91; }
+#jstudio .v4-app .chart-svg { display: block; width: 100%; min-height: 105px; flex: 1; overflow: visible; }
+#jstudio .v4-app .chart-svg text { fill: #aab4b2; font-family: inherit; font-size: 9px; }
+#jstudio .v4-app .chart-svg .gridline { stroke: #f0f3f1; stroke-width: 1; stroke-dasharray: 2 5; }
+#jstudio .v4-app .chart-svg .chart-line { fill: none; stroke: #4d9b8e; stroke-width: 2.25; stroke-linecap: round; stroke-linejoin: round; }
+#jstudio .v4-app .chart-svg .chart-area-fill { fill: url(#chartFill); opacity: .7; }
+#jstudio .v4-app .chart-svg .chart-point { fill: #fff; stroke: #4d9b8e; stroke-width: 2; }
+#jstudio .v4-app .chart-footer { display: flex; justify-content: space-between; align-items: center; padding: 2px 4px 0; color: #a4aeac; font-size: 8px; }
+#jstudio .v4-app .task-panel { display: flex; flex-direction: column; }
+#jstudio .v4-app .task-summary { display: flex; align-items: center; gap: 10px; padding: 14px 16px 9px; }
+#jstudio .v4-app .task-summary-icon { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 11px; color: var(--amber); background: var(--amber-soft); }
+#jstudio .v4-app .task-summary strong { display: block; color: #34484e; font-size: 16px; font-weight: 700; }
+#jstudio .v4-app .task-summary small { display: block; margin-top: 3px; color: #9aa5a3; font-size: 9px; }
+#jstudio .v4-app .task-summary .text-link { margin-right: auto; }
+#jstudio .v4-app .task-list { min-height: 0; display: grid; padding: 0 16px 8px; }
+#jstudio .v4-app .task-item { min-width: 0; display: flex; align-items: center; gap: 10px; padding: 11px 1px; border-top: 1px solid #f3f5f4; }
+#jstudio .v4-app .task-type { width: 29px; height: 29px; display: grid; place-items: center; flex: 0 0 auto; border-radius: 9px; color: #7e8eab; background: #f1f4f7; }
+#jstudio .v4-app .task-type.teal { color: #67988e; background: #eff6f3; }
+#jstudio .v4-app .task-info { min-width: 0; flex: 1; }
+#jstudio .v4-app .task-info strong { display: block; overflow: hidden; color: #59696e; font-size: 9px; font-weight: 550; text-overflow: ellipsis; white-space: nowrap; }
+#jstudio .v4-app .task-info small { display: block; margin-top: 4px; color: #a0aaa8; font-size: 8px; }
+#jstudio .v4-app .task-time { flex: 0 0 auto; color: #9da8a6; font-size: 8px; }
+#jstudio .v4-app .task-footer { margin-top: auto; padding: 0 16px 12px; }
+#jstudio .v4-app .invoice-panel { display: flex; flex-direction: column; }
+#jstudio .v4-app .invoice-table-wrap { min-height: 0; flex: 1; padding: 0 17px 8px; }
+#jstudio .v4-app table { width: 100%; border-collapse: collapse; text-align: right; }
+#jstudio .v4-app th { height: 34px; color: #a1acab; font-size: 9px; font-weight: 450; white-space: nowrap; }
+#jstudio .v4-app td { height: 36px; color: #68787c; font-size: 9px; border-top: 1px solid #f3f5f4; white-space: nowrap; }
+#jstudio .v4-app td strong { color: #52666b; font-weight: 600; }
+#jstudio .v4-app .customer-cell { display: flex; align-items: center; gap: 8px; }
+#jstudio .v4-app .customer-avatar { width: 25px; height: 25px; display: grid; place-items: center; border-radius: 8px; color: #668d83; background: #eff6f2; font-size: 8px; font-weight: 600; }
+#jstudio .v4-app .status { display: inline-flex; align-items: center; gap: 5px; padding: 4px 8px; border-radius: 7px; font-size: 8px; font-weight: 500; }
+#jstudio .v4-app .status::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+#jstudio .v4-app .status.paid { color: #57947d; background: #eff7f2; }
+#jstudio .v4-app .status.pending { color: #ad8855; background: #faf5ed; }
+#jstudio .v4-app .overlay { position: fixed; inset: 0; z-index: 90; display: none; align-items: center; justify-content: center; padding: 18px; background: rgba(20,47,58,.32); backdrop-filter: blur(3px); }
+#jstudio .v4-app .overlay.open { display: flex; }
+#jstudio .v4-app .modal { width: min(440px, 100%); padding: 21px; border: 1px solid rgba(255,255,255,.8); border-radius: 18px; background: #fff; box-shadow: 0 22px 70px rgba(16,40,50,.18); animation: modal-in .18s ease-out; }
+@keyframes modal-in { from { opacity: 0; transform: translateY(7px) scale(.99); } to { opacity: 1; transform: none; } }
+#jstudio .v4-app .modal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 7px; }
+#jstudio .v4-app .modal-head h2 { margin: 0; color: #30464d; font-size: 16px; font-weight: 650; }
+#jstudio .v4-app .modal-description { margin: 0 0 16px; color: #94a19f; font-size: 10px; }
+#jstudio .v4-app .modal-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 9px; }
+#jstudio .v4-app .quick-option { min-height: 67px; display: flex; align-items: center; gap: 10px; padding: 11px; border: 1px solid #edf1ef; border-radius: 12px; text-align: right; color: #607176; background: #fff; transition: .15s; }
+#jstudio .v4-app .quick-option:hover { border-color: #d2e7e0; background: #f8fbf9; }
+#jstudio .v4-app .quick-option .option-icon { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 10px; color: var(--teal); background: #eff7f4; }
+#jstudio .v4-app .quick-option strong { display: block; font-size: 10px; font-weight: 600; }
+#jstudio .v4-app .quick-option small { display: block; margin-top: 4px; color: #9ba7a5; font-size: 8px; }
+#jstudio .v4-app .modal-foot { display: flex; justify-content: flex-end; margin-top: 15px; }
+#jstudio .v4-app .subtle-button { height: 34px; padding: 0 12px; border: 1px solid #e8eeeb; border-radius: 9px; color: #77868a; background: #fff; font-size: 10px; }
+#jstudio .v4-app .toast { position: fixed; left: 22px; bottom: 20px; z-index: 110; display: flex; align-items: center; gap: 9px; max-width: min(390px, calc(100vw - 32px)); padding: 11px 14px; border: 1px solid #deeee8; border-radius: 11px; color: #42796d; background: #f6fbf8; box-shadow: var(--shadow-pop); font-size: 10px; opacity: 0; pointer-events: none; transform: translateY(7px); transition: .2s; }
+#jstudio .v4-app .toast.show { opacity: 1; transform: translateY(0); }
+#jstudio .v4-app .sidebar-overlay { display: none; }
+@media (max-width: 1280px) {#jstudio .v4-app { --sidebar-width: 230px; }
+#jstudio .v4-app .topbar { padding: 0 20px; gap: 14px; }
+#jstudio .v4-app .dashboard-main { padding: 19px 20px 20px; }
+#jstudio .v4-app .panel-row.top { grid-template-columns: minmax(0, 1.4fr) minmax(270px, .9fr); }}
+@media (max-width: 1020px) and (min-width: 921px) {#jstudio .v4-app { --sidebar-width: 215px; }
+#jstudio .v4-app .sidebar { padding-right: 11px; padding-left: 11px; }
+#jstudio .v4-app .topbar { grid-template-columns: auto minmax(190px, 330px) auto; }
+#jstudio .v4-app .panel-row.top { grid-template-columns: minmax(0, 1.25fr) minmax(250px, .9fr); }
+#jstudio .v4-app .kpi-card { padding: 13px; }}
+@media (max-height: 760px) and (min-width: 921px) {#jstudio .v4-app { --header-height: 64px; }
+#jstudio .v4-app .sidebar { padding-top: 15px; }
+#jstudio .v4-app .brand-row { padding-bottom: 13px; }
+#jstudio .v4-app .workspace-switch { margin-bottom: 12px; padding: 8px 10px; }
+#jstudio .v4-app .nav-link { min-height: 37px; }
+#jstudio .v4-app .nav-divider { margin-top: 10px; margin-bottom: 9px; }
+#jstudio .v4-app .sidebar-help { display: none; }
+#jstudio .v4-app .dashboard-main { padding-top: 14px; padding-bottom: 14px; }
+#jstudio .v4-app .dashboard-layout { gap: 11px; }
+#jstudio .v4-app .page-heading { min-height: 44px; }
+#jstudio .v4-app .kpi-card { min-height: 84px; padding: 10px 13px; }
+#jstudio .v4-app .dashboard-panels { grid-template-rows: minmax(205px, 1.2fr) minmax(125px, .75fr); gap: 10px; }
+#jstudio .v4-app .panel-row { gap: 10px; }
+#jstudio .v4-app .panel-head { min-height: 45px; }
+#jstudio .v4-app .task-item { padding: 8px 1px; }
+#jstudio .v4-app td { height: 31px; }}
+@media (max-width: 920px) {#jstudio .v4-app.app-shell { display: block; }
+#jstudio .v4-app .workspace { width: 100%; height: 100%; }
+#jstudio .v4-app .sidebar { position: fixed; top: 0; right: 0; bottom: 0; width: min(285px, 86vw); transform: translateX(105%); transition: transform .23s ease; box-shadow: -18px 0 45px rgba(10,30,40,.15); }
+#jstudio .v4-app.sidebar-open .sidebar { transform: translateX(0); }
+#jstudio .v4-app .sidebar-overlay { position: fixed; inset: 0; z-index: 55; display: block; background: rgba(13,32,42,.28); opacity: 0; pointer-events: none; transition: opacity .2s; }
+#jstudio .v4-app.sidebar-open .sidebar-overlay { opacity: 1; pointer-events: auto; }
+#jstudio .v4-app .topbar { grid-template-columns: auto minmax(180px, 1fr) auto; padding: 0 17px; }
+#jstudio .v4-app .mobile-menu { width: 36px; height: 36px; display: grid; place-items: center; border: 1px solid #edf1ef; border-radius: 10px; color: #718187; background: #fff; }
+#jstudio .v4-app .top-context { min-width: 120px; }
+#jstudio .v4-app .dashboard-main { padding: 18px; }
+#jstudio .v4-app .dashboard-layout { grid-template-rows: auto auto auto; }
+#jstudio .v4-app .dashboard-panels { grid-template-rows: auto auto; }
+#jstudio .v4-app .panel-row.top { grid-template-columns: minmax(0, 1.2fr) minmax(245px, .9fr); }}
+@media (max-width: 700px) {#jstudio .v4-app { --header-height: 62px; }
+#jstudio .v4-app { height: auto; min-height: 100%; overflow: auto; }
+#jstudio .v4-app.app-shell { height: auto; min-height: 100dvh; }
+#jstudio .v4-app .workspace { height: auto; min-height: 100dvh; display: flex; flex-direction: column; }
+#jstudio .v4-app .topbar { position: sticky; top: 0; z-index: 50; height: var(--header-height); min-height: var(--header-height); display: flex; gap: 9px; padding: 0 12px; }
+#jstudio .v4-app .top-context { min-width: 0; flex: 1; }
+#jstudio .v4-app .context-mark { display: none; }
+#jstudio .v4-app .context-copy strong { font-size: 10px; }
+#jstudio .v4-app .context-copy small { font-size: 8px; }
+#jstudio .v4-app .global-search { width: 37px; flex: 0 0 37px; }
+#jstudio .v4-app .search-box { width: 37px; height: 36px; justify-content: center; padding: 0; background: #fff; }
+#jstudio .v4-app .search-box input, #jstudio .v4-app .shortcut { display: none; }
+#jstudio .v4-app .search-box:focus-within { position: absolute; top: 12px; right: 52px; z-index: 75; width: min(240px, 58vw); justify-content: flex-start; padding: 0 10px; }
+#jstudio .v4-app .search-box:focus-within input { display: block; }
+#jstudio .v4-app .search-results { width: min(280px, 82vw); }
+#jstudio .v4-app .top-actions { gap: 2px; }
+#jstudio .v4-app .top-actions .icon-button { width: 33px; height: 34px; }
+#jstudio .v4-app .create-button { width: 35px; height: 35px; justify-content: center; padding: 0; }
+#jstudio .v4-app .create-button span { display: none; }
+#jstudio .v4-app .user-chip { width: 31px; height: 31px; }
+#jstudio .v4-app .dashboard-main { overflow: visible; padding: 16px 13px 24px; }
+#jstudio .v4-app .dashboard-layout { min-height: 0; display: flex; flex-direction: column; gap: 13px; }
+#jstudio .v4-app .page-heading { min-height: 0; align-items: flex-start; }
+#jstudio .v4-app .page-title { font-size: 18px; }
+#jstudio .v4-app .page-subtitle { display: block; margin-top: 5px; }
+#jstudio .v4-app .heading-actions { gap: 5px; }
+#jstudio .v4-app .live-indicator { display: none; }
+#jstudio .v4-app .date-button { height: 32px; padding: 0 8px; font-size: 9px; }
+#jstudio .v4-app .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+#jstudio .v4-app .kpi-card { min-height: 85px; padding: 10px; gap: 8px; }
+#jstudio .v4-app .kpi-icon { width: 32px; height: 32px; border-radius: 10px; }
+#jstudio .v4-app .kpi-label { font-size: 9px; }
+#jstudio .v4-app .kpi-value { font-size: 17px; }
+#jstudio .v4-app .kpi-foot { font-size: 8px; }
+#jstudio .v4-app .dashboard-panels { display: flex; flex-direction: column; gap: 10px; }
+#jstudio .v4-app .panel-row { display: contents; }
+#jstudio .v4-app .chart-panel { min-height: 250px; }
+#jstudio .v4-app .task-panel { min-height: 215px; }
+#jstudio .v4-app .invoice-panel { min-height: 205px; }
+#jstudio .v4-app .panel-head { padding: 0 12px; }
+#jstudio .v4-app .chart-total { font-size: 13px; }
+#jstudio .v4-app .chart-area { min-height: 185px; padding: 10px 12px; }
+#jstudio .v4-app .chart-svg { min-height: 130px; }
+#jstudio .v4-app .invoice-table-wrap { overflow-x: auto; padding: 0 12px 8px; }
+#jstudio .v4-app table { min-width: 465px; }}
+@media (max-width: 390px) {#jstudio .v4-app .page-heading { flex-direction: column; }
+#jstudio .v4-app .heading-actions { width: 100%; justify-content: flex-start; }
+#jstudio .v4-app .kpi-card { gap: 6px; padding: 8px; }
+#jstudio .v4-app .kpi-icon { width: 29px; height: 29px; }
+#jstudio .v4-app .kpi-value { font-size: 15px; }
+#jstudio .v4-app .panel-subtitle { display: none; }}
+@media (prefers-reduced-motion: reduce) {#jstudio .v4-app *, #jstudio .v4-app *::before, #jstudio .v4-app *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }}
+#jstudio .v4-app {
+      --navy: #173746;
+      --navy-deep: #102e3d;
+      --navy-soft: #244c59;
+      --teal: #07998c;
+      --teal-dark: #087a73;
+      --teal-soft: #e5f7f2;
+      --ink: #1e3641;
+      --ink-2: #455a65;
+      --muted: #758992;
+      --muted-2: #9cafb5;
+      --line: #eaf0ee;
+      --line-2: #deebe7;
+      --canvas: #f4f8f7;
+      --blue: #407fbd;
+      --blue-soft: #eaf4fd;
+      --purple: #8066b7;
+      --purple-soft: #f2edfc;
+      --amber: #c88b35;
+      --amber-soft: #fff4e4;
+      --green: #168c70;
+      --green-soft: #e7f7ed;
+      --shadow: 0 7px 24px rgba(21,62,62,.045), 0 1px 3px rgba(27,64,63,.035);
+      --shadow-pop: 0 18px 48px rgba(18,48,57,.17);
+    }
+#jstudio .v4-app { font-size: 13.5px; }
+#jstudio .v4-app .icon { stroke-width: 1.85; }
+#jstudio .v4-app .sidebar {
+      background: linear-gradient(180deg, #193b49 0%, #163644 60%, #12323f 100%);
+      border-left-color: rgba(255,255,255,.06);
+    }
+#jstudio .v4-app .brand-mark {
+      background: linear-gradient(140deg, #18b9aa, #078f84 68%, #08776f);
+      box-shadow: 0 8px 21px rgba(0,0,0,.13), inset 0 1px rgba(255,255,255,.17);
+      border: 1px solid rgba(255,255,255,.13);
+    }
+#jstudio .v4-app .brand-name { font-weight: 800; letter-spacing: -.4px; }
+#jstudio .v4-app .brand-sub { color: #afc8ca; opacity: .9; }
+#jstudio .v4-app .workspace-switch {
+      background: rgba(255,255,255,.06);
+      border-color: rgba(223,248,243,.12);
+      transition: background .18s, border-color .18s;
+    }
+#jstudio .v4-app .workspace-switch:hover { background: rgba(255,255,255,.095); border-color: rgba(223,248,243,.23); }
+#jstudio .v4-app .workspace-avatar { color: #b4f5e8; background: rgba(16,186,169,.18); }
+#jstudio .v4-app .workspace-switch strong { font-size: 12px; }
+#jstudio .v4-app .nav-label { color: #a8c3ca; font-size: 10px; }
+#jstudio .v4-app .nav-link { min-height: 43px; color: #c5d5d7; border-radius: 11px; }
+#jstudio .v4-app .nav-link span { font-size: 12px; font-weight: 500; }
+#jstudio .v4-app .nav-link .icon { color: #b0c8ca; stroke-width: 1.9; }
+#jstudio .v4-app .nav-link:hover { color: #fff; background: rgba(255,255,255,.075); }
+#jstudio .v4-app .nav-link.active {
+      background: linear-gradient(90deg, rgba(9,173,157,.13), rgba(9,173,157,.27));
+      box-shadow: inset -3px 0 0 #34d9c6;
+      color: #fff;
+    }
+#jstudio .v4-app .nav-link.active .icon { color: #58f0db; }
+#jstudio .v4-app .nav-link.active span { font-weight: 700; }
+#jstudio .v4-app .nav-count { border: 1px solid rgba(126,227,207,.14); }
+#jstudio .v4-app .more-modules { color: #b8cdd0; font-size: 11px; font-weight: 550; }
+#jstudio .v4-app .more-modules:hover { color: #8df0df; }
+#jstudio .v4-app .sidebar-help { background: rgba(255,255,255,.055); }
+#jstudio .v4-app .sidebar-help .icon { color: #7ce2d1; }
+#jstudio .v4-app .sidebar-help span { font-size: 11px; }
+#jstudio .v4-app .profile-meta strong { font-size: 11px; color: #f3fbfb; }
+#jstudio .v4-app .profile-avatar {
+      background: linear-gradient(145deg, #16b4a6, #097f76);
+      box-shadow: 0 3px 12px rgba(0,0,0,.08);
+    }
+#jstudio .v4-app .topbar {
+      background: rgba(255,255,255,.985);
+      border-bottom-color: #e9f0ed;
+      box-shadow: 0 3px 18px rgba(17,63,61,.032);
+    }
+#jstudio .v4-app .context-mark {
+      background: #e4f8f2;
+      color: #078f82;
+      box-shadow: inset 0 0 0 1px rgba(13,162,147,.06);
+    }
+#jstudio .v4-app .context-copy strong { font-size: 12px; font-weight: 700; }
+#jstudio .v4-app .context-copy small { color: #8b9da2; }
+#jstudio .v4-app .search-box { background: #f7faf9; border-color: #e5eeeb; color: #66868b; }
+#jstudio .v4-app .search-box input { font-size: 12px; }
+#jstudio .v4-app .search-box input::placeholder { color: #889ca2; }
+#jstudio .v4-app .shortcut { font-size: 10px; color: #728b91; background: #edf3f1; }
+#jstudio .v4-app .icon-button { color: #617985; }
+#jstudio .v4-app .icon-button:hover { background: #eaf8f4; color: #06897d; }
+#jstudio .v4-app .notification-dot { background: #ee9b3f; width: 7px; height: 7px; }
+#jstudio .v4-app .create-button {
+      background: linear-gradient(120deg, #07a99a, #087d79);
+      border-color: #06978c;
+      box-shadow: 0 6px 16px rgba(7,153,140,.17);
+      font-weight: 700; font-size: 12px;
+    }
+#jstudio .v4-app .create-button:hover { background: linear-gradient(120deg, #049789, #066b68); box-shadow: 0 7px 18px rgba(7,153,140,.21); }
+#jstudio .v4-app .user-chip {
+      background: linear-gradient(145deg, #16ae9f, #087f75);
+      box-shadow: 0 0 0 3px #e8f6f2;
+      font-size: 12px;
+    }
+#jstudio .v4-app .dashboard-main { background: radial-gradient(circle at 88% 0%, #e9f6f1 0, transparent 32%), var(--canvas); }
+#jstudio .v4-app .page-heading { position: relative; }
+#jstudio .v4-app .page-title-row { gap: 10px; align-items: center; }
+#jstudio .v4-app .page-title { font-size: 22px; color: #17323f; letter-spacing: -.45px; font-weight: 800; }
+#jstudio .v4-app .page-title-row::before {
+      content: ""; width: 4px; height: 24px; border-radius: 4px;
+      background: linear-gradient(#18c8b3, #0c827a); box-shadow: 0 3px 7px rgba(10,160,142,.17);
+    }
+#jstudio .v4-app .page-subtitle { color: #728891; font-size: 11px; }
+#jstudio .v4-app .breadcrumbs { font-size: 10px; color: #859ca1; }
+#jstudio .v4-app .breadcrumbs .current { color: #078e82; }
+#jstudio .v4-app .date-button { border-color: #dde9e5; background: rgba(255,255,255,.95); color: #5e7880; font-size: 11px; }
+#jstudio .v4-app .date-button:hover { border-color: #9ad2c6; }
+#jstudio .v4-app .live-indicator { color: #648e84; font-size: 10px; }
+#jstudio .v4-app .live-indicator i { background: #12b997; box-shadow: 0 0 0 4px #d9f4eb; }
+#jstudio .v4-app .kpi-card {
+      position: relative;
+      overflow: hidden;
+      min-height: 101px;
+      border-color: #e7efec;
+      box-shadow: var(--shadow);
+      transition: transform .2s, box-shadow .2s, border-color .2s;
+    }
+#jstudio .v4-app .kpi-card:nth-child(1) { background: linear-gradient(112deg, #fff 52%, #f0fbf7 100%); }
+#jstudio .v4-app .kpi-card:nth-child(2) { background: linear-gradient(112deg, #fff 58%, #f4f9fe 100%); }
+#jstudio .v4-app .kpi-card:nth-child(3) { background: linear-gradient(112deg, #fff 58%, #f9f5ff 100%); }
+#jstudio .v4-app .kpi-card::before {
+      content: ""; position: absolute; right: 0; top: 23%; height: 54%; width: 3px;
+      border-radius: 6px 0 0 6px;
+      background: #17b3a0;
+    }
+#jstudio .v4-app .kpi-card:nth-child(2)::before { background: #6ba8e0; }
+#jstudio .v4-app .kpi-card:nth-child(3)::before { background: #9a81ce; }
+#jstudio .v4-app .kpi-card:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(23,66,65,.085); border-color: #d5e8e2; }
+#jstudio .v4-app .kpi-icon { width: 43px; height: 43px; border-radius: 13px; }
+#jstudio .v4-app .kpi-icon.teal { color: #07998c; background: #dcf6ed; }
+#jstudio .v4-app .kpi-icon.blue { color: #388bd4; background: #e5f3ff; }
+#jstudio .v4-app .kpi-icon.purple { color: #8d6cbd; background: #efe7fb; }
+#jstudio .v4-app .kpi-label { color: #667c84; font-size: 11px; font-weight: 600; }
+#jstudio .v4-app .kpi-value { color: #1b3944; font-size: 24px; font-weight: 800; margin-top: 7px; }
+#jstudio .v4-app .kpi-card:nth-child(1) .kpi-value { color: #0a756e; }
+#jstudio .v4-app .kpi-foot { color: #738c93; font-size: 10px; }
+#jstudio .v4-app .trend-up { color: #078b73; background: #e4f6ee; border-radius: 5px; padding: 1px 4px; font-weight: 700; }
+#jstudio .v4-app .panel { border-color: #e7eeec; box-shadow: var(--shadow); }
+#jstudio .v4-app .panel-head { background: #fff; border-bottom-color: #edf3f0; }
+#jstudio .v4-app .panel-title { font-size: 13px; font-weight: 750; color: #223c47; }
+#jstudio .v4-app .panel-title .icon { color: #179b8e; }
+#jstudio .v4-app .panel-subtitle { color: #80949a; font-size: 10px; }
+#jstudio .v4-app .text-link { font-size: 11px; font-weight: 700; color: #078b80; }
+#jstudio .v4-app .text-link:hover { color: #065e59; }
+#jstudio .v4-app .chart-total { color: #163943; font-size: 18px; font-weight: 800; }
+#jstudio .v4-app .chart-total small { font-size: 10px; color: #728990; }
+#jstudio .v4-app .segmented { background: #f0f6f3; }
+#jstudio .v4-app .segmented button { color: #728b8e; font-size: 10px; }
+#jstudio .v4-app .segmented button.active { color: #056f68; font-weight: 700; box-shadow: 0 1px 5px rgba(5,75,75,.09); }
+#jstudio .v4-app .chart-legend { color: #657e85; font-size: 10px; }
+#jstudio .v4-app .legend-dot { background: #0ba99b; width: 7px; height: 7px; }
+#jstudio .v4-app .chart-svg .gridline { stroke: #eaf3ef; }
+#jstudio .v4-app .chart-svg .chart-line { stroke: #08a79a; stroke-width: 3; }
+#jstudio .v4-app .chart-svg .chart-area-fill { opacity: 1; }
+#jstudio .v4-app .chart-svg .chart-point { stroke: #08a79a; stroke-width: 2.6; }
+#jstudio .v4-app .chart-footer { color: #778d92; font-size: 10px; }
+#jstudio .v4-app .task-summary-icon { color: #b47a27; background: #ffefd4; }
+#jstudio .v4-app .task-summary strong { font-size: 18px; color: #273e47; }
+#jstudio .v4-app .task-summary small { color: #758a90; font-size: 10px; }
+#jstudio .v4-app .task-type { background: #eaf2fa; color: #517fb6; }
+#jstudio .v4-app .task-type.teal { background: #e3f7f0; color: #078d82; }
+#jstudio .v4-app .task-item { transition: background .16s; border-color: #edf3f1; }
+#jstudio .v4-app .task-item:hover { background: #f7fbf9; }
+#jstudio .v4-app .task-info strong { color: #364f59; font-size: 11px; font-weight: 650; }
+#jstudio .v4-app .task-info small { color: #83959a; font-size: 10px; }
+#jstudio .v4-app .task-time { color: #6d858e; font-size: 10px; }
+#jstudio .v4-app .invoice-panel th { color: #718891; font-size: 10px; font-weight: 650; }
+#jstudio .v4-app .invoice-panel td { color: #4e6670; font-size: 11px; }
+#jstudio .v4-app .invoice-panel td strong { color: #23434b; font-weight: 750; }
+#jstudio .v4-app .invoice-panel tbody tr { transition: background .15s; }
+#jstudio .v4-app .invoice-panel tbody tr:hover { background: #f4fbf8; }
+#jstudio .v4-app .customer-avatar { color: #087f73; background: #e3f7ef; }
+#jstudio .v4-app .status { font-size: 10px; font-weight: 650; border-radius: 8px; }
+#jstudio .v4-app .status.paid { color: #087a5e; background: #e3f8ef; }
+#jstudio .v4-app .status.pending { color: #9e681f; background: #fff3e1; }
+#jstudio .v4-app .notification-item strong { color: #35505a; font-size: 11px; }
+#jstudio .v4-app .notification-item small { color: #7f9399; font-size: 10px; }
+#jstudio .v4-app .popover-title { color: #66808a; font-size: 11px; }
+#jstudio .v4-app .search-result { font-size: 12px; }
+#jstudio .v4-app .modal-head h2 { color: #1d3c44; font-weight: 750; }
+#jstudio .v4-app .modal-description { color: #6d848d; font-size: 11px; }
+#jstudio .v4-app .quick-option strong { color: #2e4a54; font-size: 12px; }
+#jstudio .v4-app .quick-option small { color: #80949b; font-size: 10px; }
+#jstudio .v4-app .quick-option .option-icon { color: #078f83; background: #e2f7f0; }
+#jstudio .v4-app .quick-option:hover { background: #effaf5; border-color: #a8dbca; }
+#jstudio .v4-app .toast { color: #126e60; background: #effaf5; font-size: 11px; }
+@media (max-width: 920px) {#jstudio .v4-app .page-title { font-size: 21px; }}
+@media (max-width: 700px) {#jstudio .v4-app .page-title { font-size: 19px; }
+#jstudio .v4-app .page-title-row::before { height: 21px; }
+#jstudio .v4-app .kpi-value { font-size: 19px; }
+#jstudio .v4-app .kpi-foot { font-size: 9px; }
+#jstudio .v4-app .task-info strong { font-size: 11px; }
+#jstudio .v4-app .invoice-panel td { font-size: 10px; }}
+@media (max-width: 420px) {#jstudio .v4-app .kpi-value { font-size: 17px; }
+#jstudio .v4-app .kpi-label { font-size: 10px; }}
+@media (min-width: 921px) {#jstudio .v4-app .dashboard-panels { grid-template-rows: minmax(210px, 1fr) minmax(205px, .87fr); }}
+@media (min-width: 921px) and (max-height: 820px) {#jstudio .v4-app .invoice-panel tbody tr:nth-child(n/**/+3) { display: none; }}
+@media (max-width: 700px) {#jstudio .v4-app .kpi-card:last-child { grid-column: 1 / -1; min-height: 78px; }
+#jstudio .v4-app .kpi-card:last-child .kpi-content { display: grid; grid-template-columns: auto 1fr; column-gap: 10px; align-items: baseline; }
+#jstudio .v4-app .kpi-card:last-child .kpi-label { grid-row: 1; grid-column: 1; }
+#jstudio .v4-app .kpi-card:last-child .kpi-value { grid-row: 1; grid-column: 2; margin-top: 0; }
+#jstudio .v4-app .kpi-card:last-child .kpi-foot { grid-column: 1 / -1; }}
+/* Laravel panel integration and component refinements. */
+#jstudio .v4-app { font-family: Vazir, Tahoma, sans-serif; max-width:100%; }
+#jstudio .v4-app button, #jstudio .v4-app a, #jstudio .v4-app input { font-family: inherit; }
+#jstudio .v4-app .lucide { width:19px; height:19px; flex:0 0 auto; stroke-width:1.85; }
+#jstudio .v4-app .lucide.v4-sm { width:16px; height:16px; }
+#jstudio .v4-app .v4-panel-body { min-width:0; min-height:0; }
+#jstudio .v4-app .v4-panel-body .s-heading h1 {color:var(--ink);font-size:21px;}
+#jstudio .v4-app .v4-panel-body .s-panel {border:1px solid var(--line-2);background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);}
+#jstudio .v4-app .v4-panel-body .s-btn {border-color:var(--line-2);border-radius:10px;}
+#jstudio .v4-app .v4-panel-body .s-mainbtn {background:var(--teal);border-color:var(--teal);color:#fff;}
+#jstudio .v4-app .v4-panel-body .v-metric-link {color:var(--teal);}
+#jstudio .v4-app .v4-panel-body .v-field :is(input,select,textarea) {border-color:var(--line-2);background:#fff;}
+#jstudio .v4-app .v4-panel-body .v-field :is(input,select,textarea):focus {outline:2px solid #9dded2;}
+#jstudio .v4-app .v4-panel-body .s-tabs button[aria-selected='true'] {border-color:var(--teal);color:var(--teal);}
+#jstudio .v4-app .v4-panel-body .s-kpi {border-bottom-color:var(--teal);}
+#jstudio .v4-app .v4-panel-body .v-empty {color:var(--ink-2);}
+#jstudio .v4-app .v4-avatar {width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:#fff;background:var(--teal);font-weight:700;}
+#jstudio .v4-app .v4-quick-menu {position:absolute;top:calc(100% + 10px);left:0;z-index:95;width:242px;padding:9px;background:#fff;border:1px solid var(--line-2);border-radius:14px;box-shadow:var(--shadow-pop);}
+#jstudio .v4-app .v4-quick-menu a {display:flex;align-items:center;gap:9px;padding:10px;border-radius:9px;color:var(--ink-2);font-size:12px;text-decoration:none;}
+#jstudio .v4-app .v4-quick-menu a:hover {background:#f1faf7;color:var(--teal-dark);}
+#jstudio .v4-app .v4-quick-menu a .lucide {color:var(--teal);}
+#jstudio .v4-app .v4-quick {position:relative;}
+#jstudio .v4-app .v4-search-results a {text-decoration:none;}
+#jstudio .v4-app .v4-search-empty {font-size:11px;padding:12px;color:var(--muted);}
+#jstudio .v4-app .v4-menu-toggle {display:flex;align-items:center;justify-content:space-between;width:100%;min-height:44px;border:0;background:transparent;color:#b8cdd0;padding:0 10px;font-size:12px;}
+#jstudio .v4-app .v4-menu-toggle:hover {color:#fff;}
+#jstudio .v4-app .v4-profile-actions {display:flex;align-items:center;gap:6px;}
+#jstudio .v4-app .v4-profile-actions button {border:0;color:#b8cdd0;background:transparent;padding:5px;}
+#jstudio .v4-app .v4-panel-breadcrumb {color:var(--muted);margin:0 0 10px;font-size:11px;}
+#jstudio .v4-app .dashboard-main.v4-panel-main {scrollbar-width:thin;}
+#jstudio .v4-app .v4-empty {padding:26px 18px;text-align:center;color:var(--muted);font-size:12px;}
+#jstudio .v4-app .v4-dashboard .kpi-grid {grid-template-columns:repeat(3,minmax(0,1fr));}
+#jstudio .v4-app .v4-dashboard .kpi-card {text-decoration:none;}
+#jstudio .v4-app .v4-dashboard .kpi-content {direction:rtl;}
+#jstudio .v4-app .v4-dashboard .kpi-value small {font-size:11px;color:var(--muted);font-weight:500;}
+#jstudio .v4-app .v4-dashboard .kpi-foot {line-height:1.7;}
+#jstudio .v4-app .v4-dashboard .v4-dashboard-empty {padding:15px 18px;color:var(--muted);font-size:12px;}
+#jstudio .v4-app .v4-dashboard .v4-invoice-row {text-decoration:none;color:inherit;}
+#jstudio .v4-app .v4-dashboard .v4-invoice-row:hover {background:#f4faf8;}
+#jstudio .v4-app .v4-dashboard .v4-extras {margin-top:12px;}
+#jstudio .v4-app .v4-dashboard .v4-extras summary {cursor:pointer;padding:12px 16px;border:1px solid var(--line-2);background:#fff;border-radius:12px;color:var(--teal-dark);font-size:12px;}
+#jstudio .v4-app .v4-dashboard .v4-extra-grid {display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px;}
+#jstudio .v4-app .v4-dashboard .v4-extra-item {background:#fff;border:1px solid var(--line-2);border-radius:13px;padding:15px;min-width:0;}
+#jstudio .v4-app .v4-dashboard .v4-extra-item h2 {font-size:12px;margin:0 0 8px;color:var(--ink);}
+#jstudio .v4-app .v4-dashboard .v4-edit-panel {background:#fff;border:1px solid var(--line-2);border-radius:14px;padding:12px;margin-bottom:12px;}
+#jstudio .v4-app .v4-dashboard .v4-edit-row {display:flex;align-items:center;gap:8px;justify-content:space-between;padding:8px;border-bottom:1px solid var(--line);}
+#jstudio .v4-app .v4-dashboard .v4-edit-row:last-child {border:0;}
+#jstudio .v4-app .v4-dashboard .v4-edit-row div {display:flex;gap:6px;flex-wrap:wrap;}
+#jstudio .v4-app .v4-dashboard .v4-edit-row button {border:1px solid var(--line-2);background:#fff;color:var(--ink-2);border-radius:7px;padding:5px 8px;font-size:11px;}
+#jstudio .v4-app .v4-dashboard .v4-edit-row button:hover {background:var(--teal-soft);}
+#jstudio .v4-app .v4-dashboard .v4-edit-row button:disabled {opacity:.4;cursor:not-allowed;}
+#jstudio .v4-app .v4-dashboard .chart-svg {min-height:110px;}
+#jstudio .v4-app .v4-dashboard .chart-svg text {font-size:10px;}
+#jstudio .v4-app .v4-dashboard .v4-chart-no-data {flex:1;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:12px;}
+#jstudio .v4-app .v4-dashboard .v4-task-items {min-height:0;overflow:auto;}
+#jstudio .v4-app .v4-dashboard .v4-chart-status {font-size:10px;color:var(--muted);}
+#jstudio .v4-app [x-cloak] {display:none !important;}
+@media (max-width:920px){#jstudio .v4-app .v4-dashboard .dashboard-panels{min-height:0;} }
+@media (max-width:700px){
+ #jstudio .v4-app .v4-dashboard .kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+ #jstudio .v4-app .v4-dashboard .v4-extra-grid{grid-template-columns:1fr;}
+ #jstudio .v4-app .v4-quick-menu{left:0;width:min(280px,90vw);}
+}
+@media (max-width:390px){#jstudio .v4-app .v4-dashboard .kpi-grid{grid-template-columns:1fr;} }
+
+/* Live dashboard uses a full-height grid only while its compact panels fit. */
+#jstudio .v4-app .v4-dashboard .panel-row.top:has(> :only-child){grid-template-columns:1fr;}
+#jstudio .v4-app .v4-dashboard .dashboard-panels:has(.panel-row:empty){grid-template-rows:auto;}
+#jstudio .v4-app .v4-dashboard .v4-extra-wide{grid-column:span 2;}
+#jstudio .v4-app .brand-row a{color:inherit;text-decoration:none;}
+#jstudio .v4-app .v4-panel-main{min-height:0;overflow:auto;}
+#jstudio .v4-app .v4-panel-body>.v4-dashboard{min-height:calc(100dvh - 115px);}
+#jstudio .v4-app .sidebar-overlay {border:0;}
+@media(max-width:700px){#jstudio .v4-app .v4-dashboard .v4-extra-wide{grid-column:auto;}#jstudio .v4-app .v4-panel-body>.v4-dashboard{min-height:0;} }
+/* Translate legacy workspace controls to the approved V4 palette. */
+#jstudio .v4-app {
+  --s-primary: #07998c;
+  --s-soft: #e7f7f2;
+  --s-bg: #f4f8f7;
+  --s-surface: #ffffff;
+  --s-text: #1e3641;
+  --s-muted: #718b8f;
+  --s-line: #eaf0ee;
+  --v-accent-ink: #087e75;
+  color-scheme: light;
+}
+#jstudio .v4-app .v4-panel-body :is(.s-panel, .v-form-panel) {
+  border-color: var(--line-2);
+}
+#jstudio .v4-app .sidebar .brand-copy { text-decoration: none; }
+#jstudio .v4-app .v4-dashboard .chart-head-left { min-width:0; }
+#jstudio .v4-app .v4-dashboard .chart-total { white-space:nowrap; }
+#jstudio .v4-app .v4-dashboard .kpi-card:focus-visible { outline:3px solid var(--teal);outline-offset:2px; }
+@media (max-width: 700px) {
+  #jstudio .v4-app .v4-dashboard .panel-row.top:has(> :only-child) { display: flex; }
+  #jstudio .v4-app .v4-dashboard .chart-head-left { gap:4px; }
+  #jstudio .v4-app .v4-dashboard .chart-total { font-size:12px; }
+}

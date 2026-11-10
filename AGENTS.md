@@ -6,8 +6,8 @@
 - One Laravel modular monolith: retail ERP, optional CRM, POS and storefront.
 - This repository has a retail base plus catalog/staff, stock-document and reporting upgrades: product images/variants, owner-managed staff access, stock ledger, single-SKU purchase receipts/suppliers, atomic warehouse transfers, manual paid sales/POS and partial returns with manually confirmed refunds, filtered gross/refund/net reports with event CSV and permission-filtered low-stock alerts, CRM, widgets and a public catalog. Online checkout, supplier payments, profit/cost accounting and full accounting are not implemented. See docs/retail-reports.md and previous milestone reports.
 - One business per installation for now. Tenant isolation and subscription billing are not implemented.
-- Persian RTL UI, Vazir font, Blade + Livewire + Alpine; retain the approved navy sidebar and violet/blue/rose themes.
-- Keep the compact minimal panel rhythm: small spacing, inline metric summaries and progressive disclosure. Do not reintroduce large decorative welcome banners or oversized metric cards. See docs/minimal-panel.md.
+- Persian RTL UI, local Vazir font, Blade + Livewire + Alpine. The approved V4 panel uses a fixed navy/teal identity, one light theme, and a right-hand sidebar. Do not restore palette swatches or dark-mode toggles.
+- Keep a calm, accessible, low-density V4 dashboard with three primary metrics, a true sales chart, due follow-ups, and recent invoices. More information belongs behind progressive disclosure, never fabricated demo data. See docs/panel-v4.md.
 
 ## Module ownership
 - `Core`: identity, authorization and workspace.
@@ -31,7 +31,7 @@
 - Do not suppress critical stock or payment errors to make a page appear successful.
 
 ## Verification
-- `composer check` runs Pint and the PHPUnit suite.
+- `composer check` runs Pint and the PHPUnit suite. `npm run test:ui` tests chart presentation logic.
 - `npm run build` must pass after asset changes.
 - Feature tests use an isolated in-memory SQLite database, never the local working database.
 - Test a new behavior before implementing it; include authorization and disabled-module coverage.

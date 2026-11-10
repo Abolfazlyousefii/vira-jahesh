@@ -5,6 +5,8 @@ import '../css/vira-catalog-upgrade.css';
 import '../css/vira-reports.css';
 import '../css/vira-customer-profile.css';
 import '../css/vira-minimal.css';
+import '../css/vira-v4.css';
+import { chartShape, chartIsEmpty } from './vira-sales-chart.js';
 import {
     Livewire,
     Alpine,
@@ -41,6 +43,18 @@ import {
     Search,
     Plus,
     Trash2,
+    LayoutGrid,
+    ChevronDown,
+    X,
+    ExternalLink,
+    PackagePlus,
+    CalendarPlus,
+    ChartNoAxesCombined,
+    Wallet,
+    Clock,
+    ClockAlert,
+    CalendarDays,
+    Settings,
 } from 'lucide';
 
 const iconSet = {
@@ -74,6 +88,18 @@ const iconSet = {
     Search,
     Plus,
     Trash2,
+    LayoutGrid,
+    ChevronDown,
+    X,
+    ExternalLink,
+    PackagePlus,
+    CalendarPlus,
+    ChartNoAxesCombined,
+    Wallet,
+    Clock,
+    ClockAlert,
+    CalendarDays,
+    Settings,
 };
 const refreshIcons = () =>
     createIcons({
@@ -81,41 +107,20 @@ const refreshIcons = () =>
         attrs: { width: 18, height: 18, 'aria-hidden': true },
     });
 
+Alpine.data('viraSalesChart', (series) => ({
+    period: 'week',
+    get points() { return series[this.period] || []; },
+    get shape() { return chartShape(this.points); },
+    get empty() { return chartIsEmpty(this.points); },
+    get total() { return series.formatted?.[this.period] ?? '۰'; },
+}));
+
 Alpine.data('workspace', () => ({
-    palette: 'violet',
-    mode: 'light',
-    collapsed: false,
     menu: false,
-    init() {
-        try {
-            const prefs = JSON.parse(
-                localStorage.getItem('vira.appearance') || '{}',
-            );
-            if (['violet', 'ocean', 'rose'].includes(prefs.palette))
-                this.palette = prefs.palette;
-            if (['light', 'dark'].includes(prefs.mode)) this.mode = prefs.mode;
-            this.collapsed = prefs.collapsed === true;
-        } catch {
-            /* Invalid appearance settings fall back to defaults. */
-        }
-        this.$watch('palette', () => this.persist());
-        this.$watch('mode', () => this.persist());
-        this.$watch('collapsed', () => this.persist());
-    },
-    persist() {
-        try {
-            localStorage.setItem(
-                'vira.appearance',
-                JSON.stringify({
-                    palette: this.palette,
-                    mode: this.mode,
-                    collapsed: this.collapsed,
-                }),
-            );
-        } catch {
-            /* Appearance remains usable when storage is unavailable. */
-        }
-    },
+    more: false,
+    quickOpen: false,
+    searchOpen: false,
+    searchTerm: '',
 }));
 
 document.addEventListener('livewire:navigated', refreshIcons);

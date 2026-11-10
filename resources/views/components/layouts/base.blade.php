@@ -12,7 +12,7 @@
     @livewireStyles
 </head>
 <body>
-    <div id="jstudio" x-data="workspace" :data-palette="palette" :data-mode="mode" data-palette="violet" data-mode="light">
+    <div id="jstudio" x-data="workspace" data-mode="light">
         {{ $slot }}
     </div>
     @livewireScriptConfig

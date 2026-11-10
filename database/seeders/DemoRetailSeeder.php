@@ -92,7 +92,7 @@ class DemoRetailSeeder extends Seeder
                     }
                     $sale = app(RecordSale::class)->handle($token, $warehouse->id, $buyer->id, $items, 'direct');
                     $date = now('Asia/Tehran')->subDays(($i * 11) % 530 + 1)->setTime(10 + $i % 8, 15)->utc();
-                    $sale->update(['created_at' => $date, 'updated_at' => $date]);
+                    Sale::whereKey($sale->id)->update(['created_at' => $date, 'updated_at' => $date]);
                     StockMovement::where('reference', 'sale:'.$sale->id)->update(['created_at' => $date]);
                 }
 
@@ -105,7 +105,7 @@ class DemoRetailSeeder extends Seeder
                     }
                     $return = app(RecordReturn::class)->handle($returnToken, $sale->items()->firstOrFail()->id, 1, 'مرجوعی آزمایشی', 'cash', true);
                     $date = $sale->created_at->copy()->addDays(2);
-                    $return->update(['created_at' => $date, 'updated_at' => $date]);
+                    SaleReturn::whereKey($return->id)->update(['created_at' => $date, 'updated_at' => $date]);
                     StockMovement::where('reference', 'sale-return:'.$return->id)->update(['created_at' => $date]);
                 }
 

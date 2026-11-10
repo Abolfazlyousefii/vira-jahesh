@@ -68,7 +68,7 @@
             </div>
             <div class="c360-footer">{{ $customers->links() }}</div>
         @else
-            <div class="c360-empty"><i data-lucide="search-x"></i><h2>{{ $search !== '' ? 'مشتری پیدا نشد' : 'هنوز مشتری ثبت نشده' }}</h2><p>نام یا شماره دیگری جست‌وجو کنید یا اولین مشتری را اضافه کنید.</p>@if($search !== '')<button class="c360-button c360-button-outline" wire:click="$set('search', '')">پاک کردن جست‌وجو</button>@endif</div>
+            <div class="c360-empty"><i data-lucide="search-x"></i><h2>{{ $search !== '' ? 'نتیجه‌ای پیدا نشد' : 'هنوز مشتری ثبت نشده' }}</h2><p>نام یا شماره دیگری جست‌وجو کنید یا اولین مشتری را اضافه کنید.</p>@if($search !== '')<button class="c360-button c360-button-outline" wire:click="$set('search', '')">پاک کردن جست‌وجو</button>@endif</div>
         @endif
     </section>
 </div>

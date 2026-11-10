@@ -89,9 +89,9 @@ class Customer360Test extends TestCase
         $warehouse = Warehouse::create(['name' => 'انبار']);
         app(StockLedger::class)->adjust($warehouse->id, $product->id, 10, 'ابتدای کار');
         $sale = app(RecordSale::class)->handle((string) Str::uuid(), $warehouse->id, $customer->id, [['product_id' => $product->id, 'quantity' => 2]], 'direct');
-        $sale->update(['created_at' => '2026-03-19 12:00:00']); // 1404/12
+        $sale->forceFill(['created_at' => '2026-03-19 12:00:00'])->save(); // 1404/12
         $return = app(RecordReturn::class)->handle((string) Str::uuid(), $sale->items()->first()->id, 1, 'آزمایش', 'cash', true);
-        $return->update(['created_at' => '2026-03-23 12:00:00']); // 1405/01
+        $return->forceFill(['created_at' => '2026-03-23 12:00:00'])->save(); // 1405/01
         $report1404 = app(CustomerYearlyActivity::class)->handle($customer->id, 1404);
         $report1405 = app(CustomerYearlyActivity::class)->handle($customer->id, 1405);
         $this->assertSame(200000, $report1404['gross']);

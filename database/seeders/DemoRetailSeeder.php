@@ -30,8 +30,13 @@ class DemoRetailSeeder extends Seeder
     public function run(): void
     {
         $database = (string) DB::connection()->getDatabaseName();
-        if (! app()->environment('local', 'testing') || DB::connection()->getDriverName() !== 'sqlite' || ! preg_match('/^vira-demo(?:-test)?\.sqlite$/', basename($database))) {
-            throw new \RuntimeException('DemoRetailSeeder فقط روی database/vira-demo.sqlite در محیط local/testing قابل اجراست.');
+        $dedicatedDemo = preg_match('/^vira-demo(?:-test)?\.sqlite$/', basename($database)) === 1;
+        $mainLocalDemo = app()->bound('vira.demo.allow-main-local')
+            && app('vira.demo.allow-main-local') === true
+            && \App\Support\DemoImportGuard::allows(app()->environment(), DB::connection()->getDriverName(), $database, database_path('database.sqlite'));
+
+        if (! app()->environment('local', 'testing') || DB::connection()->getDriverName() !== 'sqlite' || (! $dedicatedDemo && ! $mainLocalDemo)) {
+            throw new \RuntimeException('DemoRetailSeeder فقط روی SQLite دمو یا با دستور محافظت‌شده vira:demo:import قابل اجراست.');
         }
         foreach (['Customers', 'Catalog', 'Inventory', 'Sales', 'Crm'] as $module) {
             if (! app(ModuleAccess::class)->available($module)) {

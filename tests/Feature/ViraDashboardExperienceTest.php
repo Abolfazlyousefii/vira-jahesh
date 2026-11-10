@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;
+use Modules\Core\Models\DashboardWidgetPreference;
 use Modules\Inventory\Models\Warehouse;
 use Modules\Sales\Models\Sale;
 use Tests\TestCase;
@@ -69,7 +70,7 @@ class ViraDashboardExperienceTest extends TestCase
         $this->seed();
         $owner = User::factory()->create();
         $owner->assignRole('owner');
-        \Modules\Core\Models\DashboardWidgetPreference::create([
+        DashboardWidgetPreference::create([
             'user_id' => $owner->id, 'widget_key' => 'sales.trend', 'position' => 0,
             'size' => 'wide', 'is_visible' => false,
         ]);

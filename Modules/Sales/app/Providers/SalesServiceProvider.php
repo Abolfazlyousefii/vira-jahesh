@@ -4,8 +4,8 @@ namespace Modules\Sales\Providers;
 
 use App\Support\ModuleServiceProvider;
 use Modules\Core\Dashboard\WidgetRegistry;
-use Modules\Sales\Models\Sale;
 use Modules\Sales\Dashboard\SalesDashboardData;
+use Modules\Sales\Models\Sale;
 
 class SalesServiceProvider extends ModuleServiceProvider
 {

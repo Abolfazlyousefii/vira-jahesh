@@ -4,8 +4,8 @@ namespace Modules\Crm\Providers;
 
 use App\Support\ModuleServiceProvider;
 use Modules\Core\Dashboard\WidgetRegistry;
-use Modules\Crm\Models\FollowUp;
 use Modules\Crm\Dashboard\CrmDashboardData;
+use Modules\Crm\Models\FollowUp;
 
 class CrmServiceProvider extends ModuleServiceProvider
 {

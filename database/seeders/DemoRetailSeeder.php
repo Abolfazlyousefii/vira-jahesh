@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Support\DemoImportGuard;
 use App\Support\ModuleAccess;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Auth;
@@ -20,6 +21,7 @@ use Modules\Sales\Actions\RecordSale;
 use Modules\Sales\Models\Sale;
 use Modules\Sales\Models\SaleReturn;
 use Ramsey\Uuid\Uuid;
+use RuntimeException;
 
 /**
  * Explicit demo-only data. Refuses the normal application database and production.
@@ -33,10 +35,14 @@ class DemoRetailSeeder extends Seeder
         $dedicatedDemo = preg_match('/^vira-demo(?:-test)?\.sqlite$/', basename($database)) === 1;
         $mainLocalDemo = app()->bound('vira.demo.allow-main-local')
             && app('vira.demo.allow-main-local') === true
-            && \App\Support\DemoImportGuard::allows(app()->environment(), DB::connection()->getDriverName(), $database, database_path('database.sqlite'));
+            && DemoImportGuard::allows(app()->environment(), DB::connection()->getDriverName(), $database, database_path('database.sqlite'));
 
-        if (! app()->environment('local', 'testing') || DB::connection()->getDriverName() !== 'sqlite' || (! $dedicatedDemo && ! $mainLocalDemo)) {
-            throw new \RuntimeException('DemoRetailSeeder فقط روی SQLite دمو یا با دستور محافظت‌شده vira:demo:import قابل اجراست.');
+        $allowed = app()->environment('local', 'testing')
+            && DB::connection()->getDriverName() === 'sqlite'
+            && ($dedicatedDemo || $mainLocalDemo);
+
+        if (! $allowed) {
+            throw new RuntimeException('DemoRetailSeeder فقط روی SQLite دمو یا با دستور محافظت‌شده vira:demo:import قابل اجراست.');
         }
         foreach (['Customers', 'Catalog', 'Inventory', 'Sales', 'Crm'] as $module) {
             if (! app(ModuleAccess::class)->available($module)) {

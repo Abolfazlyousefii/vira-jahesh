@@ -39,7 +39,7 @@ class ProductsPage extends WorkspacePage
 
     public array $variants = [];
 
-    public array $attributes = [];
+    public array $variantFeatures = [];
 
     public array $form = [
         'name' => '', 'sku' => '', 'barcode' => '', 'category' => '',
@@ -60,7 +60,7 @@ class ProductsPage extends WorkspacePage
     public function create(): void
     {
         $this->guard('catalog.manage');
-        $this->reset('editingId', 'groupId', 'kind', 'variants', 'attributes', 'productImage', 'form', 'notice');
+        $this->reset('editingId', 'groupId', 'kind', 'variants', 'variantFeatures', 'productImage', 'form', 'notice');
         $this->resetValidation();
         $this->showForm = true;
         $this->selectedId = null;
@@ -85,15 +85,15 @@ class ProductsPage extends WorkspacePage
     public function addAttribute(): void
     {
         $this->guard('catalog.manage');
-        abort_unless($this->showForm && $this->kind === 'variants' && $this->editingId === null && count($this->attributes) < 3, 422);
-        $this->attributes[] = ['name' => '', 'values' => ''];
+        abort_unless($this->showForm && $this->kind === 'variants' && $this->editingId === null && count($this->variantFeatures) < 3, 422);
+        $this->variantFeatures[] = ['name' => '', 'values' => ''];
     }
 
     public function removeAttribute(int $index): void
     {
         $this->guard('catalog.manage');
-        abort_unless($this->editingId === null && array_key_exists($index, $this->attributes), 422);
-        array_splice($this->attributes, $index, 1);
+        abort_unless($this->editingId === null && array_key_exists($index, $this->variantFeatures), 422);
+        array_splice($this->variantFeatures, $index, 1);
         $this->variants = [];
     }
 
@@ -121,7 +121,7 @@ class ProductsPage extends WorkspacePage
             throw ValidationException::withMessages(['form.sku' => 'کد پایه باید شامل ۴ تا ۱۲ رقم باشد.']);
         }
         $attributes = Validator::make(
-            ['attributes' => $this->attributes],
+            ['attributes' => $this->variantFeatures],
             [
                 'attributes' => 'required|array|min:1|max:3',
                 'attributes.*.name' => 'required|string|max:40',
@@ -202,7 +202,7 @@ class ProductsPage extends WorkspacePage
     public function edit(int $id): void
     {
         $this->guard('catalog.manage');
-        $this->reset('form', 'variants', 'attributes', 'productImage', 'notice', 'groupId');
+        $this->reset('form', 'variants', 'variantFeatures', 'productImage', 'notice', 'groupId');
         $product = Product::with('group.variants')->findOrFail($id);
         $this->editingId = $id;
         $this->kind = $product->group_id ? 'variants' : 'simple';
@@ -212,7 +212,7 @@ class ProductsPage extends WorkspacePage
             $this->groupId = $product->group_id;
             $this->form = [...$this->form, ...$group->only(['name', 'sku', 'category', 'unit', 'brand', 'description'])];
             $this->form['price_toman'] = (string) $product->price_toman;
-            $this->attributes = collect($group->attributes ?? [])->map(fn ($a) => [
+            $this->variantFeatures = collect($group->attributes ?? [])->map(fn ($a) => [
                 'name' => $a['name'], 'values' => implode('، ', $a['values']),
             ])->all();
             $this->variants = $group->variants->map(fn (Product $variant) => $variant->only([
@@ -235,7 +235,7 @@ class ProductsPage extends WorkspacePage
         ], ['productImage.*' => 'تصویر JPG، PNG یا WebP تا ۲ مگابایت و حداکثر ۴۰۹۶ پیکسل انتخاب کنید.']);
 
         $record = app(SaveCatalogProduct::class)->handle(
-            $this->kind, $this->form, $this->variants, $this->editingId, $this->groupId, $this->attributes
+            $this->kind, $this->form, $this->variants, $this->editingId, $this->groupId, $this->variantFeatures
         );
         if ($record instanceof ProductGroup) {
             $this->groupId = $record->id;

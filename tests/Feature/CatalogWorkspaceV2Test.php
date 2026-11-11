@@ -68,7 +68,7 @@ class CatalogWorkspaceV2Test extends TestCase
             ->set('form.sku', '000030')
             ->set('form.category', 'لوازم برقی')
             ->set('form.price_toman', '180000')
-            ->set('attributes', [
+            ->set('variantFeatures', [
                 ['name' => 'آمپر', 'values' => '۱۶، ۲۵'],
                 ['name' => 'پل', 'values' => 'تک، سه'],
             ])
@@ -94,7 +94,7 @@ class CatalogWorkspaceV2Test extends TestCase
             ->set('form.name', 'فیوز')
             ->set('form.sku', '000031')
             ->set('form.price_toman', '150000')
-            ->set('attributes', [['name' => 'آمپر', 'values' => '۱۰، ۲۰'], ['name' => 'پل', 'values' => 'تک، سه']])
+            ->set('variantFeatures', [['name' => 'آمپر', 'values' => '۱۰، ۲۰'], ['name' => 'پل', 'values' => 'تک، سه']])
             ->call('generateVariants')
             ->set('variants.0.options.آمپر', '۴۰')
             ->call('save')->assertHasErrors('variants');

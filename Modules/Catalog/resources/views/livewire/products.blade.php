@@ -96,24 +96,24 @@
                             <div class="vc2-attributes">
                                 @if($editingId)
                                     <p class="vc2-tip">ویژگی‌های تنوع‌های ثبت‌شده ثابت می‌مانند تا سوابق خرید و انبار تغییر نکنند. قیمت و وضعیت فروش قابل ویرایش است.</p>
-                                    @foreach($attributes as $attribute)
+                                    @foreach($variantFeatures as $attribute)
                                         <span class="vc2-attribute-chip">{{ $attribute['name'] }}: {{ $attribute['values'] }}</span>
                                     @endforeach
                                 @else
                                     <p class="vc2-tip">نام ویژگی و مقادیر آن را تعریف کنید؛ مثال: «آمپر» و «۱۶، ۲۵، ۳۲».</p>
-                                    @foreach($attributes as $index => $attribute)
+                                    @foreach($variantFeatures as $index => $attribute)
                                         <div class="vc2-attribute-row" wire:key="attribute-{{ $index }}">
                                             <x-workspace.field :label="'ویژگی '.($index + 1)" :name="'attributes.'.$index.'.name'">
-                                                <input wire:model="attributes.{{ $index }}.name" maxlength="40" placeholder="مثلاً رنگ یا آمپر">
+                                                <input wire:model="variantFeatures.{{ $index }}.name" maxlength="40" placeholder="مثلاً رنگ یا آمپر">
                                             </x-workspace.field>
                                             <x-workspace.field label="مقادیر (با ویرگول جدا کنید)" :name="'attributes.'.$index.'.values'">
-                                                <input wire:model="attributes.{{ $index }}.values" maxlength="500" placeholder="مثلاً آبی، سفید، مشکی">
+                                                <input wire:model="variantFeatures.{{ $index }}.values" maxlength="500" placeholder="مثلاً آبی، سفید، مشکی">
                                             </x-workspace.field>
                                             <button class="vc2-icon-danger" type="button" wire:click="removeAttribute({{ $index }})" aria-label="حذف ویژگی"><i data-lucide="trash-2"></i></button>
                                         </div>
                                     @endforeach
                                     <div class="vc2-inline-actions">
-                                        <button type="button" class="vc2-btn" wire:click="addAttribute" @disabled(count($attributes) >= 3)><i data-lucide="plus"></i> افزودن ویژگی</button>
+                                        <button type="button" class="vc2-btn" wire:click="addAttribute" @disabled(count($variantFeatures) >= 3)><i data-lucide="plus"></i> افزودن ویژگی</button>
                                         <button type="button" class="vc2-btn vc2-btn-purple" wire:click="generateVariants"><i data-lucide="shapes"></i> ساخت ترکیب‌ها</button>
                                     </div>
                                 @endif

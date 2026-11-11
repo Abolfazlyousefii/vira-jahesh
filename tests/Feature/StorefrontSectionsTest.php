@@ -182,5 +182,4 @@ class StorefrontSectionsTest extends TestCase
         $this->assertNotFalse($featuresPosition);
         $this->assertLessThan($featuresPosition, $ctaPosition);
     }
-
 }

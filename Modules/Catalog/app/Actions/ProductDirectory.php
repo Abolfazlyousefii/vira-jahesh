@@ -23,7 +23,8 @@ final class ProductDirectory
             ->when($search !== '', fn ($q) => $q->where(function ($q) use ($search, $public): void {
                 $q->where('name', 'like', '%'.$search.'%')->orWhere('category', 'like', '%'.$search.'%');
                 if (! $public) {
-                    $q->orWhere('sku', 'like', '%'.$search.'%')->orWhere('barcode', $search);
+                    $q->orWhere('sku', 'like', '%'.$search.'%')->orWhere('barcode', $search)
+                        ->orWhereHas('legacyCodeAlias', fn ($aliases) => $aliases->where('old_sku', 'like', '%'.$search.'%'));
                 }
             }))->orderBy('name');
     }
@@ -51,7 +52,7 @@ final class ProductDirectory
     public function inventoryOptions(string $search, ?int $selectedId = null)
     {
         $search = mb_substr(WorkspaceAccess::digits($search), 0, 160);
-        $products = Product::query()->when($search !== '', fn ($q) => $q->where(fn ($q) => $q->where('name', 'like', '%'.$search.'%')->orWhere('sku', 'like', '%'.$search.'%')->orWhere('barcode', $search)))->orderBy('name')->limit(100)->get();
+        $products = Product::query()->when($search !== '', fn ($q) => $q->where(fn ($q) => $q->where('name', 'like', '%'.$search.'%')->orWhere('sku', 'like', '%'.$search.'%')->orWhere('barcode', $search)->orWhereHas('legacyCodeAlias', fn ($alias) => $alias->where('old_sku', 'like', '%'.$search.'%'))))->orderBy('name')->limit(100)->get();
         if ($selectedId && ! $products->contains('id', $selectedId) && ($selected = Product::find($selectedId))) {
             $products->prepend($selected);
         }

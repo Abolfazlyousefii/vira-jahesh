@@ -58,6 +58,7 @@ final class SaveCatalogProduct
             return DB::transaction(function () use ($data, $existing): Product {
                 $product = $existing ?? new Product;
                 $product->fill($data)->save();
+                app(InternalBarcode::class)->fillMissing($product);
 
                 return $product;
             });
@@ -183,6 +184,7 @@ final class SaveCatalogProduct
                     'unit' => $record->unit,
                     'brand' => $record->brand,
                 ])->save();
+                app(InternalBarcode::class)->fillMissing($product);
             }
 
             return $record;

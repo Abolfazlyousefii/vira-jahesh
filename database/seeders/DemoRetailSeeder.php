@@ -9,6 +9,8 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Modules\Catalog\Actions\InternalBarcode;
+use Modules\Catalog\Models\CatalogCodeAlias;
 use Modules\Catalog\Models\Product;
 use Modules\Crm\Models\FollowUp;
 use Modules\Customers\Models\Customer;
@@ -63,10 +65,14 @@ class DemoRetailSeeder extends Seeder
                 $warehouse = Warehouse::firstOrCreate(['name' => 'انبار نمایشی ویرا']);
                 $products = [];
                 foreach ($fixture['products'] as $row) {
-                    $products[] = Product::firstOrCreate(['sku' => 'DEMO-'.$row['sku']], [
-                        'name' => $row['name'], 'price_toman' => $row['price_toman'],
-                        'category' => 'کالای نمایشی', 'is_active' => true, 'is_published' => false,
-                    ]);
+                    $oldSku = 'DEMO-'.$row['sku'];
+                    $product = CatalogCodeAlias::findProductByLegacySku($oldSku)
+                        ?? Product::firstOrCreate(['sku' => $oldSku], [
+                            'name' => $row['name'], 'price_toman' => $row['price_toman'],
+                            'category' => 'کالای نمایشی', 'is_active' => true, 'is_published' => false,
+                        ]);
+                    app(InternalBarcode::class)->fillMissing($product);
+                    $products[] = $product;
                 }
                 foreach ($products as $product) {
                     if (! StockBalance::where('warehouse_id', $warehouse->id)->where('product_id', $product->id)->exists()) {

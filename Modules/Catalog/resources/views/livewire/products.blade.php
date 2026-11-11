@@ -275,7 +275,7 @@
                                 <tr wire:key="catalog-list-{{ $product->id }}">
                                     <td data-label="ردیف" class="vc2-row-num">{{ $index + 1 }}</td>
                                     <td data-label="نام کالا"><div class="vc2-product-cell"><x-product-visual :product="$product" /><div><strong>{{ $displayName }}</strong><small>{{ $isGroup ? 'محصول دارای تنوع' : ($product->brand ?: 'کالای ساده') }}</small></div></div></td>
-                                    <td data-label="کد کالا"><bdi class="vc2-code">{{ $displayCode }}</bdi></td>
+                                    <td data-label="کد کالا"><bdi class="vc2-code">{{ $displayCode }}</bdi>@if($product->barcode)<small class="vc2-barcode" title="بارکد داخلی کالا">بارکد: <bdi dir="ltr">{{ $product->barcode }}</bdi></small>@endif</td>
                                     <td data-label="دسته‌بندی">{{ $product->category ?: 'بدون دسته' }}</td>
                                     <td data-label="تنوع"><span class="vc2-pill {{ $isGroup ? 'violet' : 'blue' }}">{{ $isGroup ? $variantCount.' تنوع' : 'ساده' }}</span></td>
                                     <td data-label="قیمت"><strong class="vc2-price">{{ number_format($product->price_toman) }}</strong><small class="vc2-currency"> تومان</small></td>
@@ -334,6 +334,7 @@
                         <div><small>برند</small><strong>{{ $details->brand ?: '—' }}</strong></div>
                         <div><small>واحد</small><strong>{{ $details->unit ?: 'عدد' }}</strong></div>
                         <div><small>قیمت پایه</small><strong>{{ number_format($details->price_toman) }} تومان</strong></div>
+                        <div><small>بارکد داخلی</small><strong dir="ltr">{{ $details->barcode ?: 'تعریف نشده' }}</strong></div>
                     </div>
                     @if($detailsGroup)
                         <h3>تنوع‌های کالا</h3>
@@ -341,6 +342,7 @@
                             <div class="vc2-detail-variant">
                                 <strong>{{ implode(' / ', array_values($variant->options ?: array_filter([$variant->color, $variant->size]))) }}</strong>
                                 <bdi>{{ $variant->sku }}</bdi>
+                                @if($variant->barcode)<small>بارکد: <bdi dir="ltr">{{ $variant->barcode }}</bdi></small>@endif
                                 <small>{{ number_format($variant->price_toman) }} تومان</small>
                             </div>
                         @endforeach

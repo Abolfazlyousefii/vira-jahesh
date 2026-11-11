@@ -57,3 +57,7 @@ All public-facing validation messages use local `lang/fa/validation.php`, field 
 ## Catalog auto SKU convention (2026-11-11)
 
 All NEW product/group codes are allocated server-side on SAVE by category: 3-digit stable category prefix + 6-digit sequence; variant SKUs append 2 digits. No random, user-entered, or client-controlled new codes. Allocation and insert must share a DB transaction and lock the category counter. Historical codes stay unchanged on edit. See docs/catalog-v2.md and tests/Feature/CatalogAutomaticSkuTest.php.
+
+## Legacy demo SKU & barcode repair (2026-11-11)
+
+Historical product IDs and invoice SKU snapshots are immutable. Only identifiable, unpublished fixture demo products can be renumbered through the guarded local-only `vira:catalog:repair-codes --apply`; keep their former code in `catalog_code_aliases` and update demo import alias resolution. Existing real/unknown SKUs and non-empty barcodes remain unchanged. New/missing barcodes use a private-use EAN-13 prefix `20`, not a global GS1 GTIN. Preview by default; require consistent SQLite backup before apply. See docs/catalog-v2.md.

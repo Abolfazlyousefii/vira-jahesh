@@ -25,6 +25,11 @@ class Product extends Model implements HasMedia
         return LogOptions::defaults()->logOnly(['name', 'sku', 'price_toman', 'is_active', 'is_published'])->logOnlyDirty()->dontSubmitEmptyLogs();
     }
 
+    public function legacyCodeAlias(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(CatalogCodeAlias::class);
+    }
+
     public function group(): BelongsTo
     {
         return $this->belongsTo(ProductGroup::class, 'group_id');

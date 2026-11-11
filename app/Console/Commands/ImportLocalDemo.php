@@ -7,6 +7,7 @@ use Database\Seeders\DemoRetailSeeder;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Modules\Catalog\Models\CatalogCodeAlias;
 use Modules\Catalog\Models\Product;
 use Modules\Customers\Models\Customer;
 use Throwable;
@@ -50,7 +51,8 @@ class ImportLocalDemo extends Command
 
         foreach ($fixture['products'] as $row) {
             $sku = 'DEMO-'.$row['sku'];
-            $existing = Product::where('sku', $sku)->first();
+            $existing = CatalogCodeAlias::findProductByLegacySku($sku)
+                ?? Product::where('sku', $sku)->first();
             if ($existing && ($existing->name !== $row['name'] || $existing->is_published)) {
                 $this->error("کد کالای {$sku} از قبل برای کالای دیگری استفاده شده است. ورود دمو لغو شد.");
 

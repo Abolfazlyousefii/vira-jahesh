@@ -227,3 +227,8 @@
 #jstudio .vc2 .vc2-sku-preview{min-height:43px;display:flex;align-items:center;gap:9px;border:1px dashed #a6dacf;background:#f2fbf8;color:#177c71;padding:9px 11px;border-radius:9px;font-size:11px;font-weight:600}
 #jstudio .vc2 .vc2-sku-preview [data-lucide]{width:17px;height:17px}
 #jstudio .vc2 input.vc2-immutable-code{background:#f2f7f7;color:#365766;font-weight:700;font-variant-numeric:tabular-nums}
+
+
+/* Optional internal EAN-13 shown beneath the permanent product SKU. */
+#jstudio .vc2 .vc2-barcode{display:block;margin-top:3px;color:#67818a;font-size:10px;font-variant-numeric:tabular-nums;white-space:nowrap}
+#jstudio .vc2 .vc2-barcode bdi{letter-spacing:.03em}

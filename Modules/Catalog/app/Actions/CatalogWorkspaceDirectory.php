@@ -27,6 +27,7 @@ final class CatalogWorkspaceDirectory
                 $query->where('products.name', 'like', '%'.$search.'%')
                     ->orWhere('products.sku', 'like', '%'.$search.'%')
                     ->orWhere('products.barcode', $search)
+                    ->orWhereHas('legacyCodeAlias', fn (Builder $aliases) => $aliases->where('old_sku', 'like', '%'.$search.'%'))
                     ->orWhere('products.category', 'like', '%'.$search.'%')
                     ->orWhere('products.brand', 'like', '%'.$search.'%')
                     ->orWhereHas('group', function (Builder $group) use ($search): void {
@@ -37,6 +38,7 @@ final class CatalogWorkspaceDirectory
                     ->orWhereHas('group.variants', function (Builder $variants) use ($search): void {
                         $variants->where('sku', 'like', '%'.$search.'%')
                             ->orWhere('barcode', $search)
+                            ->orWhereHas('legacyCodeAlias', fn (Builder $aliases) => $aliases->where('old_sku', 'like', '%'.$search.'%'))
                             ->orWhere('name', 'like', '%'.$search.'%');
                     });
             });

@@ -12,6 +12,16 @@
         ? $heroSettings['href']
         : '#site-features';
 
+    if ($heroHref === '#site-features' && (!$features || !$features['is_visible'])) {
+        $heroHref = '#site-modules';
+    }
+    if ($heroHref === '#site-cta' && (!$cta || !$cta['is_visible'])) {
+        $heroHref = '#site-modules';
+    }
+    if ($heroHref === '#site-top' && (!$hero || !$hero['is_visible'])) {
+        $heroHref = '#site-modules';
+    }
+
     $salesPhone = preg_replace('/[^\d+]/u', '', (string) config('vira.sales_phone'));
     $salesPhoneDisplay = trim((string) config('vira.sales_phone'));
 
@@ -79,7 +89,7 @@
                 </a>
 
                 <nav class="vl-nav-links" aria-label="ناوبری اصلی">
-                    <a href="#site-features">امکانات</a>
+                    <a href="{{ $features && $features['is_visible'] ? '#site-features' : '#site-modules' }}">امکانات</a>
                     <a href="#site-modules">ماژول‌ها</a>
                     <a href="#site-about">مزایای ویرا</a>
                     <a href="#site-process">مراحل راه‌اندازی</a>
@@ -102,7 +112,7 @@
                         <a href="#site-about">مزایای ویرا</a>
                         <a href="#site-process">مراحل راه‌اندازی</a>
                         <a href="#site-faq">سؤالات متداول</a>
-                        <a href="#site-cta">مشاوره و خرید</a>
+                        <a href="{{ $cta && $cta['is_visible'] ? '#site-cta' : '#site-modules' }}">مشاوره و خرید</a>
                         <a class="vl-mobile-login" href="{{ route('login') }}">ورود به پنل مدیریت</a>
                     </nav>
                 </details>
@@ -303,7 +313,7 @@
                         </details>
                         <details class="vl-faq">
                             <summary>چطور می‌توانم برای تهیه ویرا مشاوره بگیرم؟ <svg class="vl-icon"><use href="#vl-chevron"/></svg></summary>
-                            <p>از طریق راه ارتباطی مجموعه جهش که در بخش مشاوره درج شده است، برای هماهنگی و بررسی نیازهای کسب‌وکار خود اقدام کنید.</p>
+                            <p>برای هماهنگی جلسه معرفی و بررسی نیازهای کسب‌وکار، با مجموعه جهش تماس بگیرید. در صورت ثبت شماره تماس مستقیم، همین صفحه راه تماس را نیز نمایش می‌دهد.</p>
                         </details>
                         <details class="vl-faq">
                             <summary>مشتریان فعلی ویرا از کجا وارد نرم‌افزار می‌شوند؟ <svg class="vl-icon"><use href="#vl-chevron"/></svg></summary>

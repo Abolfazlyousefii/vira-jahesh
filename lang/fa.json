@@ -4,5 +4,16 @@
     "of": "از",
     "results": "نتیجه",
     "Go to page :page": "رفتن به صفحهٔ :page",
-    "Pagination Navigation": "صفحه‌بندی"
+    "Pagination Navigation": "صفحه‌بندی",
+    "Unauthenticated.": "برای ادامه باید وارد حساب شوید.",
+    "This action is unauthorized.": "اجازه انجام این عملیات را ندارید.",
+    "The given data was invalid.": "اطلاعات واردشده معتبر نیست.",
+    "Page Expired": "نشست شما منقضی شده است.",
+    "Forbidden": "اجازه دسترسی ندارید.",
+    "Not Found": "صفحه موردنظر پیدا نشد.",
+    "Too Many Requests": "تعداد درخواست‌ها بیش از حد مجاز است.",
+    "Server Error": "مشکلی در سامانه پیش آمد.",
+    "Service Unavailable": "سامانه موقتاً در دسترس نیست.",
+    "Whoops!": "مشکلی پیش آمد.",
+    "Something went wrong.": "در انجام این درخواست مشکلی پیش آمد."
 }

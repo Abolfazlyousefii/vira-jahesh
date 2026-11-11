@@ -121,26 +121,34 @@ class ProductsPage extends WorkspacePage
             throw ValidationException::withMessages(['form.sku' => 'کد پایه باید شامل ۴ تا ۱۲ رقم باشد.']);
         }
         $attributes = Validator::make(
-            ['attributes' => $this->variantFeatures],
+            ['variantFeatures' => $this->variantFeatures],
             [
-                'attributes' => 'required|array|min:1|max:3',
-                'attributes.*.name' => 'required|string|max:40',
-                'attributes.*.values' => 'required|string|max:500',
+                'variantFeatures' => 'required|array|min:1|max:3',
+                'variantFeatures.*.name' => 'required|string|max:40',
+                'variantFeatures.*.values' => 'required|string|max:500',
             ],
-            $this->messages()
-        )->validate()['attributes'];
+            [
+                'variantFeatures.*.name.required' => 'نام ویژگی را وارد کنید.',
+                'variantFeatures.*.values.required' => 'حداقل یک مقدار برای این ویژگی وارد کنید.',
+            ],
+            [
+                'variantFeatures' => 'ویژگی‌های کالا',
+                'variantFeatures.*.name' => 'نام ویژگی',
+                'variantFeatures.*.values' => 'مقادیر ویژگی',
+            ]
+        )->validate()['variantFeatures'];
 
         $sets = [];
         foreach ($attributes as $attribute) {
             $name = trim($attribute['name']);
             if (array_key_exists($name, $sets)) {
-                throw ValidationException::withMessages(['attributes' => 'نام ویژگی‌ها نباید تکراری باشد.']);
+                throw ValidationException::withMessages(['variantFeatures' => 'نام ویژگی‌ها نباید تکراری باشد.']);
             }
             $values = array_values(array_unique(array_filter(array_map(
                 'trim', preg_split('/[,،\n]+/u', $attribute['values'])
             ))));
             if (! count($values) || count($values) > 10 || collect($values)->contains(fn ($v) => mb_strlen($v) > 50)) {
-                throw ValidationException::withMessages(['attributes' => 'برای هر ویژگی، یک تا ده مقدار (حداکثر ۵۰ حرف) وارد کنید.']);
+                throw ValidationException::withMessages(['variantFeatures' => 'برای هر ویژگی، یک تا ده مقدار (حداکثر ۵۰ حرف) وارد کنید.']);
             }
             $sets[$name] = $values;
         }
@@ -151,7 +159,7 @@ class ProductsPage extends WorkspacePage
                 foreach ($values as $value) {
                     $next[] = [...$combination, $name => $value];
                     if (count($next) > 50) {
-                        throw ValidationException::withMessages(['attributes' => 'حداکثر ۵۰ ترکیب برای هر کالا مجاز است.']);
+                        throw ValidationException::withMessages(['variantFeatures' => 'حداکثر ۵۰ ترکیب برای هر کالا مجاز است.']);
                     }
                 }
             }

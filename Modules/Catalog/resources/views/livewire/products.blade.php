@@ -103,10 +103,10 @@
                                     <p class="vc2-tip">نام ویژگی و مقادیر آن را تعریف کنید؛ مثال: «آمپر» و «۱۶، ۲۵، ۳۲».</p>
                                     @foreach($variantFeatures as $index => $attribute)
                                         <div class="vc2-attribute-row" wire:key="attribute-{{ $index }}">
-                                            <x-workspace.field :label="'ویژگی '.($index + 1)" :name="'attributes.'.$index.'.name'">
+                                            <x-workspace.field :label="'ویژگی '.($index + 1)" :name="'variantFeatures.'.$index.'.name'">
                                                 <input wire:model="variantFeatures.{{ $index }}.name" maxlength="40" placeholder="مثلاً رنگ یا آمپر">
                                             </x-workspace.field>
-                                            <x-workspace.field label="مقادیر (با ویرگول جدا کنید)" :name="'attributes.'.$index.'.values'">
+                                            <x-workspace.field label="مقادیر (با ویرگول جدا کنید)" :name="'variantFeatures.'.$index.'.values'">
                                                 <input wire:model="variantFeatures.{{ $index }}.values" maxlength="500" placeholder="مثلاً آبی، سفید، مشکی">
                                             </x-workspace.field>
                                             <button class="vc2-icon-danger" type="button" wire:click="removeAttribute({{ $index }})" aria-label="حذف ویژگی"><i data-lucide="trash-2"></i></button>
@@ -117,7 +117,7 @@
                                         <button type="button" class="vc2-btn vc2-btn-purple" wire:click="generateVariants"><i data-lucide="shapes"></i> ساخت ترکیب‌ها</button>
                                     </div>
                                 @endif
-                                @error('attributes')<div class="vc2-inline-error" role="alert">{{ $message }}</div>@enderror
+                                @error('variantFeatures')<div class="vc2-inline-error" role="alert">{{ $message }}</div>@enderror
                                 @error('variants')<div class="vc2-inline-error" role="alert">{{ $message }}</div>@enderror
 
                                 @if(count($variants))

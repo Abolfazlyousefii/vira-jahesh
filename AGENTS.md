@@ -49,3 +49,7 @@ Use `docs/customers-360.md` for the reviewed customer directory, profile, demo-o
 ## Catalog V2 (2026-11-11)
 
 The approved Catalog V2 visual contract and module behavior are documented in `docs/catalog-v2.md`. Numeric-only *new* SKUs, backward-compatible historic SKU edits, grouped catalog rows, server-filtered incremental no-pagination list and a single document scroll are deliberate. Catalog never directly changes Inventory stock. Keep related tests green.
+
+## Persian validation and error feedback (2026-11-11)
+
+All public-facing validation messages use local `lang/fa/validation.php`, field labels, and Persian HTTP fallback views. For new forms map array keys to Persian names; no technical or English exception text in UI. See `docs/persian-feedback.md`. Production stays `APP_DEBUG=false` and must keep original exceptions logged.

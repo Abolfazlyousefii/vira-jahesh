@@ -1,0 +1,13 @@
+/* Shared, accessible validation feedback for the Persian workspace. */
+#jstudio .v-error-summary{display:flex;align-items:flex-start;gap:11px;border:1px solid #f3d4da;border-right:3px solid #cc5866;background:#fff6f7;color:#a83d4b;border-radius:12px;padding:12px 14px;line-height:1.9;box-shadow:0 4px 16px #2b405007}
+#jstudio .v-feedback-symbol{display:grid;place-items:center;flex:0 0 26px;width:26px;height:26px;border-radius:50%;background:#fce6e9;color:#b74453;font-weight:800;font-size:15px;margin-top:2px}
+#jstudio .v-feedback-content{min-width:0}
+#jstudio .v-feedback-content strong{display:block;color:#9f3341;font-size:12px}
+#jstudio .v-feedback-content p{font-size:11px;margin:2px 0 5px;color:#ad5964}
+#jstudio .v-feedback-content ul{margin:4px 0 0;padding-inline-start:20px;font-size:11px;max-height:none}
+#jstudio .v-feedback-content li{margin:1px 0}
+#jstudio .v-field:has(> .s-error) :is(input,select,textarea){border-color:#d9828c!important;background:#fffafa!important;box-shadow:0 0 0 2px #f9e5e8!important}
+#jstudio .v-field .s-error{font-size:10px;line-height:1.8;color:#ba4252;margin:0}
+#jstudio .v-notice{border:1px solid #c8eadd;color:#167a58;background:#eefaf3;font-weight:600;box-shadow:0 4px 16px #1e695008}
+#jstudio .vc2 .vc2-attribute-row .v-field:has(> .s-error) :is(input,select,textarea){border-color:#d9828c!important}
+@media(prefers-reduced-motion:reduce){#jstudio .v-error-summary,#jstudio .v-notice{transition:none}}

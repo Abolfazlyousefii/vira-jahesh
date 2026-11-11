@@ -17,7 +17,7 @@ class ViraPublicLandingTest extends TestCase
             ->assertSee('در یک پنل مدیریتی یکپارچه')
             ->assertSee('مدیریت کالاها')
             ->assertSee('انبار و موجودی')
-            ->assertSee('مشتریان و فروش')
+            ->assertSee('مشتریان و CRM')
             ->assertSee('مراحل راه‌اندازی');
     }
 

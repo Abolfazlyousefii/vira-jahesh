@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 @import '@fontsource/vazir/400.css';
 @import '@fontsource/vazir/700.css';
+@import './vira-public-landing.css';
 @source '../../Modules/**/*.blade.php';
 @source '../views/**/*.blade.php';
 

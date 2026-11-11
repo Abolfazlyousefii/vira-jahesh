@@ -13,11 +13,11 @@ class Product extends Model implements HasMedia
 {
     use InteractsWithMedia, LogsActivity;
 
-    protected $fillable = ['name', 'sku', 'barcode', 'category', 'price_toman', 'description', 'is_active', 'is_published', 'group_id', 'color', 'size'];
+    protected $fillable = ['name', 'sku', 'barcode', 'category', 'price_toman', 'description', 'is_active', 'is_published', 'group_id', 'color', 'size', 'unit', 'brand', 'options'];
 
     protected function casts(): array
     {
-        return ['price_toman' => 'integer', 'is_active' => 'boolean', 'is_published' => 'boolean'];
+        return ['price_toman' => 'integer', 'is_active' => 'boolean', 'is_published' => 'boolean', 'options' => 'array'];
     }
 
     public function getActivitylogOptions(): LogOptions

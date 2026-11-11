@@ -43,7 +43,7 @@ class RetailWorkspaceTest extends TestCase
 
     private function product(int $price = 125000): Product
     {
-        return Product::create(['name' => 'دفتر آبی', 'sku' => 'NOTE-BLUE', 'price_toman' => $price, 'category' => 'نوشت‌افزار', 'is_active' => true, 'is_published' => false]);
+        return Product::create(['name' => 'دفتر آبی', 'sku' => '00003001', 'price_toman' => $price, 'category' => 'نوشت‌افزار', 'is_active' => true, 'is_published' => false]);
     }
 
     private function stockedProduct(int $quantity = 5): array
@@ -138,9 +138,9 @@ class RetailWorkspaceTest extends TestCase
     public function test_product_has_exact_integer_toman_price_and_unique_sku(): void
     {
         $this->owner();
-        Livewire::test(ProductsPage::class)->call('create')->set('form.name', 'دفتر آبی')->set('form.sku', 'NOTE-BLUE')->set('form.price_toman', '۱۲۵۰۰۰')->call('save')->assertHasNoErrors();
-        $this->assertDatabaseHas('products', ['sku' => 'NOTE-BLUE', 'price_toman' => 125000]);
-        Livewire::test(ProductsPage::class)->call('create')->set('form.name', 'کپی')->set('form.sku', 'NOTE-BLUE')->set('form.price_toman', '12.5')->call('save')->assertHasErrors(['form.sku', 'form.price_toman']);
+        Livewire::test(ProductsPage::class)->call('create')->set('form.name', 'دفتر آبی')->set('form.sku', '00003001')->set('form.price_toman', '۱۲۵۰۰۰')->call('save')->assertHasNoErrors();
+        $this->assertDatabaseHas('products', ['sku' => '00003001', 'price_toman' => 125000]);
+        Livewire::test(ProductsPage::class)->call('create')->set('form.name', 'کپی')->set('form.sku', '00003001')->set('form.price_toman', '12.5')->call('save')->assertHasErrors(['form.sku', 'form.price_toman']);
     }
 
     public function test_inventory_records_auditable_movement_and_rejects_negative_stock(): void
@@ -282,8 +282,8 @@ class RetailWorkspaceTest extends TestCase
         $this->get('/shop')->assertOk()->assertDontSee('دفتر آبی');
         $this->get('/shop/'.$product->id)->assertNotFound();
         $product->update(['is_published' => true]);
-        $this->get('/shop')->assertOk()->assertSee('دفتر آبی')->assertDontSee('NOTE-BLUE');
-        $this->get('/shop/'.$product->id)->assertOk()->assertSee('125,000')->assertDontSee('NOTE-BLUE');
+        $this->get('/shop')->assertOk()->assertSee('دفتر آبی')->assertDontSee('00003001');
+        $this->get('/shop/'.$product->id)->assertOk()->assertSee('125,000')->assertDontSee('00003001');
         $product->update(['is_active' => false]);
         $this->get('/shop/'.$product->id)->assertNotFound();
         config(['vira.modules.Catalog.enabled' => false]);

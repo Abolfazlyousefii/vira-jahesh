@@ -11,7 +11,12 @@ class ProductGroup extends Model implements HasMedia
 {
     use InteractsWithMedia;
 
-    protected $fillable = ['name', 'category', 'description'];
+    protected $fillable = ['name', 'category', 'description', 'sku', 'unit', 'brand', 'attributes'];
+
+    protected function casts(): array
+    {
+        return ['attributes' => 'array'];
+    }
 
     public function variants(): HasMany
     {

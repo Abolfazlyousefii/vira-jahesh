@@ -7,6 +7,7 @@ import '../css/vira-customer-profile.css';
 import '../css/vira-minimal.css';
 import '../css/vira-v4.css';
 import '../css/vira-customers-360.css';
+import '../css/vira-catalog-v2.css';
 import { chartShape, chartIsEmpty } from './vira-sales-chart.js';
 import {
     Livewire,

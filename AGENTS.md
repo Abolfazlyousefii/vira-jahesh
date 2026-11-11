@@ -45,3 +45,7 @@
 ## Current customer UI & five-accent design (2026-11-10)
 
 Use `docs/customers-360.md` for the reviewed customer directory, profile, demo-only seeding guard and semantic five-accent palette. Preserve customer IDs, historical Sales/Crm relationships, and module/permission gates. Never run `DemoRetailSeeder` against the main database. The V4 panel remains light-only; Storefront is independently styled.
+
+## Catalog V2 (2026-11-11)
+
+The approved Catalog V2 visual contract and module behavior are documented in `docs/catalog-v2.md`. Numeric-only *new* SKUs, backward-compatible historic SKU edits, grouped catalog rows, server-filtered incremental no-pagination list and a single document scroll are deliberate. Catalog never directly changes Inventory stock. Keep related tests green.

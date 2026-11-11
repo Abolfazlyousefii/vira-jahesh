@@ -33,14 +33,14 @@ class CatalogUpgradeTest extends TestCase
     private function variants(): array
     {
         return [
-            ['id' => null, 'color' => 'آبی', 'size' => 'M', 'sku' => 'SHIRT-B-M', 'barcode' => '', 'price_toman' => '۲۵۰۰۰۰', 'is_active' => true, 'is_published' => true],
-            ['id' => null, 'color' => 'آبی', 'size' => 'L', 'sku' => 'SHIRT-B-L', 'barcode' => '', 'price_toman' => '۲۷۰۰۰۰', 'is_active' => true, 'is_published' => false],
+            ['id' => null, 'color' => 'آبی', 'size' => 'M', 'sku' => '00001001', 'barcode' => '', 'price_toman' => '۲۵۰۰۰۰', 'is_active' => true, 'is_published' => true],
+            ['id' => null, 'color' => 'آبی', 'size' => 'L', 'sku' => '00001002', 'barcode' => '', 'price_toman' => '۲۷۰۰۰۰', 'is_active' => true, 'is_published' => false],
         ];
     }
 
     private function createGroup()
     {
-        return Livewire::test(ProductsPage::class)->call('create')->call('chooseKind', 'variants')->set('form.name', 'پیراهن')->set('form.category', 'پوشاک')->set('variants', $this->variants())->call('save')->assertHasNoErrors();
+        return Livewire::test(ProductsPage::class)->call('create')->call('chooseKind', 'variants')->set('form.name', 'پیراهن')->set('form.sku', '000010')->set('form.category', 'پوشاک')->set('variants', $this->variants())->call('save')->assertHasNoErrors();
     }
 
     public function test_group_creates_sellable_variants_with_independent_prices_and_no_fake_parent_stock(): void
@@ -58,10 +58,10 @@ class CatalogUpgradeTest extends TestCase
         $this->owner();
         $variants = $this->variants();
         $variants[1]['size'] = ' M ';
-        Livewire::test(ProductsPage::class)->call('create')->call('chooseKind', 'variants')->set('form.name', 'پیراهن')->set('variants', $variants)->call('save')->assertHasErrors('variants');
+        Livewire::test(ProductsPage::class)->call('create')->call('chooseKind', 'variants')->set('form.name', 'پیراهن')->set('form.sku', '000010')->set('variants', $variants)->call('save')->assertHasErrors('variants');
         $this->assertDatabaseCount('product_groups', 0);
         $variants = $this->variants();
-        $variants[1]['sku'] = 'shirt-b-m';
+        $variants[1]['sku'] = '۰۰۰۰۱۰۰۱';
         Livewire::test(ProductsPage::class)->call('create')->call('chooseKind', 'variants')->set('form.name', 'پیراهن')->set('variants', $variants)->call('save')->assertHasErrors();
         $this->assertDatabaseCount('products', 0);
     }
@@ -70,12 +70,12 @@ class CatalogUpgradeTest extends TestCase
     {
         $this->owner();
         $this->createGroup();
-        $product = Product::where('sku', 'SHIRT-B-M')->firstOrFail();
+        $product = Product::where('sku', '00001001')->firstOrFail();
         $warehouse = Warehouse::create(['name' => 'اصلی']);
         app(StockLedger::class)->adjust($warehouse->id, $product->id, 3, 'اولیه');
         $sale = app(RecordSale::class)->handle((string) Str::uuid(), $warehouse->id, null, [['product_id' => $product->id, 'quantity' => 1]], 'direct');
         Livewire::test(ProductsPage::class)->call('edit', $product->id)->set('form.name', 'پیراهن نخی')->set('variants.0.price_toman', '300000')->call('save')->assertHasNoErrors();
-        $this->assertSame($product->id, Product::where('sku', 'SHIRT-B-M')->firstOrFail()->id);
+        $this->assertSame($product->id, Product::where('sku', '00001001')->firstOrFail()->id);
         $this->assertDatabaseHas('stock_balances', ['product_id' => $product->id, 'quantity' => 2]);
         $this->assertSame('پیراهن · آبی / M', $sale->items->first()->name);
         $this->assertSame(250000, $sale->items->first()->unit_price_toman);
@@ -117,7 +117,7 @@ class CatalogUpgradeTest extends TestCase
     {
         Storage::fake('public');
         $this->owner();
-        $page = Livewire::test(ProductsPage::class)->call('create')->set('form.name', 'کیف')->set('form.sku', 'BAG')->set('form.price_toman', '1000')->set('form.is_published', true)->set('productImage', UploadedFile::fake()->image('bag.png'))->call('save')->assertHasNoErrors();
+        $page = Livewire::test(ProductsPage::class)->call('create')->set('form.name', 'کیف')->set('form.sku', '00002001')->set('form.price_toman', '1000')->set('form.is_published', true)->set('productImage', UploadedFile::fake()->image('bag.png'))->call('save')->assertHasNoErrors();
         $product = Product::firstOrFail();
         $this->assertCount(1, $product->getMedia('product-image'));
         $firstPath = $product->getFirstMedia('product-image')->getPathRelativeToRoot();
@@ -133,11 +133,11 @@ class CatalogUpgradeTest extends TestCase
     {
         Storage::fake('public');
         $this->owner();
-        Livewire::test(ProductsPage::class)->call('create')->call('chooseKind', 'variants')->set('form.name', 'پیراهن')->set('variants', $this->variants())->set('productImage', UploadedFile::fake()->image('shirt.jpg'))->call('save')->assertHasNoErrors();
+        Livewire::test(ProductsPage::class)->call('create')->call('chooseKind', 'variants')->set('form.name', 'پیراهن')->set('form.sku', '000010')->set('variants', $this->variants())->set('productImage', UploadedFile::fake()->image('shirt.jpg'))->call('save')->assertHasNoErrors();
         $products = Product::orderBy('id')->get();
         $this->assertNotSame('', $products[0]->imageUrl());
         $this->assertSame($products[0]->imageUrl(), $products[1]->imageUrl());
-        $this->get('/shop/'.$products[0]->id)->assertOk()->assertDontSee('SHIRT-B-L')->assertDontSee('آبی / L');
+        $this->get('/shop/'.$products[0]->id)->assertOk()->assertDontSee('00001002')->assertDontSee('آبی / L');
         $products[1]->update(['is_published' => true]);
         $this->get('/shop/'.$products[0]->id)->assertOk()->assertSee('آبی / L');
         $products[1]->update(['is_active' => false]);
@@ -148,7 +148,7 @@ class CatalogUpgradeTest extends TestCase
     {
         Storage::fake('public');
         $owner = $this->owner();
-        Livewire::test(ProductsPage::class)->call('create')->set('form.name', 'کالا')->set('form.sku', 'TEST')->set('form.price_toman', '1000')->set('productImage', UploadedFile::fake()->create('bad.svg', 1, 'image/svg+xml'))->call('save')->assertHasErrors('productImage');
+        Livewire::test(ProductsPage::class)->call('create')->set('form.name', 'کالا')->set('form.sku', '00002002')->set('form.price_toman', '1000')->set('productImage', UploadedFile::fake()->create('bad.svg', 1, 'image/svg+xml'))->call('save')->assertHasErrors('productImage');
         $reader = User::factory()->create();
         $reader->givePermissionTo(['panel.access', 'catalog.view']);
         Livewire::actingAs($reader)->test(ProductsPage::class)->call('chooseKind', 'variants')->assertForbidden();

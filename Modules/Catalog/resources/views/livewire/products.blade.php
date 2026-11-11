@@ -1,50 +1,354 @@
-<div class="v-workspace">
-    <div class="s-heading"><div><span class="v-eyebrow">مرجع مشترک سایت و صندوق</span><h1>کالا و قیمت <small class="s-pill">{{ number_format($count) }} کالا</small></h1><p class="s-muted">کالا را تعریف کنید، قیمت بدهید و برای فروش آماده کنید.</p></div>@can('catalog.manage')<button class="s-btn s-mainbtn" wire:click="create"><i data-lucide="package"></i> کالای جدید</button>@endcan</div>
-    <x-workspace.feedback :notice="$notice" />
+<div class="vc2" x-on:catalog-scroll-top.window="window.scrollTo({top: 0, behavior: 'instant'})">
     @if($showForm)
-        <form wire:submit="save" class="s-panel v-form-panel" wire:key="product-form-{{ $editingId ?? 'new' }}-{{ $kind }}">
-            <div class="s-panelhead"><h2>{{ $editingId ? 'ویرایش کالا' : 'افزودن کالا' }}</h2><button type="button" class="s-btn" wire:click="$set('showForm', false)">بستن فرم</button></div>
-            @unless($editingId)<div class="v-kind-selector" role="group" aria-label="نوع کالا"><button type="button" class="s-btn {{ $kind === 'simple' ? 's-mainbtn' : '' }}" wire:click="chooseKind('simple')" aria-pressed="{{ $kind === 'simple' ? 'true' : 'false' }}"><i data-lucide="package"></i> کالای ساده</button><button type="button" class="s-btn {{ $kind === 'variants' ? 's-mainbtn' : '' }}" wire:click="chooseKind('variants')" aria-pressed="{{ $kind === 'variants' ? 'true' : 'false' }}"><i data-lucide="shapes"></i> دارای رنگ یا سایز</button></div>@endunless
-            <div class="v-form-grid">
-                <x-workspace.field label="نام کالا *" name="form.name"><input wire:model="form.name" x-init="$nextTick(() => $el.focus())" maxlength="160" required></x-workspace.field>
-                <x-workspace.field label="دسته‌بندی" name="form.category"><input wire:model="form.category" maxlength="100" placeholder="مثلاً نوشت‌افزار"></x-workspace.field>
-                @if($kind === 'simple')
-                <x-workspace.field label="قیمت فروش — تومان *" name="form.price_toman" hint="بدون اعشار؛ مثال: ۱۲۵۰۰۰"><input wire:model="form.price_toman" inputmode="numeric" dir="ltr" maxlength="13" required></x-workspace.field>
-                <x-workspace.field label="کد کالا *" name="form.sku" hint="حروف انگلیسی، عدد، خط تیره؛ مانند NOTE-BLUE"><input wire:model="form.sku" dir="ltr" maxlength="64" required></x-workspace.field>
-                <x-workspace.field label="بارکد" name="form.barcode"><input wire:model="form.barcode" inputmode="numeric" dir="ltr" maxlength="64"></x-workspace.field>
-                @endif
+        <div class="vc2-page-title">
+            <div>
+                <span class="vc2-eyebrow"><i data-lucide="package-plus"></i> کاتالوگ / ثبت محصول</span>
+                <h1>{{ $editingId ? 'ویرایش کالا' : 'تعریف کالای جدید' }}</h1>
+                <p>مشخصات اصلی را ثبت کنید؛ جزئیات بیشتر اختیاری است.</p>
             </div>
-            <x-workspace.field label="توضیحات کالا" name="form.description"><textarea wire:model="form.description" rows="3" maxlength="5000"></textarea></x-workspace.field>
-            @if($kind === 'simple')<div class="v-checks"><label><input type="checkbox" wire:model="form.is_active"> فعال و قابل فروش</label><label><input type="checkbox" wire:model="form.is_published"> نمایش در فهرست عمومی سایت</label></div>@endif
-            <section class="v-photo-section"><h2><i data-lucide="image-plus"></i> تصویر اصلی کالا</h2><x-workspace.field label="انتخاب تصویر" name="productImage" hint="JPG، PNG یا WebP؛ تا ۲ مگابایت و حداکثر ۴۰۹۶ پیکسل"><span class="v-upload-control"><input type="file" wire:model="productImage" accept="image/jpeg,image/png,image/webp" aria-label="انتخاب تصویر کالا"><i data-lucide="image-plus" aria-hidden="true"></i><span aria-hidden="true">برای انتخاب تصویر بزنید</span></span></x-workspace.field><p wire:loading wire:target="productImage" role="status">در حال بارگذاری تصویر…</p>
-                @if($productImage && in_array($productImage->guessExtension(), ['jpg', 'jpeg', 'png', 'webp'], true))<img class="v-photo-preview" src="{{ $productImage->temporaryUrl() }}" alt="پیش‌نمایش تصویر انتخاب‌شده">@elseif($editedImageUrl)<img class="v-photo-preview" src="{{ $editedImageUrl }}" alt="تصویر فعلی کالا"><button type="button" class="s-btn" wire:click="removeImage" wire:confirm="تصویر فعلی کالا حذف شود؟"><i data-lucide="trash-2"></i> حذف تصویر فعلی</button>@endif
-            </section>
-            @if($kind === 'variants')
-                <section class="v-variants"><div class="s-panelhead"><div><h2><i data-lucide="shapes"></i> رنگ‌ها و سایزها</h2><p class="s-muted">هر ترکیب یک کد، قیمت و موجودی مستقل دارد. حداقل رنگ یا سایز را وارد کنید.</p></div></div>
-                    @foreach($variants as $index => $variant)<section class="v-variant-card" wire:key="variant-row-{{ $variant['id'] ?? 'new-'.$index }}"><div class="s-panelhead"><h3>تنوع {{ $index + 1 }} @if($variant['id'] ?? null)<span class="s-pill">ثبت‌شده</span>@endif</h3>@unless($variant['id'] ?? null)<button type="button" class="s-btn" wire:click="removeVariant({{ $index }})" aria-label="حذف ردیف تنوع {{ $index + 1 }}"><i data-lucide="trash-2"></i> حذف ردیف</button>@endunless</div><div class="v-variant-fields">
-                        <x-workspace.field :label="'رنگ تنوع '.($index + 1)" :name="'variants.'.$index.'.color'"><input wire:model="variants.{{ $index }}.color" maxlength="20" placeholder="مثلاً آبی" @disabled($variant['id'] ?? false)></x-workspace.field>
-                        <x-workspace.field :label="'سایز تنوع '.($index + 1)" :name="'variants.'.$index.'.size'"><input wire:model="variants.{{ $index }}.size" maxlength="12" placeholder="مثلاً M یا ۴۲" @disabled($variant['id'] ?? false)></x-workspace.field>
-                        <x-workspace.field :label="'کد تنوع '.($index + 1).' *'" :name="'variants.'.$index.'.sku'"><input wire:model="variants.{{ $index }}.sku" maxlength="64" dir="ltr" placeholder="SHIRT-BLUE-M" required></x-workspace.field>
-                        <x-workspace.field :label="'قیمت تنوع '.($index + 1).' — تومان *'" :name="'variants.'.$index.'.price_toman'"><input wire:model="variants.{{ $index }}.price_toman" inputmode="numeric" maxlength="13" dir="ltr" required></x-workspace.field>
-                        <x-workspace.field :label="'بارکد تنوع '.($index + 1)" :name="'variants.'.$index.'.barcode'"><input wire:model="variants.{{ $index }}.barcode" inputmode="numeric" dir="ltr" maxlength="64"></x-workspace.field>
-                    </div><div class="v-checks"><label><input type="checkbox" wire:model="variants.{{ $index }}.is_active"> این تنوع قابل فروش است</label><label><input type="checkbox" wire:model="variants.{{ $index }}.is_published"> نمایش این تنوع در سایت</label></div></section>@endforeach
-                    <button type="button" class="s-btn" wire:click="addVariant" @disabled(count($variants) >= 50)><i data-lucide="plus"></i> افزودن رنگ یا سایز دیگر</button>
-                    <p class="v-help">رنگ و سایز پس از ثبت ثابت می‌مانند. برای ترکیب تازه، تنوع جدید بسازید؛ برای توقف فروش، تنوع قبلی را غیرفعال کنید.</p>
-                </section>
-            @endif
-            <p class="v-help">پس از ذخیرهٔ کالا، موجودی هر کد را از بخش انبار وارد کنید.</p>
-            <div class="v-form-footer"><button class="s-btn s-mainbtn" wire:loading.attr="disabled" wire:target="save,productImage">ذخیرهٔ کالا</button><button type="button" class="s-btn" wire:click="$set('showForm', false)">انصراف</button></div>
+            <button type="button" class="vc2-btn" wire:click="cancel"><i data-lucide="arrow-right"></i> بازگشت به کالاها</button>
+        </div>
+        <x-workspace.feedback :notice="$notice" />
+        <div class="vc2-banner"><i data-lucide="check"></i> ابتدا مشخصات اصلی کالا را وارد کنید؛ تنوع و انتشار اختیاری هستند.</div>
+        <form wire:submit="save" class="vc2-form">
+            <div class="vc2-form-columns">
+                <div class="vc2-form-flow">
+                    <section class="vc2-card vc2-form-card">
+                        <div class="vc2-section-head">
+                            <span class="vc2-step">۱</span>
+                            <div><h2>اطلاعات پایه کالا</h2><p>نام، کد عددی و مشخصات قابل جست‌وجو</p></div>
+                        </div>
+                        <div class="vc2-fields">
+                            <div class="vc2-wide">
+                                <x-workspace.field label="نام کالا *" name="form.name">
+                                    <input wire:model="form.name" maxlength="160" placeholder="مثلاً کلید مینیاتوری تک‌پل ۱۶ آمپر" required>
+                                </x-workspace.field>
+                            </div>
+                            <div>
+                                <x-workspace.field label="کد کالا *" name="form.sku" hint="فقط ارقام، با حفظ صفر ابتدایی؛ برای کالای متنوع حداکثر ۱۲ رقم">
+                                    <span class="vc2-code-row">
+                                        <input wire:model="form.sku" type="text" inputmode="numeric" dir="ltr" maxlength="14" placeholder="۰۰۰۰۱۰۲۴" required @disabled($editingId && $kind === 'variants')>
+                                        @unless($editingId)
+                                            <button type="button" class="vc2-btn vc2-generate" wire:click="generateCode">تولید کد</button>
+                                        @endunless
+                                    </span>
+                                </x-workspace.field>
+                            </div>
+                            <div>
+                                <x-workspace.field label="دسته‌بندی" name="form.category">
+                                    <input wire:model="form.category" list="vc2-categories" maxlength="100" placeholder="انتخاب یا تایپ دسته‌بندی">
+                                </x-workspace.field>
+                                <datalist id="vc2-categories">
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category }}"></option>
+                                    @endforeach
+                                </datalist>
+                            </div>
+                            <div>
+                                <x-workspace.field label="واحد شمارش" name="form.unit">
+                                    <select wire:model="form.unit">
+                                        @foreach(['عدد', 'بسته', 'متر', 'کیلوگرم', 'لیتر', 'کارتن', 'جفت'] as $unit)
+                                            <option value="{{ $unit }}">{{ $unit }}</option>
+                                        @endforeach
+                                    </select>
+                                </x-workspace.field>
+                            </div>
+                            <div>
+                                <x-workspace.field label="برند (اختیاری)" name="form.brand">
+                                    <input wire:model="form.brand" maxlength="80" placeholder="مثلاً اشنایدر">
+                                </x-workspace.field>
+                            </div>
+                            <div>
+                                <x-workspace.field label="قیمت فروش مبنا (تومان) *" name="form.price_toman">
+                                    <input wire:model="form.price_toman" inputmode="numeric" dir="ltr" maxlength="13" placeholder="۲۴۵۰۰۰" required>
+                                </x-workspace.field>
+                            </div>
+                            @if($kind === 'simple')
+                                <div>
+                                    <x-workspace.field label="بارکد (اختیاری)" name="form.barcode">
+                                        <input wire:model="form.barcode" type="text" inputmode="numeric" dir="ltr" maxlength="64" placeholder="بارکد عددی">
+                                    </x-workspace.field>
+                                </div>
+                            @endif
+                            <div class="vc2-wide">
+                                <x-workspace.field label="توضیحات کالا" name="form.description">
+                                    <textarea wire:model="form.description" rows="2" maxlength="5000" placeholder="توضیح کوتاه و کاربردی درباره کالا"></textarea>
+                                </x-workspace.field>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="vc2-card vc2-form-card">
+                        <div class="vc2-section-head">
+                            <span class="vc2-step vc2-step-purple">۲</span>
+                            <div><h2>ساختار و تنوع محصول</h2><p>رنگ، سایز، مدل یا ویژگی دلخواه</p></div>
+                        </div>
+                        <div class="vc2-kind-row">
+                            <button type="button" class="vc2-kind {{ $kind === 'simple' ? 'is-active' : '' }}" wire:click="chooseKind('simple')" @disabled($editingId) aria-pressed="{{ $kind === 'simple' ? 'true' : 'false' }}">
+                                <i data-lucide="package"></i><span><strong>کالای ساده</strong><small>یک کد و یک قیمت</small></span>
+                            </button>
+                            <button type="button" class="vc2-kind {{ $kind === 'variants' ? 'is-active' : '' }}" wire:click="chooseKind('variants')" @disabled($editingId) aria-pressed="{{ $kind === 'variants' ? 'true' : 'false' }}">
+                                <i data-lucide="shapes"></i><span><strong>کالای دارای تنوع</strong><small>کد و قیمت مستقل برای هر ترکیب</small></span>
+                            </button>
+                        </div>
+
+                        @if($kind === 'variants')
+                            <div class="vc2-attributes">
+                                @if($editingId)
+                                    <p class="vc2-tip">ویژگی‌های تنوع‌های ثبت‌شده ثابت می‌مانند تا سوابق خرید و انبار تغییر نکنند. قیمت و وضعیت فروش قابل ویرایش است.</p>
+                                    @foreach($attributes as $attribute)
+                                        <span class="vc2-attribute-chip">{{ $attribute['name'] }}: {{ $attribute['values'] }}</span>
+                                    @endforeach
+                                @else
+                                    <p class="vc2-tip">نام ویژگی و مقادیر آن را تعریف کنید؛ مثال: «آمپر» و «۱۶، ۲۵، ۳۲».</p>
+                                    @foreach($attributes as $index => $attribute)
+                                        <div class="vc2-attribute-row" wire:key="attribute-{{ $index }}">
+                                            <x-workspace.field :label="'ویژگی '.($index + 1)" :name="'attributes.'.$index.'.name'">
+                                                <input wire:model="attributes.{{ $index }}.name" maxlength="40" placeholder="مثلاً رنگ یا آمپر">
+                                            </x-workspace.field>
+                                            <x-workspace.field label="مقادیر (با ویرگول جدا کنید)" :name="'attributes.'.$index.'.values'">
+                                                <input wire:model="attributes.{{ $index }}.values" maxlength="500" placeholder="مثلاً آبی، سفید، مشکی">
+                                            </x-workspace.field>
+                                            <button class="vc2-icon-danger" type="button" wire:click="removeAttribute({{ $index }})" aria-label="حذف ویژگی"><i data-lucide="trash-2"></i></button>
+                                        </div>
+                                    @endforeach
+                                    <div class="vc2-inline-actions">
+                                        <button type="button" class="vc2-btn" wire:click="addAttribute" @disabled(count($attributes) >= 3)><i data-lucide="plus"></i> افزودن ویژگی</button>
+                                        <button type="button" class="vc2-btn vc2-btn-purple" wire:click="generateVariants"><i data-lucide="shapes"></i> ساخت ترکیب‌ها</button>
+                                    </div>
+                                @endif
+                                @error('attributes')<div class="vc2-inline-error" role="alert">{{ $message }}</div>@enderror
+                                @error('variants')<div class="vc2-inline-error" role="alert">{{ $message }}</div>@enderror
+
+                                @if(count($variants))
+                                    <div class="vc2-variants-title"><strong>تنوع‌های کالا</strong><span>{{ count($variants) }} ردیف؛ موجودی از ماژول انبار مدیریت می‌شود</span></div>
+                                    <div class="vc2-variants-grid">
+                                        @foreach($variants as $index => $variant)
+                                            <div class="vc2-variant" wire:key="catalog-variant-{{ $variant['id'] ?? 'new-'.$index }}">
+                                                <div class="vc2-variant-head">
+                                                    <strong>تنوع {{ $index + 1 }} ـ {{ implode(' / ', array_values($variant['options'] ?? array_filter([$variant['color'] ?? '', $variant['size'] ?? '']))) }}</strong>
+                                                    @unless($variant['id'] ?? null)
+                                                        <button type="button" class="vc2-icon-danger" wire:click="removeVariant({{ $index }})" aria-label="حذف تنوع {{ $index + 1 }}"><i data-lucide="trash-2"></i></button>
+                                                    @endunless
+                                                </div>
+                                                <div class="vc2-variant-fields">
+                                                    <x-workspace.field :label="'کد عددی تنوع '.($index + 1).' *'" :name="'variants.'.$index.'.sku'">
+                                                        <input wire:model="variants.{{ $index }}.sku" inputmode="numeric" dir="ltr" maxlength="64" required>
+                                                    </x-workspace.field>
+                                                    <x-workspace.field label="قیمت فروش (تومان) *" :name="'variants.'.$index.'.price_toman'">
+                                                        <input wire:model="variants.{{ $index }}.price_toman" inputmode="numeric" dir="ltr" maxlength="13" required>
+                                                    </x-workspace.field>
+                                                    <x-workspace.field label="بارکد اختیاری" :name="'variants.'.$index.'.barcode'">
+                                                        <input wire:model="variants.{{ $index }}.barcode" inputmode="numeric" dir="ltr" maxlength="64">
+                                                    </x-workspace.field>
+                                                </div>
+                                                <div class="vc2-checks">
+                                                    <label><input type="checkbox" wire:model="variants.{{ $index }}.is_active"> قابل فروش</label>
+                                                    <label><input type="checkbox" wire:model="variants.{{ $index }}.is_published"> انتشار در سایت</label>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <div class="vc2-soft-empty">ویژگی‌ها را تعریف کنید و روی «ساخت ترکیب‌ها» بزنید.</div>
+                                @endif
+                            </div>
+                        @endif
+                    </section>
+
+                    <section class="vc2-card vc2-form-card">
+                        <div class="vc2-section-head"><span class="vc2-step vc2-step-blue">۳</span><div><h2>وضعیت کالا</h2><p>فروش و انتشار</p></div></div>
+                        @if($kind === 'simple')
+                            <div class="vc2-toggles">
+                                <label><span><strong>فعال و قابل فروش</strong><small>امکان ثبت فروش از این کالا</small></span><input type="checkbox" wire:model="form.is_active"></label>
+                                <label><span><strong>انتشار در فروشگاه اینترنتی</strong><small>فقط در صورت فعال بودن ماژول Storefront</small></span><input type="checkbox" wire:model="form.is_published"></label>
+                            </div>
+                        @else
+                            <p class="vc2-tip">وضعیت فروش و انتشار برای هر تنوع به‌صورت مستقل در بخش بالا تعیین می‌شود.</p>
+                        @endif
+                    </section>
+                </div>
+
+                <aside class="vc2-form-aside">
+                    <section class="vc2-card vc2-aside-card">
+                        <h3><i data-lucide="image-plus"></i> تصویر کالا <small>اختیاری</small></h3>
+                        <div class="vc2-upload">
+                            <input type="file" wire:model="productImage" accept="image/png,image/jpeg,image/webp" aria-label="انتخاب تصویر کالا">
+                            @if($productImage && in_array($productImage->guessExtension(), ['jpg', 'jpeg', 'png', 'webp'], true))
+                                <img src="{{ $productImage->temporaryUrl() }}" alt="پیش‌نمایش تصویر کالا">
+                            @elseif($editedImageUrl)
+                                <img src="{{ $editedImageUrl }}" alt="تصویر فعلی کالا">
+                            @else
+                                <i data-lucide="image-plus"></i><span>برای انتخاب تصویر کلیک کنید</span>
+                            @endif
+                        </div>
+                        <p class="vc2-aside-help">JPG / PNG / WebP، حداکثر ۲ مگابایت</p>
+                        <p wire:loading wire:target="productImage" role="status">در حال بارگذاری تصویر...</p>
+                        @error('productImage')<div class="vc2-inline-error" role="alert">{{ $message }}</div>@enderror
+                        @if($editedImageUrl)<button type="button" class="vc2-btn vc2-danger-text" wire:click="removeImage" wire:confirm="تصویر فعلی حذف شود؟">حذف تصویر فعلی</button>@endif
+                    </section>
+                    <section class="vc2-card vc2-aside-card">
+                        <h3><i data-lucide="clipboard-list"></i> راهنمای ثبت</h3>
+                        <div class="vc2-info-list">
+                            <p><b>کد:</b> رشته عددی یکتا؛ صفر اول حذف نمی‌شود.</p>
+                            <p><b>تنوع:</b> هر ترکیب یک محصول قابل فروش مستقل است.</p>
+                            <p><b>انبار:</b> موجودی از این فرم تغییر نمی‌کند.</p>
+                        </div>
+                    </section>
+                </aside>
+            </div>
+            <div class="vc2-form-footer">
+                <small>ذخیره فقط پس از اعتبارسنجی کامل اطلاعات انجام می‌شود.</small>
+                <div><button type="button" class="vc2-btn" wire:click="cancel">انصراف</button>
+                    <button type="submit" class="vc2-btn vc2-primary" wire:loading.attr="disabled" wire:target="save,productImage"><i data-lucide="check"></i> ذخیره کالا</button>
+                </div>
+            </div>
         </form>
+    @else
+        <div class="vc2-page-title">
+            <div>
+                <span class="vc2-eyebrow"><i data-lucide="package"></i> مدیریت کاتالوگ</span>
+                <h1>کالاهای مجموعه</h1>
+                <p>جست‌وجو، مشاهده و مدیریت سریع کالاها</p>
+            </div>
+            <div class="vc2-heading-actions">
+                @can('catalog.manage')
+                    <button class="vc2-btn vc2-primary" type="button" wire:click="create"><i data-lucide="plus"></i> تعریف کالای جدید</button>
+                @endcan
+            </div>
+        </div>
+        <x-workspace.feedback :notice="$notice" />
+
+        <section class="vc2-metrics" aria-label="آمار کالاها">
+            <div class="vc2-metric vc2-metric-teal"><span class="vc2-metric-icon"><i data-lucide="package"></i></span><div><small>کل کالاها</small><strong>{{ number_format($statistics['total']) }}</strong></div></div>
+            <div class="vc2-metric vc2-metric-blue"><span class="vc2-metric-icon"><i data-lucide="check"></i></span><div><small>کالاهای فعال</small><strong>{{ number_format($statistics['active']) }}</strong></div></div>
+            <div class="vc2-metric vc2-metric-purple"><span class="vc2-metric-icon"><i data-lucide="shapes"></i></span><div><small>دارای تنوع</small><strong>{{ number_format($statistics['with_variants']) }}</strong></div></div>
+        </section>
+
+        <section class="vc2-card vc2-filters" aria-label="فیلتر کالاها">
+            <div class="vc2-filter-row">
+                <label class="vc2-search">
+                    <i data-lucide="search"></i><span class="vc2-sr-only">جست‌وجوی زنده کالا</span>
+                    <input type="search" wire:model.live.debounce.350ms="search" maxlength="160" placeholder="نام، کد عددی، بارکد، برند یا تنوع...">
+                </label>
+                <label class="vc2-select"><span class="vc2-sr-only">دسته‌بندی</span><select wire:model.live="categoryFilter"><option value="">همه دسته‌ها</option>@foreach($categories as $category)<option value="{{ $category }}">{{ $category }}</option>@endforeach</select></label>
+                <label class="vc2-select"><span class="vc2-sr-only">وضعیت</span><select wire:model.live="statusFilter"><option value="">همه وضعیت‌ها</option><option value="active">فعال</option><option value="inactive">غیرفعال</option><option value="without_price">بدون قیمت</option></select></label>
+            </div>
+            <div class="vc2-filter-bottom">
+                <div class="vc2-chips">
+                    <button type="button" wire:click="$set('kindFilter', '')" class="{{ $kindFilter === '' ? 'is-active' : '' }}">همه کالاها</button>
+                    <button type="button" wire:click="$set('kindFilter', 'variants')" class="{{ $kindFilter === 'variants' ? 'is-active' : '' }}">دارای تنوع</button>
+                    <button type="button" wire:click="$set('kindFilter', 'simple')" class="{{ $kindFilter === 'simple' ? 'is-active' : '' }}">کالای ساده</button>
+                </div>
+                <div class="vc2-filter-end">
+                    <label class="vc2-sort"><span>ترتیب:</span><select wire:model.live="sortBy"><option value="newest">جدیدترین</option><option value="name">نام کالا</option><option value="price">کمترین قیمت</option></select></label>
+                    <button type="button" class="vc2-clear" wire:click="clearFilters">پاک کردن فیلترها</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="vc2-card vc2-list" aria-label="فهرست کالاها">
+            <header class="vc2-list-head">
+                <div><h2>فهرست کالاها</h2><p>نمایش یک ردیف برای هر کالا یا خانواده تنوع</p></div>
+                <span class="vc2-list-badge">{{ number_format($products->count()) }} مورد بارگذاری‌شده</span>
+            </header>
+            @if($products->isNotEmpty())
+                <div class="vc2-table-wrap">
+                    <table class="vc2-table">
+                        <thead><tr><th scope="col">ردیف</th><th scope="col">نام کالا</th><th scope="col">کد کالا</th><th scope="col">دسته‌بندی</th><th scope="col">تنوع</th><th scope="col">قیمت فروش</th><th scope="col">وضعیت</th><th scope="col">عملیات</th></tr></thead>
+                        <tbody>
+                            @foreach($products as $index => $product)
+                                @php
+                                    $isGroup = $product->group_id !== null;
+                                    $group = $product->group;
+                                    $isActive = $isGroup ? $group->variants->contains('is_active', true) : $product->is_active;
+                                    $displayName = $isGroup ? $group->name : $product->name;
+                                    $displayCode = $isGroup ? ($group->sku ?: $product->sku) : $product->sku;
+                                    $variantCount = $isGroup ? $group->variants->count() : 0;
+                                @endphp
+                                <tr wire:key="catalog-list-{{ $product->id }}">
+                                    <td data-label="ردیف" class="vc2-row-num">{{ $index + 1 }}</td>
+                                    <td data-label="نام کالا"><div class="vc2-product-cell"><x-product-visual :product="$product" /><div><strong>{{ $displayName }}</strong><small>{{ $isGroup ? 'محصول دارای تنوع' : ($product->brand ?: 'کالای ساده') }}</small></div></div></td>
+                                    <td data-label="کد کالا"><bdi class="vc2-code">{{ $displayCode }}</bdi></td>
+                                    <td data-label="دسته‌بندی">{{ $product->category ?: 'بدون دسته' }}</td>
+                                    <td data-label="تنوع"><span class="vc2-pill {{ $isGroup ? 'violet' : 'blue' }}">{{ $isGroup ? $variantCount.' تنوع' : 'ساده' }}</span></td>
+                                    <td data-label="قیمت"><strong class="vc2-price">{{ number_format($product->price_toman) }}</strong><small class="vc2-currency"> تومان</small></td>
+                                    <td data-label="وضعیت"><span class="vc2-pill {{ $isActive ? 'green' : 'red' }}">{{ $isActive ? 'فعال' : 'غیرفعال' }}</span></td>
+                                    <td data-label="عملیات"><div class="vc2-row-actions">
+                                        <button type="button" class="vc2-btn vc2-small" wire:click="showDetails({{ $product->id }})"><i data-lucide="search"></i> جزئیات</button>
+                                        @can('catalog.manage')
+                                            <button type="button" class="vc2-btn vc2-small vc2-edit" wire:click="edit({{ $product->id }})" aria-label="ویرایش {{ $displayName }}"><i data-lucide="pencil"></i></button>
+                                        @endcan
+                                    </div></td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                <footer class="vc2-list-footer">
+                    <span>شماره ردیف · جست‌وجوی زنده · بدون صفحه‌بندی</span>
+                    <span>{{ number_format($products->count()) }} کالا نمایش داده شد</span>
+                </footer>
+                @if($hasMore)
+                    <div class="vc2-more-wrap">
+                        <button type="button" class="vc2-btn vc2-more" wire:click="loadMore" wire:loading.attr="disabled" wire:target="loadMore"
+                            x-init="const obs = new IntersectionObserver(entries => { if (entries[0]?.isIntersecting && !$el.disabled) $el.click() }, { root: null, rootMargin: '320px' }); obs.observe($el)">
+                            <i data-lucide="chevron-down"></i> نمایش کالاهای بیشتر
+                        </button>
+                        <span wire:loading wire:target="loadMore" role="status">در حال دریافت کالاها...</span>
+                    </div>
+                @endif
+            @else
+                <div class="vc2-empty">
+                    <i data-lucide="search"></i>
+                    <strong>{{ $search !== '' || $categoryFilter !== '' || $statusFilter !== '' ? 'کالایی با این مشخصات پیدا نشد' : 'هنوز کالایی ثبت نشده است' }}</strong>
+                    <p>فیلترها را تغییر دهید یا اولین کالا را تعریف کنید.</p>
+                    <button type="button" class="vc2-btn" wire:click="clearFilters">پاک کردن فیلترها</button>
+                </div>
+            @endif
+        </section>
     @endif
-    <section class="s-panel">
-        <div class="v-toolbar"><label class="v-search"><i data-lucide="package"></i><span class="v-sr-only">جست‌وجوی کالا</span><input wire:model.live.debounce.300ms="search" placeholder="نام، کد کالا یا بارکد…" type="search" maxlength="160"></label><span class="s-muted">قیمت‌ها به تومان</span></div>
-        @if($products->count())
-            <div class="v-table-wrap"><table class="v-table v-responsive-table"><thead><tr><th>کالا</th><th>کد کالا</th><th>قیمت فروش</th><th>وضعیت</th><th><span class="v-sr-only">عملیات</span></th></tr></thead><tbody>
-                @foreach($products as $product)<tr wire:key="product-{{ $product->id }}"><td><div class="s-flex"><x-product-visual :product="$product" /><div><strong>{{ $product->name }}</strong><small class="v-subtext">{{ $product->category ?: 'بدون دسته‌بندی' }}{{ $product->group_id ? ' · دارای تنوع' : '' }}</small></div></div></td><td data-label="کد کالا"><bdi>{{ $product->sku }}</bdi></td><td data-label="قیمت فروش" class="v-number">{{ number_format($product->price_toman) }} <small>تومان</small></td><td data-label="وضعیت"><span class="s-pill {{ $product->is_active ? 'green' : 'orange' }}">{{ $product->is_active ? 'فعال' : 'غیرفعال' }}</span>@if($product->is_published)<small class="v-subtext">منتشرشده در سایت</small>@endif</td><td>@can('catalog.manage')<button class="s-btn" wire:click="edit({{ $product->id }})" aria-label="ویرایش {{ $product->name }}">{{ $product->group_id ? 'ویرایش تنوع‌ها' : 'ویرایش' }}</button>@endcan</td></tr>@endforeach
-            </tbody></table></div>
-            <div class="v-pagination">{{ $products->links() }}</div>
-        @else
-            <x-workspace.empty :title="$search !== '' ? 'نتیجه‌ای پیدا نشد' : 'اولین کالا را تعریف کنید'" description="نام، کد و قیمت کالا برای شروع کافی است." />
-        @endif
-    </section>
+
+    @if($details && ! $showForm)
+        @php
+            $detailsGroup = $details->group;
+        @endphp
+        <div class="vc2-drawer-shell" role="dialog" aria-modal="true" aria-labelledby="vc2-details-title" x-on:keydown.escape.window="$wire.closeDetails()">
+            <button type="button" class="vc2-drawer-shade" wire:click="closeDetails" aria-label="بستن جزئیات"></button>
+            <aside class="vc2-drawer">
+                <header>
+                    <button type="button" class="vc2-icon-danger" wire:click="closeDetails" aria-label="بستن"><i data-lucide="x"></i></button>
+                    <span class="vc2-eyebrow">پرونده کالا</span>
+                    <h2 id="vc2-details-title">{{ $detailsGroup?->name ?? $details->name }}</h2>
+                    <p>کد: <bdi>{{ $detailsGroup?->sku ?: $details->sku }}</bdi></p>
+                </header>
+                <div class="vc2-drawer-body">
+                    <div class="vc2-detail-grid">
+                        <div><small>دسته‌بندی</small><strong>{{ $details->category ?: '—' }}</strong></div>
+                        <div><small>برند</small><strong>{{ $details->brand ?: '—' }}</strong></div>
+                        <div><small>واحد</small><strong>{{ $details->unit ?: 'عدد' }}</strong></div>
+                        <div><small>قیمت پایه</small><strong>{{ number_format($details->price_toman) }} تومان</strong></div>
+                    </div>
+                    @if($detailsGroup)
+                        <h3>تنوع‌های کالا</h3>
+                        @foreach($detailsGroup->variants as $variant)
+                            <div class="vc2-detail-variant">
+                                <strong>{{ implode(' / ', array_values($variant->options ?: array_filter([$variant->color, $variant->size]))) }}</strong>
+                                <bdi>{{ $variant->sku }}</bdi>
+                                <small>{{ number_format($variant->price_toman) }} تومان</small>
+                            </div>
+                        @endforeach
+                    @endif
+                    @if($details->description)<h3>توضیحات</h3><p>{{ $details->description }}</p>@endif
+                    <p class="vc2-tip">موجودی و گردش کالا در ماژول Inventory بررسی می‌شود؛ این صفحه موجودی را تغییر نمی‌دهد.</p>
+                </div>
+                <footer>
+                    <button type="button" class="vc2-btn" wire:click="closeDetails">بستن</button>
+                    @can('catalog.manage')
+                        <button type="button" class="vc2-btn vc2-primary" wire:click="edit({{ $details->id }})"><i data-lucide="pencil"></i> ویرایش کالا</button>
+                    @endcan
+                </footer>
+            </aside>
+        </div>
+    @endif
 </div>

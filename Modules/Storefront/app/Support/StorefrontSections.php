@@ -11,8 +11,8 @@ final class StorefrontSections
         'hero' => [
             'type' => 'hero',
             'settings' => [
-                'title' => 'از اولین ارتباط، تا یک خرید ماندگار.',
-                'description' => 'فروش حضوری، فروشگاه اینترنتی و ارتباط با مشتریان؛ کنار هم در یک تجربهٔ یکپارچه.',
+                'title' => 'تمام کسب‌وکارتان، در یک پنل مدیریتی یکپارچه',
+                'description' => 'با ویرا، کالاها، انبار، فروش و ارتباط با مشتریان را در یک محیط منسجم مدیریت کنید؛ راهکاری قابل توسعه از مجموعه جهش.',
                 'button' => 'آشنایی با امکانات',
                 'href' => '#site-features',
             ],
@@ -20,17 +20,33 @@ final class StorefrontSections
         'features' => [
             'type' => 'features',
             'settings' => [
-                'first' => 'مشتریان یکپارچه',
-                'second' => 'انبار و فروش مشترک',
-                'third' => 'گسترش ماژولار',
+                'first' => 'مدیریت کالاها و تنوع‌ها',
+                'second' => 'انبار، موجودی و فروش',
+                'third' => 'مشتریان و پیگیری‌ها',
             ],
         ],
         'cta' => [
             'type' => 'cta',
             'settings' => [
-                'title' => 'برای رشد فروشگاه، آمادهٔ یکپارچگی هستید؟',
-                'description' => 'ویرا مرحله‌به‌مرحله به یک ابزار جامع و قابل اعتماد تبدیل می‌شود.',
+                'title' => 'مدیریت کسب‌وکارتان را یکپارچه‌تر کنید',
+                'description' => 'برای بررسی نیازهای مجموعه و آشنایی با مسیر راه‌اندازی ویرا، با تیم جهش در ارتباط باشید.',
             ],
+        ],
+    ];
+
+    private const LEGACY_DEFAULTS = [
+        'hero' => [
+            'title' => 'از اولین ارتباط، تا یک خرید ماندگار.',
+            'description' => 'فروش حضوری، فروشگاه اینترنتی و ارتباط با مشتریان؛ کنار هم در یک تجربهٔ یکپارچه.',
+        ],
+        'features' => [
+            'first' => 'مشتریان یکپارچه',
+            'second' => 'انبار و فروش مشترک',
+            'third' => 'گسترش ماژولار',
+        ],
+        'cta' => [
+            'title' => 'برای رشد فروشگاه، آمادهٔ یکپارچگی هستید؟',
+            'description' => 'ویرا مرحله‌به‌مرحله به یک ابزار جامع و قابل اعتماد تبدیل می‌شود.',
         ],
     ];
 
@@ -41,16 +57,24 @@ final class StorefrontSections
         return collect(self::DEFAULTS)->map(function (array $definition, string $key) use ($records): array {
             $record = $records->get($key);
             $index = array_search($key, array_keys(self::DEFAULTS), true);
+            $settings = array_replace($definition['settings'], $record?->settings ?? []);
+
+            // Replace only the previous built-in copy; preserve text customized by the owner.
+            foreach (self::LEGACY_DEFAULTS[$key] ?? [] as $field => $legacyValue) {
+                if (($settings[$field] ?? null) === $legacyValue) {
+                    $settings[$field] = $definition['settings'][$field];
+                }
+            }
 
             return [
                 'key' => $key,
                 'type' => $definition['type'],
-                'settings' => array_replace($definition['settings'], $record?->settings ?? []),
+                'settings' => $settings,
                 'position' => $record?->position ?? $index,
                 'is_visible' => $record?->is_visible ?? true,
                 'image_url' => $key === 'hero' ? $record?->getFirstMediaUrl('hero') : null,
             ];
-        })->sortBy([['position', 'asc']])->values()->all();
+        })->sortBy('position')->values()->all();
     }
 
     public function find(string $key): array

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
 use Modules\Storefront\Livewire\StorefrontEditor;
 use Modules\Storefront\Models\StorefrontSection;
+use Modules\Storefront\Support\StorefrontSections;
 use Tests\TestCase;
 
 class StorefrontSectionsTest extends TestCase
@@ -17,7 +18,7 @@ class StorefrontSectionsTest extends TestCase
 
     public function test_storefront_home_uses_saved_sections(): void
     {
-        $this->get('/')->assertOk()->assertSee('از اولین ارتباط');
+        $this->get('/')->assertOk()->assertSee('تمام کسب‌وکارتان');
 
         StorefrontSection::create([
             'section_key' => 'hero', 'type' => 'hero', 'position' => 0,
@@ -130,5 +131,63 @@ class StorefrontSectionsTest extends TestCase
         $hero = StorefrontSection::where('section_key', 'hero')->firstOrFail();
         $this->assertCount(1, $hero->getMedia('hero'));
         $this->get('/')->assertSee('storage/', false);
+    }
+
+    public function test_legacy_default_landing_copy_is_upgraded_without_overwriting_owner_copy(): void
+    {
+        StorefrontSection::create([
+            'section_key' => 'hero',
+            'type' => 'hero',
+            'position' => 0,
+            'is_visible' => true,
+            'settings' => [
+                'title' => 'از اولین ارتباط، تا یک خرید ماندگار.',
+                'description' => 'فروش حضوری، فروشگاه اینترنتی و ارتباط با مشتریان؛ کنار هم در یک تجربهٔ یکپارچه.',
+                'button' => 'آشنایی با امکانات',
+                'href' => '#site-features',
+            ],
+        ]);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('تمام کسب‌وکارتان')
+            ->assertDontSee('از اولین ارتباط');
+
+        StorefrontSection::query()->where('section_key', 'hero')->update([
+            'settings' => json_encode([
+                'title' => 'عنوان اختصاصی مالک',
+                'description' => 'توضیح اختصاصی',
+                'button' => 'مشاهده امکانات',
+                'href' => '#site-features',
+            ], JSON_UNESCAPED_UNICODE),
+        ]);
+
+        $this->get('/')->assertSee('عنوان اختصاصی مالک');
+    }
+
+    public function test_public_homepage_respects_saved_section_order(): void
+    {
+        $this->seed();
+        $owner = User::factory()->create();
+        $owner->assignRole('owner');
+
+        Livewire::actingAs($owner)->test(StorefrontEditor::class)
+            ->call('moveSection', 'cta', 'up')
+            ->assertHasNoErrors();
+
+        $this->assertDatabaseHas('storefront_sections', ['section_key' => 'cta', 'position' => 1]);
+        $this->assertDatabaseHas('storefront_sections', ['section_key' => 'features', 'position' => 2]);
+        $this->assertSame(
+            ['hero', 'cta', 'features'],
+            array_column(app(StorefrontSections::class)->all(), 'key')
+        );
+
+        $html = $this->get('/')->assertOk()->getContent();
+        $ctaPosition = strpos($html, 'همراه شما در مسیر رشد');
+        $featuresPosition = strpos($html, 'همه‌چیز برای مدیریت ساده‌تر');
+
+        $this->assertNotFalse($ctaPosition);
+        $this->assertNotFalse($featuresPosition);
+        $this->assertLessThan($featuresPosition, $ctaPosition);
     }
 }

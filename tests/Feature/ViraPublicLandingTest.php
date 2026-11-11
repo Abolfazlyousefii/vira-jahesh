@@ -48,11 +48,11 @@ class ViraPublicLandingTest extends TestCase
             ->assertDontSee('example.com')
             ->assertDontSee('info@example');
     }
+
     public function test_public_homepage_renders_the_features_section_once(): void
     {
         $html = $this->get('/')->assertOk()->getContent();
 
         $this->assertSame(1, substr_count($html, 'همه‌چیز برای مدیریت ساده‌تر'));
     }
-
 }

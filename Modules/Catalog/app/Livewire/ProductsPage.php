@@ -230,8 +230,13 @@ class ProductsPage extends WorkspacePage
     {
         $this->guard('catalog.manage');
         $this->validate([
-            'productImage' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048', 'dimensions:max_width=4096,max_height=4096'],
-        ], ['productImage.*' => 'تصویر JPG، PNG یا WebP تا ۲ مگابایت و حداکثر ۴۰۹۶ پیکسل انتخاب کنید.']);
+            'productImage' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,gif', 'max:5120'],
+        ], [
+            'productImage.image' => 'فایل انتخاب‌شده تصویر معتبر نیست.',
+            'productImage.mimes' => 'فرمت تصویر باید JPG، PNG، WebP یا GIF باشد.',
+            'productImage.max' => 'حجم تصویر نباید بیشتر از ۵ مگابایت باشد.',
+            'productImage.uploaded' => 'بارگذاری تصویر انجام نشد؛ دوباره تلاش کنید.',
+        ]);
 
         $record = app(SaveCatalogProduct::class)->handle(
             $this->kind, $this->form, $this->variants, $this->editingId, $this->groupId, $this->variantFeatures
@@ -347,7 +352,7 @@ class ProductsPage extends WorkspacePage
             'categories' => $directory->categories(),
             'details' => $this->selectedId ? Product::with('group.variants')->findOrFail($this->selectedId) : null,
             'editedImageUrl' => $this->showForm && auth()->user()->can('catalog.manage')
-                ? ($this->imageRecord()?->getFirstMediaUrl('product-image') ?? '') : '',
+                ? ($this->imageRecord()?->imageUrl() ?? '') : '',
         ])->layoutData(['title' => $this->showForm ? 'تعریف کالا' : 'کالا و کاتالوگ']);
     }
 }

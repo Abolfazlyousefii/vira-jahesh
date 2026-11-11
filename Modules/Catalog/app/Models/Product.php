@@ -5,6 +5,7 @@ namespace Modules\Catalog\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Modules\Catalog\Support\ProductImageUrl;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\MediaLibrary\HasMedia;
@@ -38,11 +39,13 @@ class Product extends Model implements HasMedia
 
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('product-image')->useDisk('public')->singleFile()->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/webp']);
+        $this->addMediaCollection('product-image')->useDisk('public')->singleFile()->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/webp', 'image/gif']);
     }
 
     public function imageUrl(): string
     {
-        return $this->getFirstMediaUrl('product-image') ?: ($this->group?->getFirstMediaUrl('product-image') ?? '');
+        $url = app(ProductImageUrl::class)->for($this);
+
+        return $url !== '' ? $url : ($this->group?->imageUrl() ?? '');
     }
 }

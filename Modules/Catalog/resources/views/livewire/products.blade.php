@@ -178,17 +178,36 @@
                 <aside class="vc2-form-aside">
                     <section class="vc2-card vc2-aside-card">
                         <h3><i data-lucide="image-plus"></i> تصویر کالا <small>اختیاری</small></h3>
-                        <div class="vc2-upload">
-                            <input type="file" wire:model="productImage" accept="image/png,image/jpeg,image/webp" aria-label="انتخاب تصویر کالا">
-                            @if($productImage && in_array($productImage->guessExtension(), ['jpg', 'jpeg', 'png', 'webp'], true))
-                                <img src="{{ $productImage->temporaryUrl() }}" alt="پیش‌نمایش تصویر کالا">
-                            @elseif($editedImageUrl)
-                                <img src="{{ $editedImageUrl }}" alt="تصویر فعلی کالا">
+                        <div class="vc2-upload" wire:key="catalog-upload-{{ $groupId ?? $editingId ?? 'new' }}"
+                            x-data="{
+                                imagePreview: null,
+                                choose(event) {
+                                    if (this.imagePreview) URL.revokeObjectURL(this.imagePreview);
+                                    this.imagePreview = null;
+                                    const file = event.target.files?.[0];
+                                    const types = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+                                    if (file && types.includes(file.type) && file.size <= 5 * 1024 * 1024) {
+                                        this.imagePreview = URL.createObjectURL(file);
+                                    }
+                                },
+                                destroy() {
+                                    if (this.imagePreview) URL.revokeObjectURL(this.imagePreview);
+                                }
+                            }">
+                            <input type="file" wire:model="productImage" x-on:change="choose($event)"
+                                accept="image/jpeg,image/png,image/webp,image/gif,.jpg,.jpeg,.png,.webp,.gif"
+                                aria-label="انتخاب تصویر کالا">
+                            <template x-if="imagePreview">
+                                <img x-bind:src="imagePreview" alt="پیش‌نمایش تصویر انتخاب‌شده">
+                            </template>
+                            @if($editedImageUrl)
+                                <img x-show="!imagePreview" src="{{ $editedImageUrl }}" alt="تصویر فعلی کالا">
                             @else
-                                <i data-lucide="image-plus"></i><span>برای انتخاب تصویر کلیک کنید</span>
+                                <i x-show="!imagePreview" data-lucide="image-plus"></i>
+                                <span x-show="!imagePreview">برای انتخاب تصویر کلیک کنید</span>
                             @endif
                         </div>
-                        <p class="vc2-aside-help">JPG / PNG / WebP، حداکثر ۲ مگابایت</p>
+                        <p class="vc2-aside-help">JPG، PNG، WebP یا GIF · حداکثر ۵ مگابایت</p>
                         <p wire:loading wire:target="productImage" role="status">در حال بارگذاری تصویر...</p>
                         @error('productImage')<div class="vc2-inline-error" role="alert">{{ $message }}</div>@enderror
                         @if($editedImageUrl)<button type="button" class="vc2-btn vc2-danger-text" wire:click="removeImage" wire:confirm="تصویر فعلی حذف شود؟">حذف تصویر فعلی</button>@endif

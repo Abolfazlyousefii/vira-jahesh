@@ -3,6 +3,7 @@
 return [
     'brand' => 'ویرا',
     'tagline' => 'یکپارچه با جهش',
+    'sales_phone' => env('VIRA_SALES_PHONE'),
     'modules' => [
         'Core' => ['label' => 'هسته و کاربران', 'icon' => 'shield-check', 'enabled' => env('MODULE_CORE_ENABLED', true), 'requires' => []],
         'Catalog' => ['label' => 'کالاهای نرم‌افزار', 'icon' => 'package', 'enabled' => env('MODULE_CATALOG_ENABLED', true), 'requires' => ['Core']],

@@ -154,7 +154,7 @@
                         </a>
                         <p>ویرا بستری یکپارچه برای مدیریت بخش‌های مختلف کسب‌وکار است؛ راهکاری که با شناخت نیازهای هر مجموعه می‌تواند توسعه پیدا کند.</p>
                     </div>
-                    <div><h3>دسترسی سریع</h3><nav><a href="#site-features">امکانات ویرا</a><a href="#site-modules">ماژول‌ها</a><a href="#site-about">مزایای ویرا</a><a href="#site-process">مراحل راه‌اندازی</a></nav></div>
+                    <div><h3>دسترسی سریع</h3><nav><a href="{{ $features && $features['is_visible'] ? '#site-features' : '#site-modules' }}">امکانات ویرا</a><a href="#site-modules">ماژول‌ها</a><a href="#site-about">مزایای ویرا</a><a href="#site-process">مراحل راه‌اندازی</a></nav></div>
                     <div><h3>راهنما</h3><nav><a href="#site-faq">پرسش‌های متداول</a><a href="{{ $cta && $cta['is_visible'] ? '#site-cta' : '#site-modules' }}">مشاوره و خرید</a><a href="{{ route('login') }}">ورود به پنل مدیریت</a></nav></div>
                     <div><h3>ارتباط با جهش</h3><nav>
                         @if($salesPhone !== '')

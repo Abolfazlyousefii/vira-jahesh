@@ -131,4 +131,35 @@ class StorefrontSectionsTest extends TestCase
         $this->assertCount(1, $hero->getMedia('hero'));
         $this->get('/')->assertSee('storage/', false);
     }
+    public function test_legacy_default_landing_copy_is_upgraded_without_overwriting_owner_copy(): void
+    {
+        StorefrontSection::create([
+            'section_key' => 'hero',
+            'type' => 'hero',
+            'position' => 0,
+            'is_visible' => true,
+            'settings' => [
+                'title' => 'از اولین ارتباط، تا یک خرید ماندگار.',
+                'description' => 'فروش حضوری، فروشگاه اینترنتی و ارتباط با مشتریان؛ کنار هم در یک تجربهٔ یکپارچه.',
+                'button' => 'آشنایی با امکانات',
+                'href' => '#site-features',
+            ],
+        ]);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('تمام کسب‌وکارتان')
+            ->assertDontSee('از اولین ارتباط');
+
+        StorefrontSection::query()->where('section_key', 'hero')->update([
+            'settings' => json_encode([
+                'title' => 'عنوان اختصاصی مالک',
+                'description' => 'توضیح اختصاصی',
+                'button' => 'مشاهده امکانات',
+                'href' => '#site-features',
+            ], JSON_UNESCAPED_UNICODE),
+        ]);
+
+        $this->get('/')->assertSee('عنوان اختصاصی مالک');
+    }
 }

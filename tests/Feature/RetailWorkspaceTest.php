@@ -135,11 +135,11 @@ class RetailWorkspaceTest extends TestCase
         }
     }
 
-    public function test_product_has_exact_integer_toman_price_and_unique_sku(): void
+    public function test_product_has_exact_integer_toman_price_and_automatic_sku(): void
     {
         $this->owner();
         Livewire::test(ProductsPage::class)->call('create')->set('form.name', 'دفتر آبی')->set('form.sku', '00003001')->set('form.price_toman', '۱۲۵۰۰۰')->call('save')->assertHasNoErrors();
-        $this->assertDatabaseHas('products', ['sku' => '00003001', 'price_toman' => 125000]);
+        $this->assertDatabaseHas('products', ['sku' => '001000001', 'price_toman' => 125000]);
         Livewire::test(ProductsPage::class)->call('create')->set('form.name', 'کپی')->set('form.sku', '00003001')->set('form.price_toman', '12.5')->call('save')->assertHasErrors(['form.price_toman']);
     }
 

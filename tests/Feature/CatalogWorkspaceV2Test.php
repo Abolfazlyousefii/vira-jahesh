@@ -126,7 +126,7 @@ class CatalogWorkspaceV2Test extends TestCase
         }
 
         Livewire::test(ProductsPage::class)
-            ->assertSee('ردیف')->assertSee('محصول ۳۰')->assertDontSee('کالای خیلی قدیمی')
+            ->assertSee('ردیف')->assertSee('محصول 30')->assertDontSee('کالای خیلی قدیمی')
             ->assertSee('نمایش کالاهای بیشتر')
             ->call('loadMore')->assertSee('کالای خیلی قدیمی')->assertDontSee('pagination');
     }

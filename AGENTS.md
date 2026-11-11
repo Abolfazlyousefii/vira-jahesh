@@ -73,3 +73,14 @@ Catalog product/group media on public local disk must use same-origin /storage/ 
 - The Catalog sidebar entry is an accordion with real child destinations. Do not add active links for unfinished pages.
 - The product directory supports table/grid presentation over the same server-filtered query, incremental loading and whole-document vertical scrolling. CSV export is a management-only action and exports every sellable SKU, including each variant as its own row.
 - Subsequent phases: hierarchical categories with safe legacy backfill; price history and previewed bulk adjustments; spreadsheet import/export with row validation; cross-module read-only stock and transaction tabs. Catalog must never mutate Inventory balances.
+
+
+## Public Vira software landing page (2026-11-11)
+
+- The root route `/` is the public product/marketing landing page for business owners considering Vira from Jahesh; it is not the customer-facing product storefront.
+- Keep the current `storefront.home` route name for compatibility. Customer-facing published products remain under `/shop` and `/shop/{id}`.
+- The public landing must link «ورود به پنل مدیریت» to the real Fortify login route. Do not create a public management route or a fake login flow.
+- Preserve the existing owner-managed Hero, Features and CTA section settings. Update only the previous built-in default copy; never overwrite custom owner copy.
+- The landing uses the locally bundled Vazir font and its own scoped stylesheet. Keep responsive behavior, keyboard focus and reduced-motion support.
+- Do not show fabricated sales/customer/product metrics in the dashboard preview. Online checkout is not implemented and must not be advertised as active.
+- Optional Jahesh sales contact is configured with `VIRA_SALES_PHONE` / `config('vira.sales_phone')`. Do not expose a business customer's phone or Laravel's placeholder mail address as Jahesh contact information.

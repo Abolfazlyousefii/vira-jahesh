@@ -163,6 +163,7 @@ class StorefrontSectionsTest extends TestCase
 
         $this->get('/')->assertSee('عنوان اختصاصی مالک');
     }
+
     public function test_public_homepage_respects_saved_section_order(): void
     {
         $this->seed();

@@ -54,15 +54,16 @@ class ProductsPage extends WorkspacePage
 
     public string $sortBy = 'newest';
 
+    #[Locked]
     public string $displayMode = 'table';
 
     public int $visibleCount = 25;
 
-    public function mount(?string $mode = null): void
+    public function mount(): void
     {
         parent::mount();
 
-        if ($mode === 'create') {
+        if (request()->routeIs('panel.catalog.create')) {
             $this->create();
         }
     }

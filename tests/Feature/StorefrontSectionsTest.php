@@ -174,6 +174,9 @@ class StorefrontSectionsTest extends TestCase
             ->call('moveSection', 'cta', 'up')
             ->assertHasNoErrors();
 
+        $this->assertDatabaseHas('storefront_sections', ['section_key' => 'cta', 'position' => 1]);
+        $this->assertDatabaseHas('storefront_sections', ['section_key' => 'features', 'position' => 2]);
+
         $html = $this->get('/')->assertOk()->getContent();
         $ctaPosition = strpos($html, 'همراه شما در مسیر رشد');
         $featuresPosition = strpos($html, 'همه‌چیز برای مدیریت ساده‌تر');

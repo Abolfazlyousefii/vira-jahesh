@@ -11,7 +11,6 @@ use Modules\Catalog\Actions\SaveCatalogProduct;
 use Modules\Catalog\Models\Product;
 use Modules\Catalog\Models\ProductGroup;
 use Modules\Core\Livewire\WorkspacePage;
-use Modules\Core\Support\WorkspaceAccess;
 
 class ProductsPage extends WorkspacePage
 {

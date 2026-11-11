@@ -17,7 +17,7 @@ class StorefrontSectionsTest extends TestCase
 
     public function test_storefront_home_uses_saved_sections(): void
     {
-        $this->get('/')->assertOk()->assertSee('از اولین ارتباط');
+        $this->get('/')->assertOk()->assertSee('تمام کسب‌وکارتان');
 
         StorefrontSection::create([
             'section_key' => 'hero', 'type' => 'hero', 'position' => 0,

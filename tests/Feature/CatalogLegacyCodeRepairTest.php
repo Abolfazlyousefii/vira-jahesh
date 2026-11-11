@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Str;
 use Livewire\Livewire;
 use Modules\Catalog\Actions\CatalogLegacyCodeRepair;
 use Modules\Catalog\Actions\CatalogWorkspaceDirectory;
@@ -99,7 +100,7 @@ class CatalogLegacyCodeRepairTest extends TestCase
         $warehouse = Warehouse::create(['name' => 'اصلی']);
         app(StockLedger::class)->adjust($warehouse->id, $demo->id, 5, 'موجودی اولیه');
         $sale = app(RecordSale::class)->handle(
-            (string) \Illuminate\Support\Str::uuid(), $warehouse->id, null,
+            (string) Str::uuid(), $warehouse->id, null,
             [['product_id' => $demo->id, 'quantity' => 1]], 'direct'
         );
         $saleItem = $sale->items()->firstOrFail();

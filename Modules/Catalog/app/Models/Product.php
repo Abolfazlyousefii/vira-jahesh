@@ -4,6 +4,7 @@ namespace Modules\Catalog\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\MediaLibrary\HasMedia;
@@ -25,7 +26,7 @@ class Product extends Model implements HasMedia
         return LogOptions::defaults()->logOnly(['name', 'sku', 'price_toman', 'is_active', 'is_published'])->logOnlyDirty()->dontSubmitEmptyLogs();
     }
 
-    public function legacyCodeAlias(): \Illuminate\Database\Eloquent\Relations\HasOne
+    public function legacyCodeAlias(): HasOne
     {
         return $this->hasOne(CatalogCodeAlias::class);
     }

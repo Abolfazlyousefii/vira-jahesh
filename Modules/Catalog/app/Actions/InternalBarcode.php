@@ -23,7 +23,7 @@ final class InternalBarcode
             $sum += (int) $digit * ($position % 2 === 0 ? 1 : 3);
         }
 
-        return $body.(10 - $sum % 10) % 10;
+        return $body.((10 - $sum % 10) % 10);
     }
 
     public function fillMissing(Product $product): bool

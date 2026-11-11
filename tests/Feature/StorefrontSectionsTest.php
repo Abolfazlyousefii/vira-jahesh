@@ -163,4 +163,23 @@ class StorefrontSectionsTest extends TestCase
 
         $this->get('/')->assertSee('عنوان اختصاصی مالک');
     }
+    public function test_public_homepage_respects_saved_section_order(): void
+    {
+        $this->seed();
+        $owner = User::factory()->create();
+        $owner->assignRole('owner');
+
+        Livewire::actingAs($owner)->test(StorefrontEditor::class)
+            ->call('moveSection', 'cta', 'up')
+            ->assertHasNoErrors();
+
+        $html = $this->get('/')->assertOk()->getContent();
+        $ctaPosition = strpos($html, 'همراه شما در مسیر رشد');
+        $featuresPosition = strpos($html, 'همه‌چیز برای مدیریت ساده‌تر');
+
+        $this->assertNotFalse($ctaPosition);
+        $this->assertNotFalse($featuresPosition);
+        $this->assertLessThan($featuresPosition, $ctaPosition);
+    }
+
 }

@@ -74,7 +74,7 @@ final class StorefrontSections
                 'is_visible' => $record?->is_visible ?? true,
                 'image_url' => $key === 'hero' ? $record?->getFirstMediaUrl('hero') : null,
             ];
-        })->sortBy([['position', 'asc']])->values()->all();
+        })->sortBy('position')->values()->all();
     }
 
     public function find(string $key): array

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
 use Modules\Storefront\Livewire\StorefrontEditor;
 use Modules\Storefront\Models\StorefrontSection;
+use Modules\Storefront\Support\StorefrontSections;
 use Tests\TestCase;
 
 class StorefrontSectionsTest extends TestCase
@@ -178,7 +179,7 @@ class StorefrontSectionsTest extends TestCase
         $this->assertDatabaseHas('storefront_sections', ['section_key' => 'features', 'position' => 2]);
         $this->assertSame(
             ['hero', 'cta', 'features'],
-            array_column(app(\Modules\Storefront\Support\StorefrontSections::class)->all(), 'key')
+            array_column(app(StorefrontSections::class)->all(), 'key')
         );
 
         $html = $this->get('/')->assertOk()->getContent();

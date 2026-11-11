@@ -27,7 +27,7 @@ class FoundationTest extends TestCase
         $manager = User::factory()->create();
         $manager->assignRole('owner');
         $this->actingAs($manager)->get('/panel')->assertOk()->assertSee('ویرا');
-        $this->get('/panel/modules')->assertOk()->assertSee('کالا و کاتالوگ');
+        $this->get('/panel/modules')->assertOk()->assertSee('کالاهای نرم‌افزار');
     }
 
     public function test_disabled_crm_is_blocked_without_breaking_storefront(): void

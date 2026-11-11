@@ -232,3 +232,34 @@
 /* Optional internal EAN-13 shown beneath the permanent product SKU. */
 #jstudio .vc2 .vc2-barcode{display:block;margin-top:3px;color:#67818a;font-size:10px;font-variant-numeric:tabular-nums;white-space:nowrap}
 #jstudio .vc2 .vc2-barcode bdi{letter-spacing:.03em}
+
+
+/* Product workspace: switchable table/grid presentation. */
+#jstudio .vc2 .vc2-list-head-actions{display:flex;align-items:center;justify-content:flex-end;gap:11px;flex-wrap:wrap}
+#jstudio .vc2 .vc2-view-switch{display:inline-flex;align-items:center;gap:3px;padding:3px;border:1px solid #e5eeeb;border-radius:10px;background:#f7faf9}
+#jstudio .vc2 .vc2-view-switch button{min-height:29px;display:inline-flex;align-items:center;gap:5px;padding:4px 9px;border:0;border-radius:7px;color:#7d9298;background:transparent;font-size:10px}
+#jstudio .vc2 .vc2-view-switch button [data-lucide]{width:14px;height:14px}
+#jstudio .vc2 .vc2-view-switch button.is-active{color:#087f75;background:#e7f6f1;box-shadow:0 1px 2px rgba(23,58,73,.06);font-weight:700}
+#jstudio .vc2 .vc2-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;padding:14px}
+#jstudio .vc2 .vc2-product-card{min-width:0;padding:11px;border:1px solid #e7eeec;border-radius:13px;background:#fff;transition:border-color .18s,box-shadow .18s,transform .18s}
+#jstudio .vc2 .vc2-product-card:hover{border-color:#c5e3dc;box-shadow:0 8px 22px rgba(23,58,73,.065);transform:translateY(-2px)}
+#jstudio .vc2 .vc2-grid-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+#jstudio .vc2 .vc2-grid-index{color:#9aabad;font-size:9px;font-variant-numeric:tabular-nums}
+#jstudio .vc2 .vc2-grid-visual{height:122px;display:grid;place-items:center;margin:10px 0;background:linear-gradient(145deg,#f7faf9,#f0f6f4);border:1px solid #edf2f0;border-radius:10px;overflow:hidden}
+#jstudio .vc2 .vc2-grid-visual .v-product-thumb{width:100%;height:120px;object-fit:contain;border-radius:0;background:transparent}
+#jstudio .vc2 .vc2-grid-visual img{max-width:100%;max-height:120px;object-fit:contain}
+#jstudio .vc2 .vc2-grid-body{display:grid;gap:8px}
+#jstudio .vc2 .vc2-grid-title{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;min-width:0}
+#jstudio .vc2 .vc2-grid-title strong{min-width:0;color:#254451;font-size:11px;font-weight:750;line-height:1.8}
+#jstudio .vc2 .vc2-grid-title .vc2-code{flex:none;font-size:9px;padding:3px 6px}
+#jstudio .vc2 .vc2-grid-body>p{min-height:18px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:9px}
+#jstudio .vc2 .vc2-grid-meta{display:flex;align-items:center;justify-content:space-between;gap:8px;color:#8da0a4;font-size:9px}
+#jstudio .vc2 .vc2-grid-price{display:flex;align-items:baseline;gap:5px;padding-top:8px;border-top:1px solid #eef2f1}
+#jstudio .vc2 .vc2-grid-price strong{color:#2b5a64;font-size:13px;font-variant-numeric:tabular-nums}
+#jstudio .vc2 .vc2-grid-price strong small{font-size:9px;color:#9aabad;font-weight:500}
+#jstudio .vc2 .vc2-grid-price>span{color:#94a6a8;font-size:9px}
+#jstudio .vc2 .vc2-grid-actions{display:flex;align-items:center;gap:6px;margin-top:2px}
+#jstudio .vc2 .vc2-grid-actions .vc2-btn:first-child{flex:1}
+@media(max-width:1200px){#jstudio .vc2 .vc2-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:920px){#jstudio .vc2 .vc2-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){#jstudio .vc2 .vc2-list-head{align-items:flex-start;flex-direction:column}#jstudio .vc2 .vc2-list-head-actions{width:100%;justify-content:space-between}#jstudio .vc2 .vc2-grid{grid-template-columns:1fr;padding:10px}#jstudio .vc2 .vc2-product-card{display:grid;grid-template-columns:112px minmax(0,1fr);gap:10px;align-items:start}#jstudio .vc2 .vc2-grid-top{grid-column:1/-1}#jstudio .vc2 .vc2-grid-visual{height:112px;margin:0}#jstudio .vc2 .vc2-grid-visual .v-product-thumb{height:110px}#jstudio .vc2 .vc2-grid-body{min-width:0}}

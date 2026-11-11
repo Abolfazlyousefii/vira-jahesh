@@ -65,3 +65,11 @@ Historical product IDs and invoice SKU snapshots are immutable. Only identifiabl
 ## Catalog images and uploads (2026-11-11)
 
 Catalog product/group media on public local disk must use same-origin /storage/ URLs (not APP_URL-generated absolute URLs) so local port changes cannot break product images. Allow validated JPEG/PNG/WebP/GIF up to 5120 KiB; never accept SVG. Temporary browser previews use object URLs, released when discarded. Missing local files must not produce broken image elements. Keep tests/Feature/CatalogImageDeliveryTest.php green and document storage:link plus PHP upload_max_filesize/post_max_size setup in docs/local-development.md.
+
+
+## Product workspace naming and staged delivery (2026-11-11)
+
+- The user-facing panel name for Catalog is کالاهای نرم‌افزار. Keep internal module key Catalog, route compatibility and historical references unchanged; do not show «کاتالوگ» in product UI labels.
+- The Catalog sidebar entry is an accordion with real child destinations. Do not add active links for unfinished pages.
+- The product directory supports table/grid presentation over the same server-filtered query, incremental loading and whole-document vertical scrolling. CSV export is a management-only action and exports every sellable SKU, including each variant as its own row.
+- Subsequent phases: hierarchical categories with safe legacy backfill; price history and previewed bulk adjustments; spreadsheet import/export with row validation; cross-module read-only stock and transaction tabs. Catalog must never mutate Inventory balances.

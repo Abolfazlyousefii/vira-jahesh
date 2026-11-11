@@ -20,7 +20,7 @@ final class StaffAccess
 
     public static function sections(): array
     {
-        return ['customers' => 'مشتریان', 'catalog' => 'کالا و قیمت', 'inventory' => 'انبار و موجودی', 'sales' => 'فروش و فاکتورها', 'pos' => 'صندوق', 'crm' => 'پیگیری مشتریان', 'storefront' => 'مدیریت سایت', 'settings' => 'تنظیمات مجموعه'];
+        return ['customers' => 'مشتریان', 'catalog' => 'کالاهای نرم‌افزار', 'inventory' => 'انبار و موجودی', 'sales' => 'فروش و فاکتورها', 'pos' => 'صندوق', 'crm' => 'پیگیری مشتریان', 'storefront' => 'مدیریت سایت', 'settings' => 'تنظیمات مجموعه'];
     }
 
     public static function empty(): array

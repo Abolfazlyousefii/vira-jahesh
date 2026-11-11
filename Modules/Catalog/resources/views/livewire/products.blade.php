@@ -2,7 +2,7 @@
     @if($showForm)
         <div class="vc2-page-title">
             <div>
-                <span class="vc2-eyebrow"><i data-lucide="package-plus"></i> کاتالوگ / ثبت محصول</span>
+                <span class="vc2-eyebrow"><i data-lucide="package-plus"></i> کالاهای نرم‌افزار / ثبت کالا</span>
                 <h1>{{ $editingId ? 'ویرایش کالا' : 'تعریف کالای جدید' }}</h1>
                 <p>مشخصات اصلی را ثبت کنید؛ جزئیات بیشتر اختیاری است.</p>
             </div>
@@ -232,12 +232,13 @@
     @else
         <div class="vc2-page-title">
             <div>
-                <span class="vc2-eyebrow"><i data-lucide="package"></i> مدیریت کاتالوگ</span>
-                <h1>کالاهای مجموعه</h1>
+                <span class="vc2-eyebrow"><i data-lucide="package"></i> مدیریت کالاهای نرم‌افزار</span>
+                <h1>کالاهای نرم‌افزار</h1>
                 <p>جست‌وجو، مشاهده و مدیریت سریع کالاها</p>
             </div>
             <div class="vc2-heading-actions">
                 @can('catalog.manage')
+                    <button class="vc2-btn" type="button" wire:click="exportCsv" wire:loading.attr="disabled" wire:target="exportCsv"><i data-lucide="download"></i> خروجی فایل</button>
                     <button class="vc2-btn vc2-primary" type="button" wire:click="create"><i data-lucide="plus"></i> تعریف کالای جدید</button>
                 @endcan
             </div>
@@ -275,9 +276,60 @@
         <section class="vc2-card vc2-list" aria-label="فهرست کالاها">
             <header class="vc2-list-head">
                 <div><h2>فهرست کالاها</h2><p>نمایش یک ردیف برای هر کالا یا خانواده تنوع</p></div>
-                <span class="vc2-list-badge">{{ number_format($products->count()) }} مورد بارگذاری‌شده</span>
+                <div class="vc2-list-head-actions">
+                    <div class="vc2-view-switch" role="group" aria-label="نحوه نمایش کالاها">
+                        <button type="button" wire:click="setDisplayMode('table')" class="{{ $displayMode === 'table' ? 'is-active' : '' }}" aria-pressed="{{ $displayMode === 'table' ? 'true' : 'false' }}"><i data-lucide="list"></i> فهرستی</button>
+                        <button type="button" wire:click="setDisplayMode('grid')" class="{{ $displayMode === 'grid' ? 'is-active' : '' }}" aria-pressed="{{ $displayMode === 'grid' ? 'true' : 'false' }}"><i data-lucide="layout-grid"></i> شبکه‌ای</button>
+                    </div>
+                    <span class="vc2-list-badge">{{ number_format($products->count()) }} مورد بارگذاری‌شده</span>
+                </div>
             </header>
             @if($products->isNotEmpty())
+                @if($displayMode === 'grid')
+                    <div class="vc2-grid">
+                        @foreach($products as $index => $product)
+                            @php
+                                $isGroup = $product->group_id !== null;
+                                $group = $product->group;
+                                $isActive = $isGroup ? $group->variants->contains('is_active', true) : $product->is_active;
+                                $displayName = $isGroup ? $group->name : $product->name;
+                                $displayCode = $isGroup ? ($group->sku ?: $product->sku) : $product->sku;
+                                $variantCount = $isGroup ? $group->variants->count() : 0;
+                                $prices = $isGroup ? $group->variants->pluck('price_toman') : collect([$product->price_toman]);
+                                $minPrice = $prices->min() ?? 0;
+                                $maxPrice = $prices->max() ?? 0;
+                            @endphp
+                            <article class="vc2-product-card" wire:key="catalog-grid-{{ $product->id }}">
+                                <div class="vc2-grid-top">
+                                    <span class="vc2-grid-index">ردیف {{ $index + 1 }}</span>
+                                    <span class="vc2-pill {{ $isActive ? 'green' : 'red' }}">{{ $isActive ? 'فعال' : 'غیرفعال' }}</span>
+                                </div>
+                                <div class="vc2-grid-visual"><x-product-visual :product="$product" /></div>
+                                <div class="vc2-grid-body">
+                                    <div class="vc2-grid-title">
+                                        <strong>{{ $displayName }}</strong>
+                                        <bdi class="vc2-code">{{ $displayCode }}</bdi>
+                                    </div>
+                                    <p>{{ $product->category ?: 'بدون دسته' }} · {{ $product->brand ?: 'بدون برند' }}</p>
+                                    <div class="vc2-grid-meta">
+                                        <span class="vc2-pill {{ $isGroup ? 'violet' : 'blue' }}">{{ $isGroup ? $variantCount.' تنوع' : 'کالای ساده' }}</span>
+                                        <span>{{ $product->unit ?: 'عدد' }}</span>
+                                    </div>
+                                    <div class="vc2-grid-price">
+                                        <strong>{{ number_format($minPrice) }}@if($minPrice !== $maxPrice) <small>تا</small> {{ number_format($maxPrice) }}@endif</strong>
+                                        <span>تومان</span>
+                                    </div>
+                                    <div class="vc2-grid-actions">
+                                        <button type="button" class="vc2-btn vc2-small" wire:click="showDetails({{ $product->id }})"><i data-lucide="search"></i> جزئیات</button>
+                                        @can('catalog.manage')
+                                            <button type="button" class="vc2-btn vc2-small vc2-edit" wire:click="edit({{ $product->id }})" aria-label="ویرایش {{ $displayName }}"><i data-lucide="pencil"></i></button>
+                                        @endcan
+                                    </div>
+                                </div>
+                            </article>
+                        @endforeach
+                    </div>
+                @else
                 <div class="vc2-table-wrap">
                     <table class="vc2-table">
                         <thead><tr><th scope="col">ردیف</th><th scope="col">نام کالا</th><th scope="col">کد کالا</th><th scope="col">دسته‌بندی</th><th scope="col">تنوع</th><th scope="col">قیمت فروش</th><th scope="col">وضعیت</th><th scope="col">عملیات</th></tr></thead>
@@ -297,7 +349,14 @@
                                     <td data-label="کد کالا"><bdi class="vc2-code">{{ $displayCode }}</bdi>@if($product->barcode)<small class="vc2-barcode" title="بارکد داخلی کالا">بارکد: <bdi dir="ltr">{{ $product->barcode }}</bdi></small>@endif</td>
                                     <td data-label="دسته‌بندی">{{ $product->category ?: 'بدون دسته' }}</td>
                                     <td data-label="تنوع"><span class="vc2-pill {{ $isGroup ? 'violet' : 'blue' }}">{{ $isGroup ? $variantCount.' تنوع' : 'ساده' }}</span></td>
-                                    <td data-label="قیمت"><strong class="vc2-price">{{ number_format($product->price_toman) }}</strong><small class="vc2-currency"> تومان</small></td>
+                                    <td data-label="قیمت">
+                                        @php
+                                            $prices = $isGroup ? $group->variants->pluck('price_toman') : collect([$product->price_toman]);
+                                            $minPrice = $prices->min() ?? 0;
+                                            $maxPrice = $prices->max() ?? 0;
+                                        @endphp
+                                        <strong class="vc2-price">{{ number_format($minPrice) }}@if($minPrice !== $maxPrice) تا {{ number_format($maxPrice) }}@endif</strong><small class="vc2-currency"> تومان</small>
+                                    </td>
                                     <td data-label="وضعیت"><span class="vc2-pill {{ $isActive ? 'green' : 'red' }}">{{ $isActive ? 'فعال' : 'غیرفعال' }}</span></td>
                                     <td data-label="عملیات"><div class="vc2-row-actions">
                                         <button type="button" class="vc2-btn vc2-small" wire:click="showDetails({{ $product->id }})"><i data-lucide="search"></i> جزئیات</button>
@@ -310,6 +369,7 @@
                         </tbody>
                     </table>
                 </div>
+                @endif
                 <footer class="vc2-list-footer">
                     <span>شماره ردیف · جست‌وجوی زنده · بدون صفحه‌بندی</span>
                     <span>{{ number_format($products->count()) }} کالا نمایش داده شد</span>

@@ -652,3 +652,14 @@
   #jstudio .v4-app .v4-dashboard .chart-head-left { gap:4px; }
   #jstudio .v4-app .v4-dashboard .chart-total { font-size:12px; }
 }
+
+
+/* Product workspace accordion navigation. */
+#jstudio .v4-app .nav-group{display:grid;gap:3px}
+#jstudio .v4-app .nav-group-trigger{width:100%;text-align:right}
+#jstudio .v4-app .nav-group-trigger .nav-group-chevron{width:15px;height:15px;margin-right:auto;color:#8fa8ad;transition:transform .18s}
+#jstudio .v4-app .nav-group-trigger[aria-expanded="true"] .nav-group-chevron{transform:rotate(180deg)}
+#jstudio .v4-app .nav-sublist{display:grid;gap:3px;margin:1px 13px 5px 0;padding:3px 11px 3px 0;border-right:1px solid rgba(211,235,233,.16)}
+#jstudio .v4-app .nav-sub-link{min-height:35px;display:flex;align-items:center;padding:0 11px;border-radius:8px;color:#a9c0c3;text-decoration:none;font-size:10px;transition:background .16s,color .16s}
+#jstudio .v4-app .nav-sub-link:hover{color:#fff;background:rgba(255,255,255,.055)}
+#jstudio .v4-app .nav-sub-link.active{color:#eafffb;background:rgba(35,155,142,.18);font-weight:650}

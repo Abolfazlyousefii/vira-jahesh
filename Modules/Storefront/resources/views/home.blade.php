@@ -97,7 +97,7 @@
                 </nav>
 
                 <div class="vl-nav-actions">
-                    <a class="vl-btn vl-btn-quiet" href="#site-cta">مشاوره و خرید</a>
+                    <a class="vl-btn vl-btn-quiet" href="{{ $cta && $cta['is_visible'] ? '#site-cta' : '#site-modules' }}">مشاوره و خرید</a>
                     <a class="vl-btn vl-btn-primary" href="{{ route('login') }}">
                         <svg class="vl-icon"><use href="#vl-login"/></svg>
                         ورود به پنل مدیریت
@@ -107,7 +107,7 @@
                 <details class="vl-mobile-nav">
                     <summary aria-label="باز کردن منو"><svg class="vl-icon"><use href="#vl-menu"/></svg></summary>
                     <nav aria-label="منوی موبایل">
-                        <a href="#site-features">امکانات</a>
+                        <a href="{{ $features && $features['is_visible'] ? '#site-features' : '#site-modules' }}">امکانات</a>
                         <a href="#site-modules">ماژول‌ها</a>
                         <a href="#site-about">مزایای ویرا</a>
                         <a href="#site-process">مراحل راه‌اندازی</a>
@@ -351,7 +351,7 @@
                         <p>ویرا بستری یکپارچه برای مدیریت بخش‌های مختلف کسب‌وکار است؛ راهکاری که با شناخت نیازهای هر مجموعه می‌تواند توسعه پیدا کند.</p>
                     </div>
                     <div><h3>دسترسی سریع</h3><nav><a href="#site-features">امکانات ویرا</a><a href="#site-modules">ماژول‌ها</a><a href="#site-about">مزایای ویرا</a><a href="#site-process">مراحل راه‌اندازی</a></nav></div>
-                    <div><h3>راهنما</h3><nav><a href="#site-faq">پرسش‌های متداول</a><a href="#site-cta">مشاوره و خرید</a><a href="{{ route('login') }}">ورود به پنل مدیریت</a></nav></div>
+                    <div><h3>راهنما</h3><nav><a href="#site-faq">پرسش‌های متداول</a><a href="{{ $cta && $cta['is_visible'] ? '#site-cta' : '#site-modules' }}">مشاوره و خرید</a><a href="{{ route('login') }}">ورود به پنل مدیریت</a></nav></div>
                     <div><h3>ارتباط با جهش</h3><nav>
                         @if($salesPhone !== '')
                             <a href="tel:{{ $salesPhone }}"><svg class="vl-icon"><use href="#vl-phone"/></svg> <bdi dir="ltr">{{ $salesPhoneDisplay }}</bdi></a>
@@ -364,4 +364,13 @@
             </div>
         </footer>
     </div>
+    <script>
+        (() => {
+            const mobileMenu = document.querySelector('.vira-landing .vl-mobile-nav');
+            if (!mobileMenu) return;
+            mobileMenu.querySelectorAll('a').forEach((link) => {
+                link.addEventListener('click', () => { mobileMenu.open = false; });
+            });
+        })();
+    </script>
 </x-layouts.base>

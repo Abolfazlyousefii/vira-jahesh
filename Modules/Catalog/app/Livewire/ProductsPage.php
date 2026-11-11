@@ -101,25 +101,16 @@ class ProductsPage extends WorkspacePage
     {
         $this->guard('catalog.manage');
         abort_unless($this->showForm && $this->editingId === null, 422);
-        for ($attempt = 0; $attempt < 30; $attempt++) {
-            $code = str_pad((string) random_int(1, 999999), 8, '0', STR_PAD_LEFT);
-            if (! Product::where('sku', $code)->exists() && ! ProductGroup::where('sku', $code)->exists()) {
-                $this->form['sku'] = $code;
-
-                return;
-            }
-        }
-        throw ValidationException::withMessages(['form.sku' => 'کد خودکار قابل تولید نیست؛ یک کد عددی یکتا وارد کنید.']);
+        // Kept as a permission-checked compatibility entry point.
+        // The real code is assigned atomically when the new product is saved.
+        $this->form['sku'] = '';
+        $this->notice = 'کد کالا هنگام ذخیره، براساس دسته‌بندی و شماره ترتیبی ساخته می‌شود.';
     }
 
     public function generateVariants(): void
     {
         $this->guard('catalog.manage');
         abort_unless($this->showForm && $this->kind === 'variants' && $this->editingId === null, 422);
-        $base = WorkspaceAccess::digits((string) ($this->form['sku'] ?? ''));
-        if (! preg_match('/^[0-9]{4,12}$/', $base)) {
-            throw ValidationException::withMessages(['form.sku' => 'کد پایه باید شامل ۴ تا ۱۲ رقم باشد.']);
-        }
         $attributes = Validator::make(
             ['variantFeatures' => $this->variantFeatures],
             [
@@ -168,7 +159,8 @@ class ProductsPage extends WorkspacePage
 
         $this->variants = [];
         foreach ($combinations as $index => $options) {
-            $sku = $base.str_pad((string) ($index + 1), 2, '0', STR_PAD_LEFT);
+            // SKU is allocated at save time, never from client input.
+            $sku = '';
             $this->variants[] = [
                 'id' => null,
                 'options' => $options,
@@ -259,7 +251,7 @@ class ProductsPage extends WorkspacePage
         }
         $this->showForm = false;
         $this->visibleCount = 25;
-        $this->notice = 'کالا با موفقیت ذخیره شد.';
+        $this->notice = 'کالا با کد '.($record->sku ?? '').' با موفقیت ذخیره شد.';
         $this->dispatch('catalog-scroll-top');
     }
 

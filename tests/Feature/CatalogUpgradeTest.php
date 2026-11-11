@@ -62,20 +62,22 @@ class CatalogUpgradeTest extends TestCase
         $this->assertDatabaseCount('product_groups', 0);
         $variants = $this->variants();
         $variants[1]['sku'] = '۰۰۰۰۱۰۰۱';
-        Livewire::test(ProductsPage::class)->call('create')->call('chooseKind', 'variants')->set('form.name', 'پیراهن')->set('variants', $variants)->call('save')->assertHasErrors();
-        $this->assertDatabaseCount('products', 0);
+        Livewire::test(ProductsPage::class)->call('create')->call('chooseKind', 'variants')->set('form.name', 'پیراهن')->set('variants', $variants)->call('save')->assertHasNoErrors();
+        // Client-provided duplicate codes are ignored; both variants get separate codes.
+        $this->assertDatabaseCount('products', 2);
+        $this->assertNotSame(Product::orderBy('id')->firstOrFail()->sku, Product::orderByDesc('id')->firstOrFail()->sku);
     }
 
     public function test_editing_group_preserves_variant_ids_stock_and_historical_invoice(): void
     {
         $this->owner();
         $this->createGroup();
-        $product = Product::where('sku', '00001001')->firstOrFail();
+        $product = Product::where('group_id', ProductGroup::firstOrFail()->id)->orderBy('id')->firstOrFail();
         $warehouse = Warehouse::create(['name' => 'اصلی']);
         app(StockLedger::class)->adjust($warehouse->id, $product->id, 3, 'اولیه');
         $sale = app(RecordSale::class)->handle((string) Str::uuid(), $warehouse->id, null, [['product_id' => $product->id, 'quantity' => 1]], 'direct');
         Livewire::test(ProductsPage::class)->call('edit', $product->id)->set('form.name', 'پیراهن نخی')->set('variants.0.price_toman', '300000')->call('save')->assertHasNoErrors();
-        $this->assertSame($product->id, Product::where('sku', '00001001')->firstOrFail()->id);
+        $this->assertSame($product->sku, Product::findOrFail($product->id)->sku);
         $this->assertDatabaseHas('stock_balances', ['product_id' => $product->id, 'quantity' => 2]);
         $this->assertSame('پیراهن · آبی / M', $sale->items->first()->name);
         $this->assertSame(250000, $sale->items->first()->unit_price_toman);
@@ -137,7 +139,7 @@ class CatalogUpgradeTest extends TestCase
         $products = Product::orderBy('id')->get();
         $this->assertNotSame('', $products[0]->imageUrl());
         $this->assertSame($products[0]->imageUrl(), $products[1]->imageUrl());
-        $this->get('/shop/'.$products[0]->id)->assertOk()->assertDontSee('00001002')->assertDontSee('آبی / L');
+        $this->get('/shop/'.$products[0]->id)->assertOk()->assertDontSee($products[1]->sku)->assertDontSee('آبی / L');
         $products[1]->update(['is_published' => true]);
         $this->get('/shop/'.$products[0]->id)->assertOk()->assertSee('آبی / L');
         $products[1]->update(['is_active' => false]);

@@ -140,7 +140,7 @@ class RetailWorkspaceTest extends TestCase
         $this->owner();
         Livewire::test(ProductsPage::class)->call('create')->set('form.name', 'دفتر آبی')->set('form.sku', '00003001')->set('form.price_toman', '۱۲۵۰۰۰')->call('save')->assertHasNoErrors();
         $this->assertDatabaseHas('products', ['sku' => '00003001', 'price_toman' => 125000]);
-        Livewire::test(ProductsPage::class)->call('create')->set('form.name', 'کپی')->set('form.sku', '00003001')->set('form.price_toman', '12.5')->call('save')->assertHasErrors(['form.sku', 'form.price_toman']);
+        Livewire::test(ProductsPage::class)->call('create')->set('form.name', 'کپی')->set('form.sku', '00003001')->set('form.price_toman', '12.5')->call('save')->assertHasErrors(['form.price_toman']);
     }
 
     public function test_inventory_records_auditable_movement_and_rejects_negative_stock(): void

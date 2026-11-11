@@ -25,13 +25,15 @@
                                 </x-workspace.field>
                             </div>
                             <div>
-                                <x-workspace.field label="کد کالا *" name="form.sku" hint="فقط ارقام، با حفظ صفر ابتدایی؛ برای کالای متنوع حداکثر ۱۲ رقم">
-                                    <span class="vc2-code-row">
-                                        <input wire:model="form.sku" type="text" inputmode="numeric" dir="ltr" maxlength="14" placeholder="۰۰۰۰۱۰۲۴" required @disabled($editingId && $kind === 'variants')>
-                                        @unless($editingId)
-                                            <button type="button" class="vc2-btn vc2-generate" wire:click="generateCode">تولید کد</button>
-                                        @endunless
-                                    </span>
+                                <x-workspace.field label="کد کالا (خودکار)" name="form.sku" hint="۳ رقم دسته‌بندی + ۶ رقم ترتیبی؛ کد پس از ذخیره نهایی می‌شود و تغییر نام دسته آن را عوض نمی‌کند.">
+                                    @if($editingId)
+                                        <input type="text" value="{{ $form['sku'] }}" dir="ltr" class="vc2-immutable-code" readonly aria-label="کد ثابت کالا">
+                                    @else
+                                        <div class="vc2-sku-preview" role="status">
+                                            <i data-lucide="fingerprint" aria-hidden="true"></i>
+                                            <span>کد عددی به‌صورت خودکار هنگام ذخیره ساخته می‌شود</span>
+                                        </div>
+                                    @endif
                                 </x-workspace.field>
                             </div>
                             <div>
@@ -132,8 +134,12 @@
                                                     @endunless
                                                 </div>
                                                 <div class="vc2-variant-fields">
-                                                    <x-workspace.field :label="'کد عددی تنوع '.($index + 1).' *'" :name="'variants.'.$index.'.sku'">
-                                                        <input wire:model="variants.{{ $index }}.sku" inputmode="numeric" dir="ltr" maxlength="64" required>
+                                                    <x-workspace.field :label="'کد تنوع '.($index + 1).' (خودکار)'" :name="'variants.'.$index.'.sku'">
+                                                        @if($variant['id'] ?? null)
+                                                            <input type="text" value="{{ $variant['sku'] }}" dir="ltr" readonly aria-label="کد ثابت تنوع {{ $index + 1 }}">
+                                                        @else
+                                                            <div class="vc2-sku-preview"><i data-lucide="fingerprint" aria-hidden="true"></i> پس از ذخیره تعیین می‌شود</div>
+                                                        @endif
                                                     </x-workspace.field>
                                                     <x-workspace.field label="قیمت فروش (تومان) *" :name="'variants.'.$index.'.price_toman'">
                                                         <input wire:model="variants.{{ $index }}.price_toman" inputmode="numeric" dir="ltr" maxlength="13" required>
@@ -190,7 +196,7 @@
                     <section class="vc2-card vc2-aside-card">
                         <h3><i data-lucide="clipboard-list"></i> راهنمای ثبت</h3>
                         <div class="vc2-info-list">
-                            <p><b>کد:</b> رشته عددی یکتا؛ صفر اول حذف نمی‌شود.</p>
+                            <p><b>کد:</b> خودکار و فقط عددی: سه رقم دسته، شش رقم ردیف و برای تنوع‌ها دو رقم افزوده می‌شود.</p>
                             <p><b>تنوع:</b> هر ترکیب یک محصول قابل فروش مستقل است.</p>
                             <p><b>انبار:</b> موجودی از این فرم تغییر نمی‌کند.</p>
                         </div>

@@ -15,6 +15,17 @@ final class SaveCatalogProduct
     public function handle(string $kind, array $form, array $variants, ?int $editingId, ?int $groupId, array $attributes = []): Product|ProductGroup
     {
         WorkspaceAccess::check('Catalog', 'catalog.manage');
+
+        // Allocation and persistence share one transaction. Failed validation
+        // cannot consume a code, and each category sequence is row-locked.
+        return DB::transaction(
+            fn (): Product|ProductGroup => $this->saveInTransaction($kind, $form, $variants, $editingId, $groupId, $attributes),
+            5
+        );
+    }
+
+    private function saveInTransaction(string $kind, array $form, array $variants, ?int $editingId, ?int $groupId, array $attributes): Product|ProductGroup
+    {
         abort_unless(in_array($kind, ['simple', 'variants'], true), 422);
 
         $form['name'] = trim($form['name'] ?? '');
@@ -35,6 +46,8 @@ final class SaveCatalogProduct
         if ($kind === 'simple') {
             $existing = $editingId ? Product::findOrFail($editingId) : null;
             abort_if($existing?->group_id !== null, 422);
+            // Ignore user-submitted SKU for new and edited products.
+            $form['sku'] = $existing?->sku ?? app(CatalogSkuAllocator::class)->next($form['category']);
             $form = $this->normalize($form);
             $rules = [...$rules, ...$this->skuRules('form', $editingId, $existing?->sku === $form['sku'])];
             $data = Validator::make(['form' => $form], $rules, $this->messages())->validate()['form'];
@@ -58,6 +71,7 @@ final class SaveCatalogProduct
             $form['sku'] = $group->sku;
         } else {
             abort_if($editingId !== null, 422);
+            $form['sku'] = app(CatalogSkuAllocator::class)->next($form['category'], count($variants));
         }
 
         $rules['form.sku'] = $groupId
@@ -70,8 +84,26 @@ final class SaveCatalogProduct
         $variants = array_values($variants);
         $seen = [];
         $ids = [];
+        $nextSuffix = 1;
+        if ($group && preg_match('/^[0-9]{9}$/', (string) $group->sku)) {
+            foreach ($existing as $stored) {
+                if (preg_match('/^'.preg_quote($group->sku, '/').'([0-9]{2})$/', $stored->sku, $match)) {
+                    $nextSuffix = max($nextSuffix, (int) $match[1] + 1);
+                }
+            }
+        }
         foreach ($variants as $index => &$variant) {
             $variant = $this->normalize($variant);
+            if (! $group) {
+                $variant['sku'] = $form['sku'].str_pad((string) ($index + 1), 2, '0', STR_PAD_LEFT);
+            } elseif (isset($variant['id']) && $original = $existing->get($variant['id'])) {
+                $variant['sku'] = $original->sku;
+            } else {
+                if (! preg_match('/^[0-9]{9}$/', (string) $group->sku) || $nextSuffix > 99) {
+                    $this->invalidVariants('افزودن تنوع جدید به این گروه با ساختار کد فعلی امکان‌پذیر نیست.');
+                }
+                $variant['sku'] = $group->sku.str_pad((string) $nextSuffix++, 2, '0', STR_PAD_LEFT);
+            }
             $variant['color'] = trim((string) ($variant['color'] ?? ''));
             $variant['size'] = strtoupper(WorkspaceAccess::digits((string) ($variant['size'] ?? '')));
             $options = $variant['options'] ?? [];

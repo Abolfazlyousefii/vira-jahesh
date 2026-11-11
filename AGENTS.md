@@ -53,3 +53,7 @@ The approved Catalog V2 visual contract and module behavior are documented in `d
 ## Persian validation and error feedback (2026-11-11)
 
 All public-facing validation messages use local `lang/fa/validation.php`, field labels, and Persian HTTP fallback views. For new forms map array keys to Persian names; no technical or English exception text in UI. See `docs/persian-feedback.md`. Production stays `APP_DEBUG=false` and must keep original exceptions logged.
+
+## Catalog auto SKU convention (2026-11-11)
+
+All NEW product/group codes are allocated server-side on SAVE by category: 3-digit stable category prefix + 6-digit sequence; variant SKUs append 2 digits. No random, user-entered, or client-controlled new codes. Allocation and insert must share a DB transaction and lock the category counter. Historical codes stay unchanged on edit. See docs/catalog-v2.md and tests/Feature/CatalogAutomaticSkuTest.php.

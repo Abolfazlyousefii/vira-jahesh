@@ -23,7 +23,7 @@ class CatalogWorkspaceV2Test extends TestCase
         $this->actingAs($owner);
     }
 
-    public function test_new_skus_are_numeric_and_persian_digits_preserve_leading_zeroes(): void
+    public function test_new_codes_are_automatically_generated_and_ignore_client_input(): void
     {
         $this->loginOwner();
         Livewire::test(ProductsPage::class)
@@ -32,31 +32,28 @@ class CatalogWorkspaceV2Test extends TestCase
             ->set('form.sku', '۰۰۰۰۱۲۳۴')
             ->set('form.price_toman', '۲۵۰۰۰۰')
             ->set('form.brand', 'پارس')
-            ->call('save')
-            ->assertHasNoErrors();
+            ->call('save')->assertHasNoErrors();
 
         $this->assertDatabaseHas('products', [
-            'sku' => '00001234', 'name' => 'کلید مینیاتوری', 'price_toman' => 250000, 'brand' => 'پارس',
+            'sku' => '001000001', 'name' => 'کلید مینیاتوری', 'price_toman' => 250000, 'brand' => 'پارس',
         ]);
         Livewire::test(ProductsPage::class)
-            ->call('create')->set('form.name', 'کالای نامعتبر')
+            ->call('create')->set('form.name', 'کالای دوم')
             ->set('form.sku', 'ITEM-22')->set('form.price_toman', '5000')
-            ->call('save')->assertHasErrors('form.sku');
-        $this->assertDatabaseCount('products', 1);
+            ->call('save')->assertHasNoErrors();
+        $this->assertDatabaseHas('products', ['name' => 'کالای دوم', 'sku' => '001000002']);
     }
 
-    public function test_numeric_code_is_unique_and_a_group_code_cannot_be_reused(): void
+    public function test_allocator_skips_codes_already_in_use_by_products_and_groups(): void
     {
         $this->loginOwner();
-        Product::create(['name' => 'اول', 'sku' => '00002000', 'price_toman' => 12000]);
+        Product::create(['name' => 'اول', 'sku' => '001000001', 'price_toman' => 12000]);
+        ProductGroup::create(['name' => 'گروه', 'sku' => '001000002']);
         Livewire::test(ProductsPage::class)
-            ->call('create')->set('form.name', 'دوم')->set('form.sku', '00002000')
-            ->set('form.price_toman', '2000')->call('save')->assertHasErrors('form.sku');
+            ->call('create')->set('form.name', 'دوم')->set('form.sku', '001000001')
+            ->set('form.price_toman', '2000')->call('save')->assertHasNoErrors();
 
-        ProductGroup::create(['name' => 'گروه', 'sku' => '00002100']);
-        Livewire::test(ProductsPage::class)
-            ->call('create')->set('form.name', 'سوم')->set('form.sku', '00002100')
-            ->set('form.price_toman', '2000')->call('save')->assertHasErrors('form.sku');
+        $this->assertDatabaseHas('products', ['name' => 'دوم', 'sku' => '001000003']);
     }
 
     public function test_custom_attributes_generate_sellable_variants_without_creating_stock(): void
@@ -73,7 +70,7 @@ class CatalogWorkspaceV2Test extends TestCase
                 ['name' => 'پل', 'values' => 'تک، سه'],
             ])
             ->call('generateVariants')
-            ->assertSet('variants.0.sku', '00003001')
+            ->assertSet('variants.0.sku', '')
             ->call('save')
             ->assertHasNoErrors();
 
@@ -81,7 +78,7 @@ class CatalogWorkspaceV2Test extends TestCase
         $this->assertDatabaseCount('products', 4);
         $this->assertDatabaseCount('stock_balances', 0);
         $group = ProductGroup::firstOrFail();
-        $this->assertSame('000030', $group->sku);
+        $this->assertSame('001000001', $group->sku);
         $this->assertSame('آمپر', $group->attributes[0]['name']);
         $this->assertSame(['آمپر' => '۱۶', 'پل' => 'تک'], $group->variants()->orderBy('id')->firstOrFail()->options);
     }
@@ -139,7 +136,8 @@ class CatalogWorkspaceV2Test extends TestCase
             ->call('edit', $product->id)->set('form.price_toman', '2000')->call('save')->assertHasNoErrors();
         $this->assertDatabaseHas('products', ['id' => $product->id, 'sku' => 'LEGACY-A', 'price_toman' => 2000]);
         Livewire::test(ProductsPage::class)
-            ->call('edit', $product->id)->set('form.sku', 'OTHER-1')->call('save')->assertHasErrors('form.sku');
+            ->call('edit', $product->id)->set('form.sku', 'OTHER-1')->call('save')->assertHasNoErrors();
+        $this->assertSame('LEGACY-A', $product->fresh()->sku);
     }
 
     public function test_readonly_staff_cannot_mutate_or_expand_an_unavailable_module(): void

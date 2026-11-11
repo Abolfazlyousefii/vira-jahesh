@@ -131,6 +131,7 @@ class StorefrontSectionsTest extends TestCase
         $this->assertCount(1, $hero->getMedia('hero'));
         $this->get('/')->assertSee('storage/', false);
     }
+
     public function test_legacy_default_landing_copy_is_upgraded_without_overwriting_owner_copy(): void
     {
         StorefrontSection::create([

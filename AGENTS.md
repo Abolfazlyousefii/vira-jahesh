@@ -61,3 +61,7 @@ All NEW product/group codes are allocated server-side on SAVE by category: 3-dig
 ## Legacy demo SKU & barcode repair (2026-11-11)
 
 Historical product IDs and invoice SKU snapshots are immutable. Only identifiable, unpublished fixture demo products can be renumbered through the guarded local-only `vira:catalog:repair-codes --apply`; keep their former code in `catalog_code_aliases` and update demo import alias resolution. Existing real/unknown SKUs and non-empty barcodes remain unchanged. New/missing barcodes use a private-use EAN-13 prefix `20`, not a global GS1 GTIN. Preview by default; require consistent SQLite backup before apply. See docs/catalog-v2.md.
+
+## Catalog images and uploads (2026-11-11)
+
+Catalog product/group media on public local disk must use same-origin /storage/ URLs (not APP_URL-generated absolute URLs) so local port changes cannot break product images. Allow validated JPEG/PNG/WebP/GIF up to 5120 KiB; never accept SVG. Temporary browser previews use object URLs, released when discarded. Missing local files must not produce broken image elements. Keep tests/Feature/CatalogImageDeliveryTest.php green and document storage:link plus PHP upload_max_filesize/post_max_size setup in docs/local-development.md.

@@ -1,5 +1,6 @@
 @php
-    $sectionMap = collect($sections)->keyBy('key');
+    $orderedSections = collect($sections)->sortBy('position')->values();
+    $sectionMap = $orderedSections->keyBy('key');
     $hero = $sectionMap->get('hero');
     $features = $sectionMap->get('features');
     $cta = $sectionMap->get('cta');
@@ -121,7 +122,7 @@
 
         <main>
             @php($staticSectionsRendered = false)
-            @foreach($sections as $section)
+            @foreach($orderedSections as $section)
                 @if($section['key'] === 'hero' && $section['is_visible'])
                     @include('storefront::landing.hero')
                 @elseif($section['key'] === 'features' && $section['is_visible'])

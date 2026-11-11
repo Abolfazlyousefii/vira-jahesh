@@ -6,7 +6,7 @@
     $primary = [
         ['module' => 'Customers', 'permission' => 'customers.view', 'route' => 'panel.customers', 'title' => 'مشتریان', 'icon' => 'users'],
         ['module' => 'Crm', 'permission' => 'crm.view', 'route' => 'panel.crm', 'title' => 'ارتباطات و پیگیری', 'icon' => 'contact-round'],
-        ['module' => 'Catalog', 'permission' => 'catalog.view', 'route' => 'panel.catalog', 'title' => 'کالا و کاتالوگ', 'icon' => 'package'],
+        ['module' => 'Catalog', 'permission' => 'catalog.view', 'route' => 'panel.catalog', 'title' => 'کالاهای نرم‌افزار', 'icon' => 'package'],
         ['module' => 'Inventory', 'permission' => 'inventory.view', 'route' => 'panel.inventory', 'title' => 'انبار و موجودی', 'icon' => 'boxes'],
         ['module' => 'Sales', 'permission' => 'sales.view', 'route' => 'panel.sales', 'title' => 'فروش و فاکتورها', 'icon' => 'receipt-text'],
     ];
@@ -27,13 +27,20 @@
     $primary = array_values(array_filter($primary, $enabled));
     $secondary = array_values(array_filter($secondary, $enabled));
     $searchItems = array_merge([['title' => 'میز کار', 'route' => 'panel.dashboard', 'icon' => 'layout-dashboard']], $primary, $secondary);
+    if ($moduleAccess->available('Catalog') && $user->can('catalog.view')) {
+        $searchItems[] = ['title' => 'نمایش کالاها', 'route' => 'panel.catalog', 'icon' => 'package'];
+        if ($user->can('catalog.manage')) {
+            $searchItems[] = ['title' => 'تعریف کالای جدید', 'route' => 'panel.catalog.create', 'icon' => 'package-plus'];
+        }
+    }
     $quickActions = array_values(array_filter([
         ['module' => 'Sales', 'permission' => 'sales.manage', 'route' => 'panel.sales', 'title' => 'شروع فروش', 'icon' => 'receipt-text'],
         ['module' => 'Customers', 'permission' => 'customers.manage', 'route' => 'panel.customers', 'title' => 'ثبت مشتری', 'icon' => 'user-plus'],
-        ['module' => 'Catalog', 'permission' => 'catalog.manage', 'route' => 'panel.catalog', 'title' => 'ثبت کالا', 'icon' => 'package-plus'],
+        ['module' => 'Catalog', 'permission' => 'catalog.manage', 'route' => 'panel.catalog.create', 'title' => 'تعریف کالای جدید', 'icon' => 'package-plus'],
         ['module' => 'Crm', 'permission' => 'crm.manage', 'route' => 'panel.crm', 'title' => 'ثبت پیگیری', 'icon' => 'calendar-plus'],
     ], $enabled));
     $isSecondaryActive = collect($secondary)->contains(fn ($item) => request()->routeIs($item['route']));
+    $isCatalogActive = request()->routeIs('panel.catalog*');
     $businessName = \Modules\Core\Models\BusinessSetting::find(1)?->name ?: 'مجموعه من';
     // One semantic accent per workspace area; the application shell remains navy/teal.
     $area = match (true) {
@@ -107,7 +114,21 @@
                 <div class="nav-list">
                     <a class="nav-link {{ request()->routeIs('panel.dashboard') ? 'active' : '' }}" href="{{ route('panel.dashboard') }}" @if(request()->routeIs('panel.dashboard')) aria-current="page" @endif><i data-lucide="layout-dashboard"></i><span>میز کار</span></a>
                     @foreach($primary as $item)
-                        <a href="{{ route($item['route']) }}" data-vira-area="{{ $item['module'] }}" class="nav-link {{ request()->routeIs($item['route'].'*') ? 'active' : '' }}" @if(request()->routeIs($item['route'].'*')) aria-current="page" @endif><i data-lucide="{{ $item['icon'] }}"></i><span>{{ $item['title'] }}</span></a>
+                        @if($item['module'] === 'Catalog')
+                            <div class="nav-group" x-data="{ open: @js($isCatalogActive) }">
+                                <button type="button" data-vira-area="Catalog" class="nav-link nav-group-trigger {{ $isCatalogActive ? 'active' : '' }}" @click="open = !open" :aria-expanded="open">
+                                    <i data-lucide="{{ $item['icon'] }}"></i><span>{{ $item['title'] }}</span><i class="nav-group-chevron" data-lucide="chevron-down"></i>
+                                </button>
+                                <div class="nav-sublist" x-show="open" x-cloak>
+                                    <a href="{{ route('panel.catalog') }}" class="nav-sub-link {{ request()->routeIs('panel.catalog') ? 'active' : '' }}" @if(request()->routeIs('panel.catalog')) aria-current="page" @endif>نمایش کالاها</a>
+                                    @can('catalog.manage')
+                                        <a href="{{ route('panel.catalog.create') }}" class="nav-sub-link {{ request()->routeIs('panel.catalog.create') ? 'active' : '' }}" @if(request()->routeIs('panel.catalog.create')) aria-current="page" @endif>تعریف کالای جدید</a>
+                                    @endcan
+                                </div>
+                            </div>
+                        @else
+                            <a href="{{ route($item['route']) }}" data-vira-area="{{ $item['module'] }}" class="nav-link {{ request()->routeIs($item['route'].'*') ? 'active' : '' }}" @if(request()->routeIs($item['route'].'*')) aria-current="page" @endif><i data-lucide="{{ $item['icon'] }}"></i><span>{{ $item['title'] }}</span></a>
+                        @endif
                     @endforeach
                 </div>
                 @if(count($secondary))

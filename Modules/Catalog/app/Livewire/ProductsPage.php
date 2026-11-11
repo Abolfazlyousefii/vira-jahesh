@@ -54,7 +54,18 @@ class ProductsPage extends WorkspacePage
 
     public string $sortBy = 'newest';
 
+    public string $displayMode = 'table';
+
     public int $visibleCount = 25;
+
+    public function mount(?string $mode = null): void
+    {
+        parent::mount();
+
+        if ($mode === 'create') {
+            $this->create();
+        }
+    }
 
     public function create(): void
     {
@@ -275,6 +286,75 @@ class ProductsPage extends WorkspacePage
             : ($this->editingId ? Product::findOrFail($this->editingId) : null);
     }
 
+    public function setDisplayMode(string $mode): void
+    {
+        $this->guard();
+        abort_unless(in_array($mode, ['table', 'grid'], true), 422);
+        $this->displayMode = $mode;
+    }
+
+    public function exportCsv()
+    {
+        $this->guard('catalog.manage');
+        $filters = [$this->search, $this->categoryFilter, $this->statusFilter, $this->kindFilter, $this->sortBy];
+
+        return response()->streamDownload(function () use ($filters): void {
+            $stream = fopen('php://output', 'wb');
+            fwrite($stream, "\xEF\xBB\xBF");
+            fputcsv($stream, [
+                'ردیف', 'نام کالا', 'کد کالا', 'بارکد', 'دسته‌بندی', 'نوع کالا',
+                'ویژگی‌ها', 'قیمت فروش (تومان)', 'واحد', 'برند', 'وضعیت فروش', 'وضعیت انتشار',
+            ], ';', '"', '\\');
+
+            $rowNumber = 0;
+            app(CatalogWorkspaceDirectory::class)->query(...$filters)->chunk(200, function ($products) use ($stream, &$rowNumber): void {
+                foreach ($products as $product) {
+                    if ($product->group_id && $product->group) {
+                        foreach ($product->group->variants as $variant) {
+                            $rowNumber++;
+                            fputcsv($stream, [$rowNumber, ...$this->exportRow($product, $variant)], ';', '"', '\\');
+                        }
+                    } else {
+                        $rowNumber++;
+                        fputcsv($stream, [$rowNumber, ...$this->exportRow($product, $product)], ';', '"', '\\');
+                    }
+                }
+            });
+
+            fclose($stream);
+        }, 'vira-products-'.now()->format('Ymd-His').'.csv', [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+            'Cache-Control' => 'no-store, private',
+        ]);
+    }
+
+    private function exportRow(Product $representative, Product $sellable): array
+    {
+        $isGroup = $representative->group_id !== null;
+        $options = $sellable->options ?: array_filter([
+            'رنگ' => $sellable->color,
+            'سایز' => $sellable->size,
+        ], fn ($value) => $value !== null && $value !== '');
+        $features = collect($options)->map(fn ($value, $name) => $name.': '.$value)->implode('، ');
+        $values = [
+            $isGroup ? ($representative->group?->name ?? $sellable->name) : $sellable->name,
+            $sellable->sku, $sellable->barcode, $sellable->category,
+            $isGroup ? 'دارای تنوع' : 'ساده', $features, $sellable->price_toman,
+            $sellable->unit ?: 'عدد', $sellable->brand,
+            $sellable->is_active ? 'فعال' : 'غیرفعال',
+            $sellable->is_published ? 'منتشرشده' : 'منتشرنشده',
+        ];
+
+        return array_map(fn ($value) => $this->safeCsvCell($value), $values);
+    }
+
+    private function safeCsvCell(mixed $value): string
+    {
+        $value = (string) ($value ?? '');
+
+        return preg_match('/^[\\x00-\\x20]*[=+@-]/u', $value) === 1 ? "'".$value : $value;
+    }
+
     public function loadMore(): void
     {
         $this->guard();
@@ -353,6 +433,6 @@ class ProductsPage extends WorkspacePage
             'details' => $this->selectedId ? Product::with('group.variants')->findOrFail($this->selectedId) : null,
             'editedImageUrl' => $this->showForm && auth()->user()->can('catalog.manage')
                 ? ($this->imageRecord()?->imageUrl() ?? '') : '',
-        ])->layoutData(['title' => $this->showForm ? 'تعریف کالا' : 'کالا و کاتالوگ']);
+        ])->layoutData(['title' => $this->showForm ? 'تعریف کالای جدید' : 'کالاهای نرم‌افزار']);
     }
 }

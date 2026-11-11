@@ -5,7 +5,7 @@ return [
     'tagline' => 'یکپارچه با جهش',
     'modules' => [
         'Core' => ['label' => 'هسته و کاربران', 'icon' => 'shield-check', 'enabled' => env('MODULE_CORE_ENABLED', true), 'requires' => []],
-        'Catalog' => ['label' => 'کالا و کاتالوگ', 'icon' => 'package', 'enabled' => env('MODULE_CATALOG_ENABLED', true), 'requires' => ['Core']],
+        'Catalog' => ['label' => 'کالاهای نرم‌افزار', 'icon' => 'package', 'enabled' => env('MODULE_CATALOG_ENABLED', true), 'requires' => ['Core']],
         'Inventory' => ['label' => 'انبار و موجودی', 'icon' => 'boxes', 'enabled' => env('MODULE_INVENTORY_ENABLED', true), 'requires' => ['Catalog']],
         'Customers' => ['label' => 'مشتریان', 'icon' => 'users', 'enabled' => env('MODULE_CUSTOMERS_ENABLED', true), 'requires' => ['Core']],
         'Sales' => ['label' => 'فروش و فاکتورها', 'icon' => 'receipt-text', 'enabled' => env('MODULE_SALES_ENABLED', true), 'requires' => ['Inventory', 'Customers']],

@@ -126,8 +126,10 @@
                     @include('storefront::landing.hero')
                 @elseif($section['key'] === 'features' && $section['is_visible'])
                     @include('storefront::landing.features')
-                    @include('storefront::landing.static-sections')
-                    @php($staticSectionsRendered = true)
+                    @if(!$staticSectionsRendered)
+                        @include('storefront::landing.static-sections')
+                        @php($staticSectionsRendered = true)
+                    @endif
                 @elseif($section['key'] === 'cta' && $section['is_visible'])
                     @if(!$staticSectionsRendered)
                         @include('storefront::landing.static-sections')

@@ -176,6 +176,10 @@ class StorefrontSectionsTest extends TestCase
 
         $this->assertDatabaseHas('storefront_sections', ['section_key' => 'cta', 'position' => 1]);
         $this->assertDatabaseHas('storefront_sections', ['section_key' => 'features', 'position' => 2]);
+        $this->assertSame(
+            ['hero', 'cta', 'features'],
+            array_column(app(\Modules\Storefront\Support\StorefrontSections::class)->all(), 'key')
+        );
 
         $html = $this->get('/')->assertOk()->getContent();
         $ctaPosition = strpos($html, 'همراه شما در مسیر رشد');

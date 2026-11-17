@@ -201,5 +201,4 @@ class StaffManagementTest extends TestCase
         $this->assertTrue($employee->can('website.manage'));
         $this->assertTrue($employee->can('storefront.manage'));
     }
-
 }

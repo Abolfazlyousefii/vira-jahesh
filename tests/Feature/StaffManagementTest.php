@@ -201,4 +201,22 @@ class StaffManagementTest extends TestCase
         $this->assertTrue($employee->can('website.manage'));
         $this->assertTrue($employee->can('storefront.manage'));
     }
+
+    public function test_editing_read_only_website_staff_does_not_grant_management(): void
+    {
+        $this->owner();
+        $employee = User::factory()->create();
+        $employee->assignRole('website_operator');
+
+        Livewire::test(StaffPage::class)
+            ->call('edit', $employee->id)
+            ->assertSet('form.access.website', 'view')
+            ->call('save')
+            ->assertHasNoErrors();
+
+        $employee->refresh();
+        $this->assertTrue($employee->can('website.access'));
+        $this->assertFalse($employee->can('website.manage'));
+        $this->assertFalse($employee->can('storefront.manage'));
+    }
 }

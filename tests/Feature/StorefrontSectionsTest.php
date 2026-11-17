@@ -45,7 +45,8 @@ class StorefrontSectionsTest extends TestCase
 
         $owner = User::factory()->create();
         $owner->assignRole('owner');
-        $this->actingAs($owner)->get('/panel/storefront')->assertOk();
+        $this->actingAs($owner)->get('/panel/storefront')->assertRedirect('/site-admin/homepage');
+        $this->get('/site-admin/homepage')->assertOk();
     }
 
     public function test_owner_can_save_hero_and_public_page_reflects_it(): void

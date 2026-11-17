@@ -2,8 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Modules\Storefront\Http\Controllers\LegacyShopPreviewController;
 use Modules\Catalog\Actions\ProductDirectory;
+use Modules\Storefront\Http\Controllers\LegacyShopPreviewController;
 use Modules\Storefront\Support\StorefrontSections;
 
 Route::middleware(['web', 'module.active:Storefront'])

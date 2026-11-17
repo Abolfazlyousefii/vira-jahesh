@@ -63,7 +63,7 @@ class StaffPage extends WorkspacePage
         $this->form = [...$user->only(['name', 'email', 'is_active']), 'access' => StaffAccess::empty()];
         foreach ($this->form['access'] as $section => $level) {
             $this->form['access'][$section] = match ($section) {
-                'website' => ($user->can('website.manage') || $user->can('storefront.manage') || $user->can('website.access')) ? 'manage' : 'none',
+                'website' => ($user->can('website.manage') || $user->can('storefront.manage')) ? 'manage' : ($user->can('website.access') ? 'view' : 'none'),
                 'settings' => $user->can('settings.manage') ? 'manage' : 'none',
                 default => $user->can($section.'.manage') ? 'manage' : ($user->can($section.'.view') ? 'view' : 'none'),
             };
@@ -94,7 +94,7 @@ class StaffPage extends WorkspacePage
             'password' => [$existing ? 'nullable' : 'required', 'string', 'min:12', 'max:128', 'confirmed'],
         ];
         foreach (StaffAccess::sections() as $section => $label) {
-            $rules['form.access.'.$section] = ['required', Rule::in(in_array($section, ['settings', 'website'], true) ? ['none', 'manage'] : ['none', 'view', 'manage'])];
+            $rules['form.access.'.$section] = ['required', Rule::in($section === 'settings' ? ['none', 'manage'] : ['none', 'view', 'manage'])];
         }
         $data = $this->validate($rules, ['password.required' => 'برای حساب جدید رمز اختصاصی تعیین کنید.', 'password.min' => 'رمز باید حداقل ۱۲ نویسه باشد.', 'password.confirmed' => 'تکرار رمز یکسان نیست.', 'form.email.email' => 'ایمیل معتبر وارد کنید.']);
         $access = $data['form']['access'];
@@ -107,7 +107,7 @@ class StaffPage extends WorkspacePage
                 break;
             }
         }
-        if (($access['website'] ?? 'none') === 'manage') {
+        if (($access['website'] ?? 'none') !== 'none') {
             $roles[] = 'website_operator';
         }
         if ($roles === []) {

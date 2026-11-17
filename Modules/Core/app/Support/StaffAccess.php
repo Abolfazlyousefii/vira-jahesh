@@ -74,7 +74,10 @@ final class StaffAccess
             }
 
             if ($section === 'website') {
-                array_push($permissions, 'website.access', 'website.manage', 'storefront.manage');
+                $permissions[] = 'website.access';
+                if ($level === 'manage') {
+                    array_push($permissions, 'website.manage', 'storefront.manage');
+                }
 
                 continue;
             }

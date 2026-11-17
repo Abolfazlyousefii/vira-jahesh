@@ -3,7 +3,7 @@
 ## Product and scope
 - Read `VIRA-PROJECT-CONTEXT.fa.md` for the full Persian product context; editable source documents are indexed in `docs/product/README.md`.
 - Keep implemented behavior distinct from planned requirements. After changing product scope or completing a milestone, update the relevant source documents and regenerate the consolidated context file.
-- One Laravel modular monolith: retail ERP, optional CRM, POS and storefront.
+- One Laravel modular monolith: retail ERP, optional CRM, POS, public Storefront and the separate WebsiteAdmin workspace. Shared Fortify authentication; `/workspace` selects `/site-admin` or `/panel` by permission.
 - This repository has a retail base plus catalog/staff, stock-document and reporting upgrades: product images/variants, owner-managed staff access, stock ledger, single-SKU purchase receipts/suppliers, atomic warehouse transfers, manual paid sales/POS and partial returns with manually confirmed refunds, filtered gross/refund/net reports with event CSV and permission-filtered low-stock alerts, CRM, widgets and a public catalog. Online checkout, supplier payments, profit/cost accounting and full accounting are not implemented. See docs/retail-reports.md and previous milestone reports.
 - One business per installation for now. Tenant isolation and subscription billing are not implemented.
 - Persian RTL UI, local Vazir font, Blade + Livewire + Alpine. The approved V4 panel uses a fixed navy/teal identity, one light theme, and a right-hand sidebar. Do not restore palette swatches or dark-mode toggles.
@@ -16,13 +16,19 @@
 - `Catalog`: product identity, variants and pricing.
 - `Inventory`: stock movement, physical purchase receipts/supplier identity, warehouse transfers and future reservations; purchase orders/accounting are not implemented.
 - `Sales`: orders, invoices, returns and payment state.
-- `Pos` and `Storefront`: sales channels; both call Sales actions.
+- `Pos` and `Storefront`: sales channels; both call Sales actions. `WebsiteAdmin` owns the separate website-management shell/routes, while `Storefront` owns public rendering and homepage-section data. Never duplicate Catalog, Customers, Inventory or Sales data in WebsiteAdmin.
 - Keep code in its owning module. Use named actions/contracts across module boundaries, not other modules' controllers or ad hoc stock updates.
 - Nwidart manages installation-level module loading. `ModuleAccess` checks configured availability and dependencies. Entitlements per customer organization are future scope.
 - Disabling a module must not delete its data. Never introduce public management routes.
 
+## Workspace separation
+- Fortify login and the web session are shared. `/workspace` shows only destinations the user can access; `/site-admin` is WebsiteAdmin and `/panel` is ERP/CRM.
+- `operator` grants ERP entry, `website_operator` grants website entry, and `staff` grants neither; employees may hold both operator roles. `owner` can access both.
+- The existing homepage editor lives at `/site-admin/homepage`; `/panel/storefront` is a compatibility redirect only. Do not put website-management navigation or UI back inside the ERP shell.
+- The website script has not yet been imported. Review its structure and dependencies before creating migrations or porting UI; keep catalog, customer, stock and sales data in their existing modules.
+
 ## Security and correctness
-- All panel routes require authentication, `panel.access`, module availability and the relevant permission.
+- ERP routes require authentication, `panel.access`, Core/module availability and the relevant permission. Website-admin routes require authentication, `website.access`, WebsiteAdmin availability and the relevant management permission. The shared `/workspace` selector must expose only authorized destinations.
 - Livewire mutation actions must also authorize; hiding a button does not enforce permission.
 - No default passwords, public staff registration, production secrets or customer data in commits.
 - Monetary amounts must use explicit units and exact arithmetic. No float storage for money.
@@ -38,7 +44,7 @@
 - Browser-check responsive layouts and interactions; honor reduced-motion preferences.
 
 ## Running
-- `composer dev` starts the local server on 127.0.0.1:8017, a queue worker, and Vite.
+- `composer dev` starts the local server on 127.0.0.1:8017, a queue worker, and Vite. Login is `/login`, workspace selection is `/workspace`, ERP is `/panel`, and website admin is `/site-admin`.
 - For XAMPP/Laragon Apache, document root must be this repository's `public/` folder. See `docs/local-development.md`.
 
 

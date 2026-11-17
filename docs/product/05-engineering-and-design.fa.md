@@ -26,8 +26,9 @@
 - `app/Livewire/FoundationDashboard.php`: داشبورد ماژولار آغازین، نه گزارش فروش کامل.
 - `Modules/Core/app/Dashboard/WidgetRegistry.php`: ثبت، اولویت پیش‌فرض و کنترل دسترسی ویجت‌های Core و ماژول‌ها؛ ویجت‌های عملیاتی در Provider ماژول مالک ثبت می‌شوند.
 - `Modules/Core/app/Models/DashboardWidgetPreference.php`: ذخیرهٔ چیدمان هر کاربر.
-- `Modules/Storefront/app/Support/StorefrontSections.php` و `Modules/Storefront/app/Livewire/StorefrontEditor.php`: مدیریت سکشن‌های معرفی سایت، مستقل از منطق Catalog/Sales.
-- `resources/views/components/layouts/`: قالب پایه و پنل؛ `resources/css/app.css` و `resources/js/app.js`: ظاهر و تعامل‌های مشترک.
+- `Modules/Storefront/app/Support/StorefrontSections.php`: مالک داده و تنظیمات سکشن‌های عمومی Hero، Features و CTA.
+- `Modules/WebsiteAdmin/`: مالک پوسته و مسیرهای مدیریت سایت (`/site-admin`)؛ احراز هویت مشترک با Fortify و middleware مستقل `website.access`. مسیر `/site-admin/homepage` ویرایشگر Storefront را در پوستهٔ مستقل سایت نمایش می‌دهد.
+- `resources/views/components/layouts/`: قالب پایه، پنل داخلی و `website-admin`; `resources/css/app.css`, `resources/css/website-admin.css` و `resources/js/app.js`: ظاهر و تعامل‌های مشترک/مجزا.
 - `Modules/Core/app/Livewire/WorkspacePage.php` و `Support/WorkspaceAccess.php`: پوستهٔ صفحه، کنترل مجدد مجوز/ماژول در mutation و render و تبدیل ارقام. شناسه‌های ویرایش و توکن فروش با Livewire Locked محافظت می‌شوند.
 - `Modules/Catalog/app/Actions/ProductDirectory.php` و `Modules/Customers/app/Actions/CustomerDirectory.php`: خواندن مشترک کالا/مشتری در مرز ماژول.
 - `Modules/Inventory/app/Actions/StockLedger.php`: تنها مسیر تغییر ماندهٔ پایه و ثبت گردش؛ افزایش/کاهش شرطی و تراکنشی.
@@ -36,7 +37,8 @@
 - `Modules/Catalog/app/Actions/SaveCatalogProduct.php`: ثبت تراکنشی کالای ساده و گروه رنگ/سایز، اعتبارسنجی کد/بارکد/ترکیب و حفظ شناسه‌های قبلی. `ProductGroup` تصویر و دادهٔ مشترک دارد؛ Product واحد قابل فروش Sales/Inventory است.
 - `Modules/Core/app/Livewire/StaffPage.php` و `Support/StaffAccess.php`: مدیریت محدود به owner، الگوهای دسترسی و محافظت از حساب مدیر. `RequireActiveAccount` ورود/جلسهٔ حساب غیرفعال را می‌بندد؛ تغییر دسترسی با Actor ثبت می‌شود و رمز وارد Activitylog نمی‌شود.
 - `resources/css/vira-catalog-upgrade.css`: فرم‌های تصویر/تنوع و کارکنان؛ `public/licenses/lucide.txt` متن مجوز SVGهای آماده است. منابع در `docs/design-assets.md` ثبت شده‌اند. پیام ورود و صفحه‌بندی فارسی‌اند.
-- `database/seeders/DatabaseSeeder.php`: مجوزها و نقش‌های اولیه؛ حساب ثابت ایجاد نمی‌کند.
+- `database/seeders/DatabaseSeeder.php`: مجوزها و نقش‌های اولیه (`owner`، `operator`، `website_operator` و `staff`); حساب ثابت ایجاد نمی‌کند.
+- `app/Support/WorkspaceDestinationResolver.php` و `WorkspaceSelectorController.php`: انتخاب محیط پس از ورود بر اساس مجوز و فعال بودن ماژول؛ `WorkspaceLoginResponse` مسیر مقصد قبلی را برای عبور از انتخاب محیط نادیده می‌گیرد.
 - `app/Console/Commands/CreateOwner.php`: ساخت مدیر بدون ثبت‌نام عمومی.
 - `tests/Feature/`: آزمون‌های هسته، دسترسی و ساخت مدیر.
 
@@ -44,7 +46,7 @@
 
 یک عملیات کسب‌وکار در یک Action روشن قرار گیرد. کنترلر و Livewire آن را هماهنگ کنند؛ قواعد موجودی و قیمت در قالب و جاوااسکریپت پراکنده نشوند. ماژول‌ها کنترلر یکدیگر را صدا نزنند. انتزاع، Repository و لایهٔ اضافه فقط در صورت نیاز واقعی اضافه شوند.
 
-وابستگی فعلی: Catalog به Core؛ Inventory به Catalog؛ Customers به Core؛ Crm به Customers؛ Sales به Inventory و Customers؛ Pos و Storefront به Sales. Core الزامی است. CRM برای خرید اختیاری است.
+وابستگی فعلی: Catalog به Core؛ Inventory به Catalog؛ Customers به Core؛ Crm به Customers؛ Sales به Inventory و Customers؛ Pos و Storefront به Sales؛ WebsiteAdmin به Core. ویرایشگر صفحهٔ اصلی در WebsiteAdmin به Storefront فعال نیاز دارد. Core الزامی است. CRM برای خرید اختیاری است.
 
 نام ماژول در تنظیمات، namespace، مسیر و آزمون یکدست باشد. «غیرفعال بودن در نصب»، «خریداری شدن قابلیت برای مجموعه در آینده» و «مجوز کاربر» سه موضوع جدا هستند؛ فعلاً فقط اولی و سومی پایه‌گذاری شده‌اند.
 
@@ -54,7 +56,7 @@
 - پول با واحد صریح و محاسبات دقیق؛ پیشنهاد فعلی ذخیرهٔ صحیح ریال و نمایش تومان است، اما پیش از schema فروش تصویب نهایی شود. float برای مبلغ مالی استفاده نشود.
 - تغییرات مرتبط با موجودی و پرداخت در تراکنش و با مدیریت هم‌زمانی انجام شوند.
 - درخواست‌های تکراری، callback و retry صف باید اثر تکراری نسازند.
-- روی همهٔ ورودی‌ها اعتبارسنجی و روی خواندن/نوشتن کنترل مجوز انجام شود؛ در Actionهای Livewire هم بررسی لازم است.
+- روی همهٔ ورودی‌ها اعتبارسنجی و روی خواندن/نوشتن کنترل مجوز انجام شود؛ در Actionهای Livewire هم بررسی لازم است. محیط ERP به `panel.access` و محیط سایت به `website.access` نیاز دارد؛ عملیات ویرایش سایت `website.manage`/مجوز ماژول مربوط را دوباره بررسی می‌کند.
 - کارکنان و خریداران سایت دسترسی جدا دارند، حتی اگر بعداً از مدل یا guard مشترک استفاده کنند.
 - اطلاعات خصوصی، فایل مکالمه، آدرس و فاکتور دیگران از API، URL، فایل عمومی یا خروجی قابل افشا نباشند.
 - کلیدها، توکن‌ها، رمز اولیه، دیتابیس و دادهٔ مشتری وارد گیت و سند انتقال نشوند.
@@ -78,7 +80,7 @@
 
 ## اجرای محلی
 
-از ریشهٔ پروژه `composer dev` اجرا می‌شود: سرور روی `127.0.0.1:8017`، worker و Vite. URL پنل `/panel` و ورود `/login` است. سرور اجراشده در چت قبلی ممکن است امروز فعال نباشد؛ قبل از ادعای دسترسی زنده، آن را بررسی کنید.
+از ریشهٔ پروژه `composer dev` اجرا می‌شود: سرور روی `127.0.0.1:8017`، worker و Vite. ورود `/login`، انتخاب محیط `/workspace`، پنل ERP `/panel` و مدیریت سایت `/site-admin` است. سرور اجراشده در چت قبلی ممکن است امروز فعال نباشد؛ قبل از ادعای دسترسی زنده، آن را بررسی کنید.
 
 برای XAMPP/Laragon، DocumentRoot باید `public/` باشد؛ تنظیم عمومی Apache و hosts در تحویل پایه تغییر نکرده است. PHP ترمینال از Laragon بوده، ولی Apache موجود متعلق به XAMPP است؛ نسخه و افزونه‌های PHP وب و CLI را یکسان فرض نکنید. راهنمای `docs/local-development.md` جزئیات بیشتری دارد.
 

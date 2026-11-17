@@ -224,10 +224,10 @@ try {
         throw $exception;
     }
 
-    echo "Staged ".count($entries)." files privately at: ".$target."\n";
+    echo 'Staged '.count($entries).' files privately at: '.$target."\n";
     echo "Files are not served publicly or registered with Laravel.\n";
 } catch (Throwable $exception) {
-    fwrite(STDERR, "Import staging aborted: ".$exception->getMessage()."\n");
+    fwrite(STDERR, 'Import staging aborted: '.$exception->getMessage()."\n");
     exit(1);
 } finally {
     $archive->close();

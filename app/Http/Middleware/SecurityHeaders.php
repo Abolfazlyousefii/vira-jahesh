@@ -14,7 +14,7 @@ final class SecurityHeaders
         $response->headers->set('X-Content-Type-Options', 'nosniff');
         $response->headers->set('X-Frame-Options', 'SAMEORIGIN');
         $response->headers->set('Referrer-Policy', 'strict-origin-when-cross-origin');
-        if ($request->is('panel*')) {
+        if ($request->is('panel*') || $request->is('site-admin*') || $request->is('workspace*')) {
             $response->headers->set('Cache-Control', 'no-store, private');
         }
 

@@ -1,0 +1,424 @@
+#jstudio .workspace-select {
+    min-height: 100dvh;
+    display: grid;
+    place-items: center;
+    padding: 32px 18px;
+    background:
+        radial-gradient(circle at 15% 12%, #d9f2ef 0, transparent 32%),
+        radial-gradient(circle at 90% 88%, #e7eaf7 0, transparent 30%),
+        #f4f7fb;
+}
+#jstudio .workspace-select-card {
+    width: min(100%, 760px);
+    padding: clamp(24px, 5vw, 48px);
+    border: 1px solid #e5eaf1;
+    border-radius: 24px;
+    background: #fff;
+    box-shadow: 0 24px 80px #172a3a12;
+}
+#jstudio .workspace-select-brand,
+#jstudio .website-admin-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+}
+#jstudio .workspace-select-mark,
+#jstudio .website-admin-brand-mark {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    color: #fff;
+    background: #147f80;
+    font-size: 25px;
+    font-weight: 700;
+}
+#jstudio .workspace-select-brand strong,
+#jstudio .website-admin-brand strong {
+    display: block;
+    color: #182b3a;
+    font-size: 21px;
+}
+#jstudio .workspace-select-brand small,
+#jstudio .website-admin-brand small {
+    display: block;
+    color: #7b8794;
+    font-size: 11px;
+}
+#jstudio .workspace-select-intro {
+    margin: 44px 0 28px;
+}
+#jstudio .workspace-select-eyebrow,
+#jstudio .website-admin-eyebrow {
+    color: #168786;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+}
+#jstudio .workspace-select-intro h1 {
+    margin: 8px 0;
+    color: #172b3a;
+    font-size: clamp(25px, 4vw, 34px);
+}
+#jstudio .workspace-select-intro p {
+    color: #748291;
+    font-size: 14px;
+}
+#jstudio .workspace-select-options {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+#jstudio .workspace-select-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    min-height: 118px;
+    padding: 18px;
+    border: 1px solid #e4eaf0;
+    border-radius: 16px;
+    background: #fff;
+    transition: border-color 0.18s, box-shadow 0.18s, transform 0.18s;
+}
+#jstudio .workspace-select-option:hover {
+    border-color: #159895;
+    box-shadow: 0 12px 28px #183b4a12;
+    transform: translateY(-2px);
+}
+#jstudio .workspace-select-option-icon {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    flex: 0 0 44px;
+    border-radius: 13px;
+    color: #147f80;
+    background: #e9f6f4;
+}
+#jstudio .workspace-select-option--erp .workspace-select-option-icon {
+    color: #455c8b;
+    background: #edf1fa;
+}
+#jstudio .workspace-select-option-copy {
+    display: grid;
+    gap: 5px;
+    min-width: 0;
+}
+#jstudio .workspace-select-option-copy strong {
+    color: #203445;
+    font-size: 15px;
+}
+#jstudio .workspace-select-option-copy small {
+    color: #7a8794;
+    font-size: 11px;
+    line-height: 1.8;
+}
+#jstudio .workspace-select-arrow {
+    margin-right: auto;
+    color: #8794a0;
+    flex: 0 0 auto;
+}
+#jstudio .workspace-select-logout {
+    margin-top: 24px;
+    text-align: center;
+}
+#jstudio .workspace-select-logout button {
+    border: 0;
+    background: transparent;
+    color: #7c8995;
+    font: inherit;
+    font-size: 12px;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+#jstudio .website-admin-shell {
+    min-height: 100dvh;
+    color: #213444;
+    background: #f3f6fa;
+}
+#jstudio .website-admin-topbar {
+    position: sticky;
+    z-index: 20;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    min-height: 72px;
+    padding: 12px 28px;
+    border-bottom: 1px solid #e6ebf0;
+    background: #fff;
+}
+#jstudio .website-admin-brand-mark {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    font-size: 23px;
+}
+#jstudio .website-admin-brand strong {
+    font-size: 18px;
+}
+#jstudio .website-admin-brand small {
+    font-size: 10px;
+}
+#jstudio .website-admin-top-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+#jstudio .website-admin-top-actions a,
+#jstudio .website-admin-top-actions form button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 40px;
+    padding: 8px 12px;
+    border: 1px solid #e5ebf0;
+    border-radius: 10px;
+    color: #526575;
+    background: #fff;
+    font: inherit;
+    font-size: 11px;
+}
+#jstudio .website-admin-top-actions a:hover,
+#jstudio .website-admin-top-actions form button:hover {
+    border-color: #168b89;
+    color: #147f80;
+}
+#jstudio .website-admin-user {
+    color: #526575;
+    font-size: 12px;
+}
+#jstudio .website-admin-body {
+    display: grid;
+    grid-template-columns: 248px minmax(0, 1fr);
+    min-height: calc(100dvh - 72px);
+}
+#jstudio .website-admin-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 26px 17px;
+    border-left: 1px solid #e6ebf0;
+    background: #fff;
+}
+#jstudio .website-admin-sidebar-heading {
+    padding: 0 10px;
+    color: #8995a1;
+    font-size: 10px;
+    font-weight: 700;
+}
+#jstudio .website-admin-sidebar nav {
+    display: grid;
+    gap: 6px;
+}
+#jstudio .website-admin-sidebar nav a {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    min-height: 46px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    color: #5e6f7e;
+    font-size: 12px;
+}
+#jstudio .website-admin-sidebar nav a:hover,
+#jstudio .website-admin-sidebar nav a.active {
+    color: #147f80;
+    background: #eaf6f4;
+}
+#jstudio .website-admin-sidebar-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    margin-top: auto;
+    padding: 13px;
+    border-radius: 12px;
+    color: #71818e;
+    background: #f4f7fa;
+    font-size: 10px;
+    line-height: 1.9;
+}
+#jstudio .website-admin-sidebar-note svg {
+    flex: 0 0 auto;
+    margin-top: 2px;
+    color: #168786;
+}
+#jstudio .website-admin-main {
+    min-width: 0;
+    padding: 28px clamp(16px, 3vw, 38px);
+}
+#jstudio .website-admin-page-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+#jstudio .website-admin-page-heading span {
+    color: #8a98a4;
+    font-size: 10px;
+}
+#jstudio .website-admin-page-heading h1 {
+    margin-top: 5px;
+    color: #203545;
+    font-size: 23px;
+}
+#jstudio .website-admin-page {
+    display: grid;
+    gap: 18px;
+    max-width: 1180px;
+}
+#jstudio .website-admin-welcome {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 28px;
+    border: 1px solid #dcebe9;
+    border-radius: 18px;
+    background: linear-gradient(120deg, #f0faf8, #fff 72%);
+}
+#jstudio .website-admin-welcome h2 {
+    margin: 8px 0 6px;
+    color: #1d3b48;
+    font-size: 20px;
+}
+#jstudio .website-admin-welcome p,
+#jstudio .website-admin-feature p,
+#jstudio .website-admin-next p {
+    color: #71818e;
+    font-size: 12px;
+    line-height: 2;
+}
+#jstudio .website-admin-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 42px;
+    padding: 9px 15px;
+    border: 1px solid #147f80;
+    border-radius: 10px;
+    color: #fff;
+    background: #147f80;
+    font-size: 11px;
+    white-space: nowrap;
+}
+#jstudio .website-admin-button:hover {
+    background: #116f70;
+}
+#jstudio .website-admin-button--quiet {
+    color: #147f80;
+    background: #fff;
+}
+#jstudio .website-admin-feature {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+    border: 1px solid #e4eaf0;
+    border-radius: 16px;
+    background: #fff;
+}
+#jstudio .website-admin-feature-icon,
+#jstudio .website-admin-next-icon {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    flex: 0 0 48px;
+    border-radius: 14px;
+    color: #147f80;
+    background: #eaf6f4;
+}
+#jstudio .website-admin-feature-copy {
+    min-width: 0;
+    flex: 1;
+}
+#jstudio .website-admin-feature h2,
+#jstudio .website-admin-next h2 {
+    margin-bottom: 5px;
+    color: #263d4d;
+    font-size: 14px;
+}
+#jstudio .website-admin-muted {
+    color: #8996a1;
+    font-size: 11px;
+}
+#jstudio .website-admin-next {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 22px;
+    border: 1px dashed #cbd9e1;
+    border-radius: 16px;
+    background: #f9fbfc;
+}
+@media (max-width: 850px) {
+    #jstudio .website-admin-body {
+        grid-template-columns: 200px minmax(0, 1fr);
+    }
+    #jstudio .website-admin-topbar {
+        padding-inline: 18px;
+    }
+    #jstudio .website-admin-top-actions a span,
+    #jstudio .website-admin-user {
+        display: none;
+    }
+}
+@media (max-width: 680px) {
+    #jstudio .workspace-select-options {
+        grid-template-columns: 1fr;
+    }
+    #jstudio .workspace-select-intro {
+        margin-top: 30px;
+    }
+    #jstudio .website-admin-topbar {
+        padding: 10px 14px;
+    }
+    #jstudio .website-admin-body {
+        grid-template-columns: 1fr;
+    }
+    #jstudio .website-admin-sidebar {
+        gap: 10px;
+        padding: 12px 14px;
+        border-left: 0;
+        border-bottom: 1px solid #e6ebf0;
+    }
+    #jstudio .website-admin-sidebar-heading,
+    #jstudio .website-admin-sidebar-note {
+        display: none;
+    }
+    #jstudio .website-admin-sidebar nav {
+        display: flex;
+        overflow-x: auto;
+    }
+    #jstudio .website-admin-sidebar nav a {
+        flex: 0 0 auto;
+    }
+    #jstudio .website-admin-main {
+        padding: 22px 14px;
+    }
+    #jstudio .website-admin-welcome,
+    #jstudio .website-admin-feature {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+    #jstudio .website-admin-top-actions {
+        gap: 5px;
+    }
+    #jstudio .website-admin-top-actions a,
+    #jstudio .website-admin-top-actions form button {
+        min-width: 38px;
+        padding: 8px;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    #jstudio .workspace-select-option,
+    #jstudio .website-admin-top-actions a {
+        transition: none;
+    }
+}

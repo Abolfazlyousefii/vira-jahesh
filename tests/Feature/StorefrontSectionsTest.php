@@ -45,7 +45,8 @@ class StorefrontSectionsTest extends TestCase
 
         $owner = User::factory()->create();
         $owner->assignRole('owner');
-        $this->actingAs($owner)->get('/panel/storefront')->assertOk();
+        $this->actingAs($owner)->get('/panel/storefront')->assertRedirect('/site-admin/homepage');
+        $this->get('/site-admin/homepage')->assertOk();
     }
 
     public function test_owner_can_save_hero_and_public_page_reflects_it(): void
@@ -189,5 +190,15 @@ class StorefrontSectionsTest extends TestCase
         $this->assertNotFalse($ctaPosition);
         $this->assertNotFalse($featuresPosition);
         $this->assertLessThan($featuresPosition, $ctaPosition);
+    }
+
+    public function test_website_operator_can_open_dashboard_but_cannot_edit_without_manage_permission(): void
+    {
+        $this->seed();
+        $websiteViewer = User::factory()->create();
+        $websiteViewer->assignRole('website_operator');
+
+        $this->actingAs($websiteViewer)->get('/site-admin')->assertOk();
+        $this->get('/site-admin/homepage')->assertForbidden();
     }
 }

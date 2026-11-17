@@ -10,7 +10,7 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use Modules\Storefront\Support\StorefrontSections;
 
-#[Layout('components.layouts.panel')]
+#[Layout('components.layouts.website-admin')]
 class StorefrontEditor extends Component
 {
     use WithFileUploads;
@@ -110,8 +110,15 @@ class StorefrontEditor extends Component
 
     private function authorizeEditor(): void
     {
-        abort_unless(auth()->check() && auth()->user()->can('panel.access') && auth()->user()->can('storefront.manage'), 403);
-        abort_unless(app(ModuleAccess::class)->available('Core') && app(ModuleAccess::class)->available('Storefront'), 404);
+        $user = auth()->user();
+        abort_unless($user && ($user->can('website.access') || $user->can('storefront.manage')), 403);
+        abort_unless($user->can('website.manage') || $user->can('storefront.manage'), 403);
+        abort_unless(
+            app(ModuleAccess::class)->available('Core')
+                && app(ModuleAccess::class)->available('WebsiteAdmin')
+                && app(ModuleAccess::class)->available('Storefront'),
+            404
+        );
     }
 
     public function render()

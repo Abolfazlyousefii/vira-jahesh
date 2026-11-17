@@ -125,4 +125,98 @@ class StaffManagementTest extends TestCase
         Livewire::test(StaffPage::class)->call('create')->assertHasErrors('form.access');
         $this->assertDatabaseCount('users', 1);
     }
+
+    public function test_owner_can_create_website_manager_without_granting_erp_access(): void
+    {
+        $this->owner();
+
+        Livewire::test(StaffPage::class)
+            ->call('create')
+            ->set('form.name', 'مدیر سایت')
+            ->set('form.email', 'site-manager@example.test')
+            ->set('password', 'Secure-site-manager-123!')
+            ->set('password_confirmation', 'Secure-site-manager-123!')
+            ->set('form.access.website', 'manage')
+            ->call('save')
+            ->assertHasNoErrors();
+
+        $manager = User::where('email', 'site-manager@example.test')->firstOrFail();
+        $this->assertTrue($manager->hasRole('website_operator'));
+        $this->assertFalse($manager->hasRole('operator'));
+        $this->assertTrue($manager->can('website.access'));
+        $this->assertTrue($manager->can('website.manage'));
+        $this->assertTrue($manager->can('storefront.manage'));
+        $this->assertFalse($manager->can('panel.access'));
+
+        $this->actingAs($manager)->get('/workspace')->assertRedirect('/site-admin');
+        $this->get('/site-admin')->assertOk();
+        $this->get('/panel')->assertForbidden();
+    }
+
+    public function test_staff_member_can_receive_both_website_and_erp_workspaces(): void
+    {
+        $this->owner();
+
+        Livewire::test(StaffPage::class)
+            ->call('create')
+            ->set('form.name', 'مدیر فروشگاه')
+            ->set('form.email', 'dual-manager@example.test')
+            ->set('password', 'Secure-dual-manager-123!')
+            ->set('password_confirmation', 'Secure-dual-manager-123!')
+            ->set('form.access.website', 'manage')
+            ->set('form.access.pos', 'manage')
+            ->call('save')
+            ->assertHasNoErrors();
+
+        $manager = User::where('email', 'dual-manager@example.test')->firstOrFail();
+        $this->assertTrue($manager->hasRole('website_operator'));
+        $this->assertTrue($manager->hasRole('operator'));
+        $this->assertTrue($manager->can('website.access'));
+        $this->assertTrue($manager->can('pos.manage'));
+
+        $this->actingAs($manager)->get('/workspace')
+            ->assertOk()
+            ->assertSee('مدیریت سایت')
+            ->assertSee('مدیریت داخلی');
+        $this->get('/site-admin')->assertOk();
+        $this->get('/panel/pos')->assertOk();
+    }
+
+    public function test_editing_legacy_storefront_manager_keeps_site_access_in_new_workspace(): void
+    {
+        $this->owner();
+        $employee = User::factory()->create();
+        $employee->assignRole('operator');
+        $employee->givePermissionTo('storefront.manage');
+
+        Livewire::test(StaffPage::class)
+            ->call('edit', $employee->id)
+            ->assertSet('form.access.website', 'manage')
+            ->call('save')
+            ->assertHasNoErrors();
+
+        $employee->refresh();
+        $this->assertTrue($employee->hasRole('website_operator'));
+        $this->assertTrue($employee->can('website.access'));
+        $this->assertTrue($employee->can('website.manage'));
+        $this->assertTrue($employee->can('storefront.manage'));
+    }
+
+    public function test_editing_read_only_website_staff_does_not_grant_management(): void
+    {
+        $this->owner();
+        $employee = User::factory()->create();
+        $employee->assignRole('website_operator');
+
+        Livewire::test(StaffPage::class)
+            ->call('edit', $employee->id)
+            ->assertSet('form.access.website', 'view')
+            ->call('save')
+            ->assertHasNoErrors();
+
+        $employee->refresh();
+        $this->assertTrue($employee->can('website.access'));
+        $this->assertFalse($employee->can('website.manage'));
+        $this->assertFalse($employee->can('storefront.manage'));
+    }
 }

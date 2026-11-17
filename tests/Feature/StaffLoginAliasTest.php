@@ -15,10 +15,10 @@ class StaffLoginAliasTest extends TestCase
         $this->seed();
         $user = User::factory()->create(['email' => '09120000000@vira.local', 'password' => 'Synthetic-alias-test-123!']);
         $user->assignRole('owner');
-        $this->post('/login', ['email' => '۰۹۱۲۰۰۰۰۰۰۰', 'password' => 'Synthetic-alias-test-123!'])->assertRedirect('/panel');
+        $this->post('/login', ['email' => '۰۹۱۲۰۰۰۰۰۰۰', 'password' => 'Synthetic-alias-test-123!'])->assertRedirect('/workspace');
         $this->assertAuthenticatedAs($user);
         $this->post('/logout');
-        $this->post('/login', ['email' => $user->email, 'password' => 'Synthetic-alias-test-123!'])->assertRedirect('/panel');
+        $this->post('/login', ['email' => $user->email, 'password' => 'Synthetic-alias-test-123!'])->assertRedirect('/workspace');
         $this->assertAuthenticatedAs($user);
     }
 

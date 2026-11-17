@@ -6,5 +6,6 @@
     "Sales": true,
     "Crm": true,
     "Pos": true,
-    "Storefront": true
+    "Storefront": true,
+    "WebsiteAdmin": true
 }

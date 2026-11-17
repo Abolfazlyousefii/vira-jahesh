@@ -5,6 +5,7 @@ namespace Modules\Storefront\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\Catalog\Actions\ProductDirectory;
+use Modules\Storefront\Support\LegacyShopPreviewWidget;
 use Modules\Storefront\Support\LegacyShopTheme;
 
 final class LegacyShopPreviewController extends Controller
@@ -15,7 +16,12 @@ final class LegacyShopPreviewController extends Controller
 
         return view('front::index', [
             ...$this->layoutData(),
-            'widgets' => collect([(object) ['key' => 'products-default-block']]),
+            'widgets' => collect([
+                new LegacyShopPreviewWidget('main-slider'),
+                new LegacyShopPreviewWidget('products-default-block'),
+                new LegacyShopPreviewWidget('middle-banners'),
+                new LegacyShopPreviewWidget('sevices-sliders'),
+            ]),
             'previewProducts' => $directory->search('', true)->limit(12)->get(),
         ]);
     }

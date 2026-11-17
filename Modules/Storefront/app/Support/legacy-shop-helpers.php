@@ -26,3 +26,46 @@ if (! function_exists('option')) {
         };
     }
 }
+
+if (! function_exists('get_widget')) {
+    function get_widget(object $widget): array
+    {
+        $url = route('storefront.preview.products');
+        $slide = static fn (string $file, string $title) => (object) [
+            'image' => 'legacy-shop-theme/img/default/'.$file,
+            'link' => $url,
+            'title' => $title,
+        ];
+
+        return match ($widget->key) {
+            'main-slider' => [
+                'main_sliders' => collect([
+                    $slide('slider1.jpg', 'فروشگاه ویرا'),
+                    $slide('slider2.jpg', 'محصولات فروشگاه'),
+                ]),
+                'mobile_sliders' => collect([
+                    $slide('slider3.jpg', 'فروشگاه ویرا'),
+                    $slide('slider4.jpg', 'محصولات فروشگاه'),
+                ]),
+                'index_slider_banners' => collect([
+                    $slide('banner1.jpg', 'پیشنهادهای فروشگاه'),
+                    $slide('banner2.jpg', 'محصولات جدید'),
+                ]),
+            ],
+            'middle-banners' => [
+                'index_middle_banners' => collect([
+                    $slide('banner3.jpg', 'فروشگاه ویرا'),
+                    $slide('banner4.jpg', 'خرید از فروشگاه'),
+                ]),
+            ],
+            'sevices-sliders' => [
+                'sevices_sliders' => collect([
+                    $slide('slider10.svg', 'پشتیبانی'),
+                    $slide('slider11.svg', 'محصولات'),
+                    $slide('slider12.svg', 'خدمات فروشگاه'),
+                ]),
+            ],
+            default => [],
+        };
+    }
+}

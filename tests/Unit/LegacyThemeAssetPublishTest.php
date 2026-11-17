@@ -92,7 +92,9 @@ class LegacyThemeAssetPublishTest extends UnitTestCase
 
         foreach ($files as $name => $body) {
             $path = $stage.'/'.$name;
-            mkdir(dirname($path), 0700, true);
+            if (! is_dir(dirname($path))) {
+                mkdir(dirname($path), 0700, true);
+            }
             file_put_contents($path, $body);
             $manifest['files'][] = ['path' => $name, 'size' => strlen($body), 'sha256' => hash('sha256', $body)];
         }

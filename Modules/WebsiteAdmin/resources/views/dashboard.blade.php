@@ -27,6 +27,17 @@
             @endif
         </section>
 
+        @if(config('vira.shop_preview.enabled', false) && app(\Modules\Storefront\Support\LegacyShopTheme::class)->ready())
+            <section class="website-admin-feature">
+                <span class="website-admin-feature-icon"><i data-lucide="eye"></i></span>
+                <div class="website-admin-feature-copy">
+                    <h2>پیش‌نمایش قالب Laravel Shop</h2>
+                    <p>نمایش قالب اصلی انتقال‌یافته با کالاهای منتشرشدهٔ ویرا، بدون فعال کردن فروش و پرداخت آنلاین.</p>
+                </div>
+                <a class="website-admin-button" href="{{ route('storefront.preview.home') }}" target="_blank" rel="noopener">مشاهده پیش‌نمایش</a>
+            </section>
+        @endif
+
         <section class="website-admin-next">
             <div class="website-admin-next-icon"><i data-lucide="blocks"></i></div>
             <div>

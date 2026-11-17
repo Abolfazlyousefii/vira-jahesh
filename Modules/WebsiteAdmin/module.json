@@ -1,0 +1,11 @@
+{
+    "name": "WebsiteAdmin",
+    "alias": "websiteadmin",
+    "description": "مدیریت سایت",
+    "keywords": [],
+    "priority": 20,
+    "providers": [
+        "Modules\\WebsiteAdmin\\Providers\\WebsiteAdminServiceProvider"
+    ],
+    "files": []
+}

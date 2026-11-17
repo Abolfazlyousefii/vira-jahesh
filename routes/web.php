@@ -1,3 +1,9 @@
 <?php
 
-// Business routes live in their owning module. Shared authentication is provided by Fortify.
+use App\Http\Controllers\WorkspaceSelectorController;
+use Illuminate\Support\Facades\Route;
+
+// Both management environments share Fortify authentication and the web session.
+Route::middleware('auth')
+    ->get('/workspace', WorkspaceSelectorController::class)
+    ->name('workspace.select');

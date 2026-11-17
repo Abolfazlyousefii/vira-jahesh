@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\RequireModule;
+use App\Http\Middleware\RequireWebsiteAccess;
 use App\Http\Middleware\SecurityHeaders;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -14,7 +15,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->alias(['module.active' => RequireModule::class]);
+        $middleware->alias([
+            'module.active' => RequireModule::class,
+            'website.access' => RequireWebsiteAccess::class,
+        ]);
         $middleware->web(append: [SecurityHeaders::class, RequireActiveAccount::class]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

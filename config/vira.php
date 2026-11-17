@@ -13,5 +13,6 @@ return [
         'Crm' => ['label' => 'ارتباطات و پیگیری‌ها', 'icon' => 'contact-round', 'enabled' => env('MODULE_CRM_ENABLED', true), 'requires' => ['Customers']],
         'Pos' => ['label' => 'صندوق فروشگاهی', 'icon' => 'scan-line', 'enabled' => env('MODULE_POS_ENABLED', true), 'requires' => ['Sales']],
         'Storefront' => ['label' => 'سایت فروشگاهی', 'icon' => 'store', 'enabled' => env('MODULE_STOREFRONT_ENABLED', true), 'requires' => ['Sales']],
+        'WebsiteAdmin' => ['label' => 'مدیریت سایت', 'icon' => 'globe', 'enabled' => env('MODULE_WEBSITE_ADMIN_ENABLED', true), 'requires' => ['Core']],
     ],
 ];

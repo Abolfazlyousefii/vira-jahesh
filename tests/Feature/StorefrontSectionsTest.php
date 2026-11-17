@@ -191,4 +191,14 @@ class StorefrontSectionsTest extends TestCase
         $this->assertNotFalse($featuresPosition);
         $this->assertLessThan($featuresPosition, $ctaPosition);
     }
+
+    public function test_website_operator_can_open_dashboard_but_cannot_edit_without_manage_permission(): void
+    {
+        $this->seed();
+        $websiteViewer = User::factory()->create();
+        $websiteViewer->assignRole('website_operator');
+
+        $this->actingAs($websiteViewer)->get('/site-admin')->assertOk();
+        $this->get('/site-admin/homepage')->assertForbidden();
+    }
 }

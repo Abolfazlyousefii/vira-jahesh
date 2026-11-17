@@ -130,4 +130,16 @@ class FoundationTest extends TestCase
             ->assertStatus(429);
         $this->assertGuest();
     }
+
+    public function test_disabling_website_admin_hides_that_destination_without_blocking_erp(): void
+    {
+        $this->seed();
+        $owner = User::factory()->create();
+        $owner->assignRole('owner');
+        config(['vira.modules.WebsiteAdmin.enabled' => false]);
+
+        $this->actingAs($owner)->get('/workspace')->assertRedirect('/panel');
+        $this->get('/site-admin')->assertNotFound();
+        $this->get('/panel')->assertOk();
+    }
 }

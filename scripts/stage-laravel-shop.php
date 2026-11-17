@@ -97,7 +97,14 @@ try {
             throw new RuntimeException('Unsafe ZIP path rejected: '.$name);
         }
 
-        if (array_any($segments, fn ($segment) => str_starts_with($segment, '.'))) {
+        $hidden = false;
+        foreach ($segments as $segment) {
+            if (str_starts_with($segment, '.')) {
+                $hidden = true;
+                break;
+            }
+        }
+        if ($hidden) {
             continue;
         }
 
@@ -134,6 +141,11 @@ try {
 
     if (! $apply) {
         echo "Dry run only. Add --apply to copy files into an isolated, private directory.\n";
+        $archive->close();
+        if ($nestedArchivePath !== null && is_file($nestedArchivePath)) {
+            unlink($nestedArchivePath);
+            $nestedArchivePath = null;
+        }
         exit(0);
     }
 

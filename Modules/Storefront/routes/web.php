@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Modules\Storefront\Http\Controllers\LegacyShopPreviewController;
 use Illuminate\Support\Facades\Route;
 use Modules\Catalog\Actions\ProductDirectory;
 use Modules\Storefront\Support\StorefrontSections;
@@ -26,3 +27,17 @@ Route::middleware(['web', 'module.active:Storefront'])->group(function (): void 
 Route::middleware(['web', 'auth', 'module.active:WebsiteAdmin', 'module.active:Storefront', 'website.access'])
     ->get('/panel/storefront', fn () => redirect()->route('website.homepage'))
     ->name('panel.storefront');
+
+
+// Opt-in preview of the actual staged Laravel Shop DefaultTheme.
+// The existing / and /shop routes remain unchanged until acceptance.
+Route::middleware(['web', 'module.active:Storefront'])
+    ->prefix('shop-preview')
+    ->name('storefront.preview.')
+    ->group(function (): void {
+        Route::get('/', [LegacyShopPreviewController::class, 'index'])->name('home');
+        Route::get('/products', [LegacyShopPreviewController::class, 'products'])->name('products');
+        Route::get('/products/{id}', [LegacyShopPreviewController::class, 'product'])
+            ->whereNumber('id')
+            ->name('product');
+    });

@@ -2,6 +2,8 @@
 @inject('moduleAccess', 'App\Support\ModuleAccess')
 @php
     $user = auth()->user();
+    $canWebsite = $moduleAccess->available('WebsiteAdmin') && ($user->can('website.access') || $user->can('storefront.manage'));
+    $canSwitchWorkspace = $canWebsite && $moduleAccess->available('Core') && $user->can('panel.access');
     // The same access-filtered navigation powers both the sidebar and command search.
     $primary = [
         ['module' => 'Customers', 'permission' => 'customers.view', 'route' => 'panel.customers', 'title' => 'مشتریان', 'icon' => 'users'],
@@ -13,7 +15,6 @@
     $secondary = [
         ['module' => 'Pos', 'permission' => 'pos.view', 'route' => 'panel.pos', 'title' => 'صندوق فروشگاهی', 'icon' => 'scan-line'],
         ['module' => 'Sales', 'permission' => 'sales.view', 'route' => 'panel.reports', 'title' => 'گزارش‌های فروش', 'icon' => 'chart-no-axes-combined'],
-        ['module' => 'Storefront', 'permission' => 'storefront.manage', 'route' => 'panel.storefront', 'title' => 'مدیریت صفحه اصلی سایت', 'icon' => 'store'],
         ['module' => 'Core', 'permission' => 'settings.manage', 'route' => 'panel.settings', 'title' => 'تنظیمات مجموعه', 'icon' => 'settings'],
         ['module' => 'Core', 'permission' => 'modules.manage', 'route' => 'panel.modules', 'title' => 'ماژول‌های مجموعه', 'icon' => 'blocks'],
     ];
@@ -49,7 +50,6 @@
         request()->routeIs('panel.catalog*') => 'catalog',
         request()->routeIs('panel.inventory*') => 'inventory',
         request()->routeIs('panel.sales*', 'panel.pos*', 'panel.reports*') => 'sales',
-        request()->routeIs('panel.storefront*') => 'storefront',
         default => 'core',
     };
 @endphp
@@ -87,6 +87,12 @@
                                 @endforeach
                             </div>
                         </div>
+                    @endif
+                    @if($canWebsite)
+                        <a class="icon-button" href="{{ route('website.dashboard') }}" title="مدیریت سایت" aria-label="مدیریت سایت"><i data-lucide="globe"></i></a>
+                    @endif
+                    @if($canSwitchWorkspace)
+                        <a class="icon-button" href="{{ route('workspace.select') }}" title="تغییر محیط" aria-label="تغییر محیط"><i data-lucide="arrow-left-right"></i></a>
                     @endif
                     <a class="icon-button" href="{{ route('panel.dashboard') }}" title="میز کار" aria-label="میز کار"><i data-lucide="layout-dashboard"></i></a>
                     <span class="user-chip" title="{{ $user->name }}">{{ mb_substr($user->name, 0, 1) }}</span>

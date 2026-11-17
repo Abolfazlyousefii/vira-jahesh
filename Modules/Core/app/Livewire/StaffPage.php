@@ -62,7 +62,11 @@ class StaffPage extends WorkspacePage
         $this->editingId = $id;
         $this->form = [...$user->only(['name', 'email', 'is_active']), 'access' => StaffAccess::empty()];
         foreach ($this->form['access'] as $section => $level) {
-            $this->form['access'][$section] = $user->can($section.'.manage') ? 'manage' : ($user->can($section.'.view') ? 'view' : 'none');
+            $this->form['access'][$section] = match ($section) {
+                'website' => ($user->can('website.manage') || $user->can('storefront.manage') || $user->can('website.access')) ? 'manage' : 'none',
+                'settings' => $user->can('settings.manage') ? 'manage' : 'none',
+                default => $user->can($section.'.manage') ? 'manage' : ($user->can($section.'.view') ? 'view' : 'none'),
+            };
         }
         $this->reset('password', 'password_confirmation', 'notice');
         $this->resetValidation();
@@ -90,10 +94,27 @@ class StaffPage extends WorkspacePage
             'password' => [$existing ? 'nullable' : 'required', 'string', 'min:12', 'max:128', 'confirmed'],
         ];
         foreach (StaffAccess::sections() as $section => $label) {
-            $rules['form.access.'.$section] = ['required', Rule::in(in_array($section, ['settings', 'storefront'], true) ? ['none', 'manage'] : ['none', 'view', 'manage'])];
+            $rules['form.access.'.$section] = ['required', Rule::in(in_array($section, ['settings', 'website'], true) ? ['none', 'manage'] : ['none', 'view', 'manage'])];
         }
         $data = $this->validate($rules, ['password.required' => 'برای حساب جدید رمز اختصاصی تعیین کنید.', 'password.min' => 'رمز باید حداقل ۱۲ نویسه باشد.', 'password.confirmed' => 'تکرار رمز یکسان نیست.', 'form.email.email' => 'ایمیل معتبر وارد کنید.']);
-        DB::transaction(function () use ($data, $existing): void {
+        $access = $data['form']['access'];
+        $erpSections = ['customers', 'catalog', 'inventory', 'sales', 'pos', 'crm', 'settings'];
+        $roles = [];
+        foreach ($erpSections as $section) {
+            if (($access[$section] ?? 'none') !== 'none') {
+                $roles[] = 'operator';
+
+                break;
+            }
+        }
+        if (($access['website'] ?? 'none') === 'manage') {
+            $roles[] = 'website_operator';
+        }
+        if ($roles === []) {
+            $roles[] = 'staff';
+        }
+
+        DB::transaction(function () use ($data, $existing, $roles): void {
             $user = $existing ?? new User;
             $old = $existing ? ['is_active' => $existing->is_active, 'permissions' => $existing->getAllPermissions()->pluck('name')->all()] : [];
             $user->fill(['name' => $data['form']['name'], 'email' => $data['form']['email']]);
@@ -105,7 +126,7 @@ class StaffPage extends WorkspacePage
                 $user->remember_token = Str::random(60);
             }
             $user->save();
-            $user->assignRole('operator');
+            $user->syncRoles($roles);
             $user->syncPermissions(StaffAccess::permissions($data['form']['access']));
             activity()->causedBy(auth()->user())->performedOn($user)->withProperties(['old' => $old, 'attributes' => ['is_active' => $user->is_active, 'permissions' => $user->getAllPermissions()->pluck('name')->all()]])->log($existing ? 'staff.updated' : 'staff.created');
         });
@@ -116,7 +137,7 @@ class StaffPage extends WorkspacePage
 
     private function checkBaseRole(): void
     {
-        if (! StaffAccess::operatorRoleReady()) {
+        if (! StaffAccess::operatorRoleReady() || ! StaffAccess::websiteOperatorRoleReady() || ! StaffAccess::staffRoleReady()) {
             throw ValidationException::withMessages(['form.access' => 'نقش پایهٔ کارکنان دسترسی سفارشی دارد؛ پیش از ساخت یا ویرایش همکار، تنظیم نقش را بررسی کنید.']);
         }
     }
@@ -127,7 +148,7 @@ class StaffPage extends WorkspacePage
         $search = mb_substr($this->search, 0, 120);
 
         return view('core::livewire.staff', [
-            'staff' => User::role(['owner', 'operator'])->with('roles.permissions')->when($search !== '', fn ($q) => $q->where(fn ($q) => $q->where('name', 'like', '%'.$search.'%')->orWhere('email', 'like', '%'.$search.'%')))->latest('id')->paginate(12),
+            'staff' => User::role(['owner', 'operator', 'website_operator', 'staff'])->with('roles.permissions')->when($search !== '', fn ($q) => $q->where(fn ($q) => $q->where('name', 'like', '%'.$search.'%')->orWhere('email', 'like', '%'.$search.'%')))->latest('id')->paginate(12),
             'sections' => StaffAccess::sections(),
         ])->layoutData(['title' => 'کارکنان و دسترسی‌ها']);
     }

@@ -15,7 +15,7 @@ class StorefrontServiceProvider extends ModuleServiceProvider
         parent::boot();
         $this->callAfterResolving(WidgetRegistry::class, function ($registry): void {
             $registry->register('storefront.published', 'ویترین سایت', 'Storefront', 'storefront.manage', 'core::dashboard.widgets.metric', fn () => [
-                'value' => app(ProductDirectory::class)->search('', true)->count(), 'unit' => 'کالای منتشرشده', 'description' => 'کالاهای فعال و منتشرشده؛ خرید اینترنتی هنوز فعال نیست.', 'route' => 'panel.storefront', 'label' => 'مدیریت صفحهٔ اصلی',
+                'value' => app(ProductDirectory::class)->search('', true)->count(), 'unit' => 'کالای منتشرشده', 'description' => 'کالاهای فعال و منتشرشده؛ خرید اینترنتی هنوز فعال نیست.', 'route' => 'website.homepage', 'label' => 'مدیریت صفحهٔ اصلی',
             ]);
         });
     }

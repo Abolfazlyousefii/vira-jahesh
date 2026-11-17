@@ -3,7 +3,6 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Modules\Catalog\Actions\ProductDirectory;
-use Modules\Storefront\Livewire\StorefrontEditor;
 use Modules\Storefront\Support\StorefrontSections;
 
 Route::middleware(['web', 'module.active:Storefront'])
@@ -24,7 +23,6 @@ Route::middleware(['web', 'module.active:Storefront'])->group(function (): void 
     })->whereNumber('id')->name('storefront.product');
 });
 
-Route::middleware([
-    'web', 'auth', 'module.active:Core', 'module.active:Storefront',
-    'can:panel.access', 'can:storefront.manage',
-])->get('/panel/storefront', StorefrontEditor::class)->name('panel.storefront');
+Route::middleware(['web', 'auth', 'module.active:WebsiteAdmin', 'module.active:Storefront', 'website.access'])
+    ->get('/panel/storefront', fn () => redirect()->route('website.homepage'))
+    ->name('panel.storefront');

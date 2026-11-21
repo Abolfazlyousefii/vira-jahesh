@@ -263,3 +263,85 @@
 @media(max-width:1200px){#jstudio .vc2 .vc2-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:920px){#jstudio .vc2 .vc2-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){#jstudio .vc2 .vc2-list-head{align-items:flex-start;flex-direction:column}#jstudio .vc2 .vc2-list-head-actions{width:100%;justify-content:space-between}#jstudio .vc2 .vc2-grid{grid-template-columns:1fr;padding:10px}#jstudio .vc2 .vc2-product-card{display:grid;grid-template-columns:112px minmax(0,1fr);gap:10px;align-items:start}#jstudio .vc2 .vc2-grid-top{grid-column:1/-1}#jstudio .vc2 .vc2-grid-visual{height:112px;margin:0}#jstudio .vc2 .vc2-grid-visual .v-product-thumb{height:110px}#jstudio .vc2 .vc2-grid-body{min-width:0}}
+
+
+/* Catalog create form polish: clearer hierarchy, larger controls and persistent actions. */
+#jstudio .vc2 .vc2-page-title{min-height:66px;margin-bottom:14px}
+#jstudio .vc2 .vc2-page-title h1{font-size:25px;letter-spacing:-.45px}
+#jstudio .vc2 .vc2-page-title p{font-size:12px;line-height:1.9}
+#jstudio .vc2 .vc2-banner{padding:12px 16px;border-radius:12px;font-size:12px;line-height:1.9}
+#jstudio .vc2 .vc2-banner [data-lucide]{width:18px;height:18px}
+#jstudio .vc2 .vc2-form,
+#jstudio .vc2 .vc2-form-columns,
+#jstudio .vc2 .vc2-form-flow,
+#jstudio .vc2 .vc2-form-aside{min-width:0}
+#jstudio .vc2 .vc2-form-columns{grid-template-columns:minmax(0,1fr) 292px;gap:18px}
+#jstudio .vc2 .vc2-form-card{position:relative;padding:22px 24px;margin-bottom:16px;border-radius:17px;border-color:#e2ece9;box-shadow:0 8px 25px rgba(23,58,73,.055)}
+#jstudio .vc2 .vc2-form-card::before{content:"";position:absolute;inset-block:18px;width:3px;inset-inline-start:0;border-radius:4px;background:#0b998d;opacity:.8}
+#jstudio .vc2 .vc2-form-flow>.vc2-form-card:nth-child(2)::before{background:#9678cb}
+#jstudio .vc2 .vc2-form-flow>.vc2-form-card:nth-child(3)::before{background:#5686cf}
+#jstudio .vc2 .vc2-section-head{gap:12px;margin-bottom:17px}
+#jstudio .vc2 .vc2-section-head h2{font-size:15px;line-height:1.7}
+#jstudio .vc2 .vc2-section-head p{font-size:11.5px;line-height:1.8}
+#jstudio .vc2 .vc2-step{width:34px;height:34px;border-radius:10px;font-size:13px}
+#jstudio .vc2 .vc2-fields{gap:4px 18px}
+#jstudio .vc2 .v-field{margin:7px 0;font-size:12px;gap:6px;color:#405b66}
+#jstudio .vc2 .v-field>span:first-child{font-size:12px;font-weight:750;color:#35525e;line-height:1.8}
+#jstudio .vc2 .v-field :is(input,textarea,select){min-height:47px;padding:10px 13px;border-color:#d7e5e2;border-radius:10px;background:#fbfdfd;font-size:13px;line-height:1.7;transition:border-color .16s,box-shadow .16s,background .16s}
+#jstudio .vc2 .v-field :is(input,textarea,select):hover{border-color:#b8d6d0;background:#fff}
+#jstudio .vc2 .v-field :is(input,textarea,select):focus{border-color:#53b9aa;box-shadow:0 0 0 3px rgba(11,153,141,.09);background:#fff;outline:0}
+#jstudio .vc2 .v-field textarea{min-height:82px;resize:vertical}
+#jstudio .vc2 .v-field small{font-size:10.5px;line-height:1.85}
+#jstudio .vc2 .vc2-sku-preview{min-height:47px;padding:10px 13px;border-radius:10px;font-size:11.5px;line-height:1.8}
+#jstudio .vc2 .vc2-kind-row{gap:12px}
+#jstudio .vc2 .vc2-kind{min-height:76px;padding:14px;border-radius:12px}
+#jstudio .vc2 .vc2-kind>[data-lucide]{width:21px;height:21px}
+#jstudio .vc2 .vc2-kind strong{font-size:12px}
+#jstudio .vc2 .vc2-kind small{font-size:10.5px;line-height:1.8}
+#jstudio .vc2 .vc2-tip{padding:12px 14px;font-size:11px;line-height:2}
+#jstudio .vc2 .vc2-attribute-row{gap:12px}
+#jstudio .vc2 .vc2-variant{padding:14px 15px;border-radius:12px}
+#jstudio .vc2 .vc2-variant-head strong{font-size:12px}
+#jstudio .vc2 .vc2-checks{font-size:11.5px}
+#jstudio .vc2 .vc2-form-aside{gap:14px}
+#jstudio .vc2 .vc2-aside-card{padding:19px;border-radius:16px}
+#jstudio .vc2 .vc2-aside-card h3{font-size:13px;margin-bottom:14px}
+#jstudio .vc2 .vc2-aside-card h3 [data-lucide]{width:19px;height:19px}
+#jstudio .vc2 .vc2-upload{min-height:180px;padding:16px;border-width:1.5px;border-radius:13px;background:linear-gradient(145deg,#f8fcfa,#eff8f5);font-size:12px;line-height:1.9;transition:border-color .16s,background .16s,box-shadow .16s}
+#jstudio .vc2 .vc2-upload:hover,
+#jstudio .vc2 .vc2-upload:focus-within{border-color:#69bfb1;background:#f2fbf7;box-shadow:0 0 0 3px rgba(11,153,141,.07)}
+#jstudio .vc2 .vc2-upload>[data-lucide]{width:25px;height:25px}
+#jstudio .vc2 .vc2-upload img{width:100%;max-width:100%;height:158px;max-height:158px;object-fit:contain}
+#jstudio .vc2 .vc2-aside-help{font-size:10.5px;line-height:1.9}
+#jstudio .vc2 .vc2-info-list{gap:11px}
+#jstudio .vc2 .vc2-info-list p{font-size:11.5px;line-height:2.05;padding-inline-start:10px;border-inline-start:2px solid #dcefe9}
+#jstudio .vc2 .vc2-info-list p:nth-child(2){border-inline-start-color:#e8def5}
+#jstudio .vc2 .vc2-info-list p:nth-child(3){border-inline-start-color:#dce8f7}
+#jstudio .vc2 .vc2-form-footer{position:sticky;bottom:12px;z-index:25;margin-top:10px;padding:13px 17px;border:1px solid #dfeae7;border-radius:14px;background:rgba(255,255,255,.94);box-shadow:0 9px 28px rgba(23,58,73,.12);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+#jstudio .vc2 .vc2-form-footer small{font-size:11px;line-height:1.8}
+#jstudio .vc2 .vc2-form-footer .vc2-btn{min-height:42px}
+@media(max-width:1120px){
+ #jstudio .vc2 .vc2-form-columns{grid-template-columns:minmax(0,1fr) 250px;gap:14px}
+ #jstudio .vc2 .vc2-form-card{padding:19px 20px}
+}
+@media(max-width:920px){
+ #jstudio .vc2 .vc2-form-columns{grid-template-columns:1fr}
+ #jstudio .vc2 .vc2-form-aside{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:760px){
+ #jstudio .vc2 .vc2-form-columns{grid-template-columns:1fr}
+ #jstudio .vc2 .vc2-form-aside{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #jstudio .vc2 .vc2-form-card{padding:16px}
+ #jstudio .vc2 .vc2-form-footer{bottom:8px;padding:11px 12px}
+}
+@media(max-width:560px){
+ #jstudio .vc2 .vc2-form-aside{grid-template-columns:1fr}
+ #jstudio .vc2 .vc2-page-title h1{font-size:21px}
+ #jstudio .vc2 .vc2-form-footer{align-items:stretch;flex-direction:column}
+ #jstudio .vc2 .vc2-form-footer>div{width:100%}
+ #jstudio .vc2 .vc2-form-footer>div .vc2-btn{flex:1}
+}
+@media(prefers-reduced-motion:reduce){
+ #jstudio .vc2 .v-field :is(input,textarea,select),
+ #jstudio .vc2 .vc2-upload{transition:none}
+}
